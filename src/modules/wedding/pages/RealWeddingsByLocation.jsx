@@ -14,7 +14,7 @@ const RealWeddingsByLocation = () => {
   const destinationName = filteredWeddings.length > 0 ? filteredWeddings[0].location : destinationId;
 
   return (
-    <div className="min-h-screen bg-[#fafafb] pb-20 pt-16 md:pt-24">
+    <div className="min-h-screen bg-[#fafafb] pb-20 pt-6 md:pt-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <div className="mb-8">
