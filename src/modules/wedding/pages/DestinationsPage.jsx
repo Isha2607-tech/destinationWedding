@@ -70,12 +70,12 @@ const DestinationsPage = () => {
       {/* Filters + Grid */}
       <section className="py-8 px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-wrap justify-center gap-3 mb-8">
+          <div className="flex flex-nowrap overflow-x-auto md:flex-wrap md:justify-center gap-2 md:gap-3 mb-8 pb-4 md:pb-0 px-2 scrollbar-none">
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActive(cat)}
-                className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
+                className={`flex-none px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
                   active === cat
                     ? "wedding-gradient text-background shadow-md"
                     : "bg-muted text-muted-foreground hover:bg-primary/10"

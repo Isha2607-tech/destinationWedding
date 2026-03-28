@@ -32,7 +32,7 @@ const RealWeddingGalleryPage = () => {
   return (
     <div className="min-h-screen bg-[#fafbfc]">
       {/* Premium Navigation Bar */}
-      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-100 px-4 py-4">
+      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-100 px-4 py-2.5">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <button 
             onClick={() => navigate(-1)}
@@ -65,16 +65,16 @@ const RealWeddingGalleryPage = () => {
       </nav>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-12">
+      <main className="max-w-7xl mx-auto px-4 pt-4 pb-12">
         <ScrollReveal>
-          <div className="text-center mb-16">
+          <div className="text-center mb-4">
             <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-widest mb-4">
               A Love Story Captured
             </div>
-            <h2 className="text-3xl md:text-5xl font-bold leading-tight mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>
+            <h2 className="text-2xl md:text-5xl font-bold leading-tight mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
               Memories from the <br className="hidden sm:block" /> {wedding.location} Celebration
             </h2>
-            <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-slate-500 font-medium italic">
+            <div className="flex flex-wrap items-center justify-center gap-4 text-[10px] md:text-sm text-slate-500 font-medium italic">
               <div className="flex items-center gap-2">
                 <div className="w-1.5 h-1.5 rounded-full bg-primary/40" />
                 <span>{wedding.guests} Guests Witnessed</span>
@@ -116,13 +116,6 @@ const RealWeddingGalleryPage = () => {
                     className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/40 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center">
-                    <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center scale-0 group-hover:scale-100 transition-transform">
-                      <div className="w-1 h-1 bg-white rounded-full mx-0.5" />
-                      <div className="w-1 h-1 bg-white rounded-full mx-0.5" />
-                      <div className="w-1 h-1 bg-white rounded-full mx-0.5" />
-                    </div>
-                  </div>
                 </div>
               </ScrollReveal>
             );
@@ -130,7 +123,7 @@ const RealWeddingGalleryPage = () => {
         </div>
 
         {/* CTA Section */}
-        <div className="mt-24 text-center">
+        <div className="mt-12 text-center">
           <ScrollReveal>
             <div className="bg-white rounded-[3rem] p-12 md:p-20 shadow-2xl shadow-primary/5 border border-slate-100 relative overflow-hidden">
               <div className="relative z-10 max-w-xl mx-auto">

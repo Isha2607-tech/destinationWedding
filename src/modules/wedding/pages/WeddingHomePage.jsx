@@ -8,6 +8,7 @@ import {
   Camera,
   Utensils,
   Music,
+  ChevronRight,
 } from "lucide-react";
 import HeroSection from "../components/HeroSection";
 import DestinationCard from "../components/DestinationCard";
@@ -104,10 +105,10 @@ const WeddingHomePage = () => {
       </section>
 
       {/* Popular Destinations */}
-      <section className="pt-4 pb-6 md:pb-24 px-4 wedding-gradient-soft">
+      <section className="pt-2 pb-4 md:pb-24 px-4 wedding-gradient-soft">
         <div className="max-w-7xl mx-auto">
           <ScrollReveal>
-            <div className="text-center mb-6 sm:mb-12">
+            <div className="text-center mb-3 sm:mb-12">
               <p className="text-sm uppercase tracking-[0.2em] text-primary mb-3">
                 Dream Locations
               </p>
@@ -120,19 +121,28 @@ const WeddingHomePage = () => {
             </div>
           </ScrollReveal>
 
-          <div className="flex gap-6 overflow-x-auto overflow-y-hidden pb-6 snap-x snap-mandatory no-scrollbar">
-            {destinations.slice(0, 5).map((dest, i) => (
-              <ScrollReveal
-                key={dest.id}
-                delay={i * 100}
-                className="min-w-[280px] sm:min-w-[320px] snap-start"
-              >
-                <DestinationCard destination={dest} />
-              </ScrollReveal>
-            ))}
+          <div className="relative group/scroll">
+            <div className="flex gap-6 overflow-x-auto overflow-y-hidden pb-6 snap-x snap-mandatory no-scrollbar scroll-smooth">
+              {destinations.slice(0, 5).map((dest, i) => (
+                <ScrollReveal
+                  key={dest.id}
+                  delay={i * 100}
+                  className="min-w-[280px] sm:min-w-[320px] snap-start"
+                >
+                  <DestinationCard destination={dest} />
+                </ScrollReveal>
+              ))}
+              
+              {/* Mobile Scroll Indicator Arrow */}
+              <div className="flex sm:hidden items-center justify-center min-w-[60px] pr-4">
+                <div className="w-10 h-10 rounded-full bg-white/80 border border-primary/20 flex items-center justify-center text-primary shadow-sm animate-pulse">
+                  <ChevronRight className="w-6 h-6" />
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div className="text-center mt-4">
+          <div className="text-center mt-2">
             <Link
               to="/wedding/destinations"
               className="inline-block px-8 py-3 rounded-full text-sm font-medium border-2 border-primary text-primary transition-all duration-300 hover:bg-primary hover:text-primary-foreground hover:scale-105"
@@ -144,7 +154,7 @@ const WeddingHomePage = () => {
       </section>
 
       {/* Why Choose Us */}
-      <section className="pt-2 pb-6 px-4">
+      <section className="pt-0 pb-6 px-4">
         <div className="max-w-6xl mx-auto">
           <ScrollReveal>
             <div className="text-center mb-10">

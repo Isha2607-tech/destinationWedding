@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { 
   Calendar, MapPin, Users, 
   ChevronRight, BadgeCheck, Clock, 
@@ -9,6 +9,7 @@ import { myBookings, formatPrice } from "../data/weddingData";
 import ScrollReveal from "../components/ScrollReveal";
 
 const MyBookingsPage = () => {
+  const navigate = useNavigate();
   const getStatusStyles = (status) => {
     switch (status.toLowerCase()) {
       case 'confirmed':
@@ -78,14 +79,14 @@ const MyBookingsPage = () => {
 
             return (
               <ScrollReveal key={booking.id} delay={i * 100}>
-                <div className="group relative bg-white rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-500 overflow-hidden flex flex-col md:flex-row h-auto md:h-[220px]">
+                <div className="group relative bg-white rounded-[2rem] border border-slate-100 shadow-sm transition-all duration-500 overflow-hidden flex flex-col md:flex-row h-auto md:h-[220px]">
                   
                   {/* Image Column */}
                   <div className="w-full md:w-[280px] h-[160px] md:h-full relative overflow-hidden group-hover:transform transition-transform duration-700">
                     <img 
                       src={booking.image} 
                       alt={booking.destination} 
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
+                      className="w-full h-full object-cover transition-transform duration-1000"
                     />
                     <div className="absolute top-4 left-4">
                       <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full backdrop-blur-md shadow-sm border ${styles.bg}/80 ${styles.border} ${styles.text}`}>
@@ -143,7 +144,10 @@ const MyBookingsPage = () => {
                     </div>
 
                     <div className="mt-6 md:mt-0 flex items-center justify-end">
-                      <button className="flex items-center gap-1 text-[11px] font-black text-primary hover:gap-2 transition-all uppercase tracking-widest">
+                      <button 
+                        onClick={() => navigate(`/wedding/bookings/${booking.id}`)}
+                        className="flex items-center gap-1 text-[11px] font-black text-primary hover:gap-2 transition-all uppercase tracking-widest"
+                      >
                         View Details
                         <ChevronRight className="w-3.5 h-3.5" />
                       </button>

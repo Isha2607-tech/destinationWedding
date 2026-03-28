@@ -67,34 +67,34 @@ const WeddingEnquiryPage = () => {
 
   return (
     <div className="min-h-screen">
-      <section className="pt-32 pb-8 px-4 text-center">
+      <section className="pt-4 md:pt-20 pb-4 px-4 text-center leading-tight">
         <h1
-          className="text-3xl md:text-5xl font-bold"
+          className="text-2xl md:text-5xl font-bold"
           style={{ fontFamily: "'Playfair Display', serif" }}
         >
           Plan Your Dream Wedding
         </h1>
-        <p className="text-muted-foreground mt-3 text-lg">
+        <p className="text-muted-foreground mt-1 text-sm md:text-lg">
           Tell us about your vision
         </p>
       </section>
-
+      
       {/* Step indicator */}
-      <div className="max-w-lg mx-auto px-4 mb-12">
+      <div className="max-w-lg mx-auto px-4 mb-8 md:mb-12">
         <div className="flex items-center justify-between">
           {[1, 2, 3].map((s) => (
             <div key={s} className="flex items-center">
               <div
-                className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-500 ${
+                className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center text-xs md:text-sm font-semibold transition-all duration-500 ${
                   step >= s
                     ? "wedding-gradient text-background"
                     : "bg-muted text-muted-foreground"
                 }`}
               >
-                {step > s ? <Check className="w-5 h-5" /> : s}
+                {step > s ? <Check className="w-4 h-4 md:w-5 md:h-5" /> : s}
               </div>
               {s < 3 && (
-                <div className="w-16 sm:w-24 h-1 mx-2 rounded-full overflow-hidden bg-muted">
+                <div className="w-12 sm:w-24 h-1 mx-2 rounded-full overflow-hidden bg-muted">
                   <div
                     className="h-full wedding-gradient transition-all duration-700"
                     style={{ width: step > s ? "100%" : "0%" }}
@@ -104,7 +104,7 @@ const WeddingEnquiryPage = () => {
             </div>
           ))}
         </div>
-        <div className="flex justify-between mt-2 text-xs text-muted-foreground">
+        <div className="flex justify-between mt-1 text-[10px] md:text-xs text-muted-foreground">
           <span>Event Details</span>
           <span>Services</span>
           <span>Contact</span>
@@ -112,30 +112,30 @@ const WeddingEnquiryPage = () => {
       </div>
 
       {/* Form */}
-      <div className="max-w-2xl mx-auto px-4 pb-24">
+      <div className="max-w-2xl mx-auto px-4 pb-12 md:pb-24">
         <ScrollReveal>
-          <div className="p-8 rounded-2xl bg-card border border-border wedding-shadow">
+          <div className="p-5 md:p-8 rounded-2xl bg-card border border-border wedding-shadow">
             {step === 1 && (
               <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium mb-2">
+                  <label className="block text-xs font-medium mb-1">
                     Event Date
                   </label>
                   <input
                     type="date"
                     value={form.eventDate}
                     onChange={(e) => update("eventDate", e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl bg-muted border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    className="w-full px-4 py-2 md:py-3 rounded-xl bg-muted border border-border text-foreground text-base md:text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2">
+                  <label className="block text-xs font-medium mb-1">
                     Expected Guest Count
                   </label>
                   <select
                     value={form.guestCount}
                     onChange={(e) => update("guestCount", e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl bg-muted border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    className="w-full px-4 py-2 md:py-3 rounded-xl bg-muted border border-border text-foreground text-base md:text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                   >
                     <option value="">Select</option>
                     <option>Under 100</option>
@@ -145,13 +145,13 @@ const WeddingEnquiryPage = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2">
+                  <label className="block text-xs font-medium mb-1">
                     Preferred Destination
                   </label>
                   <select
                     value={form.destination}
                     onChange={(e) => update("destination", e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl bg-muted border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    className="w-full px-4 py-2 md:py-3 rounded-xl bg-muted border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                   >
                     <option value="">Select</option>
                     {destinations.map((d) => (

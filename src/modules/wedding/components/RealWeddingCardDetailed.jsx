@@ -19,11 +19,6 @@ const RealWeddingCardDetailed = ({ wedding }) => {
             alt={wedding.coupleName}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
           />
-          <div className="absolute top-2 right-2">
-            <span className="px-1.5 py-0.5 rounded-md bg-slate-900/80 text-white text-[6px] font-black uppercase tracking-wider backdrop-blur-sm shadow-xl">
-              Case
-            </span>
-          </div>
         </div>
 
         {/* Info */}
@@ -51,15 +46,15 @@ const RealWeddingCardDetailed = ({ wedding }) => {
           <div className="flex gap-2">
             <button
               onClick={() => navigate(`/wedding/real-weddings/gallery/${wedding.id}`)}
-              className="flex-1 py-1.5 rounded-md border border-[#e5e7eb] text-[8px] font-bold text-[#374151] hover:bg-slate-50 transition-all active:scale-95"
+              className="flex-1 py-1.5 rounded-md border border-[#e5e7eb] text-[10px] font-bold text-[#374151] hover:bg-slate-50 transition-all active:scale-95"
             >
-              Photos
+              View Photos
             </button>
             <button
               onClick={() => setIsEnquiryOpen(true)}
-              className="flex-1 py-1.5 rounded-md bg-[#ff7676] text-white text-[8px] font-bold shadow-sm shadow-red-100 hover:bg-[#ef6666] transition-all active:scale-95"
+              className="flex-1 py-1.5 rounded-md wedding-gradient text-background text-[10px] font-bold shadow-sm shadow-primary/20 hover:opacity-90 transition-all active:scale-95"
             >
-              Similar
+              Plan Something Similar
             </button>
           </div>
         </div>

@@ -6,7 +6,7 @@ const PlannerCard = ({ planner }) => {
   return (
     <Link
       to={`/wedding/planners/${planner.id}`}
-      className="group block h-full rounded-[2rem] overflow-hidden bg-white/40 backdrop-blur-md border border-pink-100/30 p-6 sm:p-7 transition-all duration-500 hover:shadow-[0_20px_50px_-15px_rgba(157,49,61,0.15)] hover:-translate-y-2 hover:bg-white hover:border-primary/20"
+      className="group block h-full rounded-[2rem] overflow-hidden bg-white border-primary/20 md:bg-white/40 md:border-pink-100/30 p-6 sm:p-7 transition-all duration-500 hover:shadow-[0_20px_50px_-15px_rgba(157,49,61,0.15)] hover:-translate-y-2 md:hover:bg-white md:hover:border-primary/20"
     >
       <div className="flex items-start gap-4">
         <img

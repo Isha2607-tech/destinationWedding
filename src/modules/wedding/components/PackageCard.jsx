@@ -3,7 +3,7 @@ import { formatPrice } from "../data/weddingData";
 
 const PackageCard = ({ pkg, onSelect }) => {
   return (
-    <div className="h-full rounded-[2rem] border border-pink-100/30 bg-white/40 backdrop-blur-md p-6 sm:p-8 transition-all duration-500 hover:shadow-[0_20px_50px_-12px_rgba(157,49,61,0.15)] hover:-translate-y-2 hover:bg-white hover:border-primary/20 group">
+    <div className="h-full rounded-[2rem] border-primary/20 bg-white md:bg-white/40 md:border-pink-100/30 p-6 sm:p-8 transition-all duration-500 hover:shadow-[0_20px_50px_-12px_rgba(157,49,61,0.15)] hover:-translate-y-2 md:hover:bg-white md:hover:border-primary/20 group">
       <h4
         className="text-xl font-semibold"
         style={{ fontFamily: "'Playfair Display', serif" }}

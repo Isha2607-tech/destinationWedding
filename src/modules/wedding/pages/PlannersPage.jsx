@@ -21,7 +21,7 @@ const PlannersPage = () => {
 
   return (
     <div>
-      <section className="relative py-32 px-4 overflow-hidden">
+      <section className="relative py-12 md:py-24 px-4 overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <img src={bgImg} alt="Planners Background" className="w-full h-full object-cover" />
@@ -49,16 +49,15 @@ const PlannersPage = () => {
         </div>
       </section>
 
-      <section className="py-16 px-4">
+      <section className="pt-8 pb-16 px-4 md:pt-16">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-wrap justify-center gap-3 mb-12">
+          <div className="flex flex-nowrap overflow-x-auto md:flex-wrap md:justify-center gap-2 md:gap-3 mb-8 md:mb-12 pb-4 md:pb-0 px-2 scrollbar-none">
             <button
               onClick={() => setCityFilter("All")}
-              className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
-                cityFilter === "All"
+              className={`flex-none px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${cityFilter === "All"
                   ? "wedding-gradient text-background shadow-md"
                   : "bg-muted text-muted-foreground hover:bg-primary/10"
-              }`}
+                }`}
             >
               All Cities
             </button>
@@ -66,11 +65,10 @@ const PlannersPage = () => {
               <button
                 key={city}
                 onClick={() => setCityFilter(city)}
-                className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
-                  cityFilter === city
+                className={`flex-none px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${cityFilter === city
                     ? "wedding-gradient text-background shadow-md"
                     : "bg-muted text-muted-foreground hover:bg-primary/10"
-                }`}
+                  }`}
               >
                 {city}
               </button>

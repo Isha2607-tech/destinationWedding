@@ -62,7 +62,7 @@ const DestinationDetailPage = () => {
   return (
     <div>
       {/* Gallery Hero */}
-      <section className="relative h-[60vh] min-h-[400px] overflow-hidden">
+      <section className="relative h-[45vh] md:h-[60vh] min-h-[300px] md:min-h-[400px] overflow-hidden">
         <img
           src={dest.image}
           alt={dest.name}
@@ -97,7 +97,7 @@ const DestinationDetailPage = () => {
       </section>
 
       {/* Stats */}
-      <section className="py-12 px-4 border-b border-border">
+      <section className="py-6 md:py-12 px-4 border-b border-border">
         <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
           {[
             { icon: IndianRupee, label: "Avg Cost", value: dest.avgCost },
@@ -121,10 +121,10 @@ const DestinationDetailPage = () => {
       </section>
 
       {/* Description */}
-      <section className="py-16 px-4">
+      <section className="pt-6 pb-6 md:py-16 px-4">
         <div className="max-w-4xl mx-auto">
           <ScrollReveal>
-            <p className="text-lg leading-relaxed text-muted-foreground">
+            <p className="text-sm md:text-lg leading-relaxed text-muted-foreground">
               {dest.description}
             </p>
           </ScrollReveal>
@@ -132,11 +132,11 @@ const DestinationDetailPage = () => {
       </section>
 
       {/* Venues */}
-      <section className="py-16 px-4 wedding-gradient-soft">
+      <section className="pt-6 pb-8 md:py-16 px-4 wedding-gradient-soft">
         <div className="max-w-6xl mx-auto">
           <ScrollReveal>
             <h2
-              className="text-3xl font-bold mb-10 text-center"
+              className="text-3xl font-bold mb-6 md:mb-10 text-center"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               Recommended Venues
@@ -173,11 +173,11 @@ const DestinationDetailPage = () => {
       </section>
 
       {/* Planners for this destination */}
-      <section className="py-16 px-4">
+      <section className="pt-4 pb-16 md:py-16 px-4">
         <div className="max-w-6xl mx-auto">
           <ScrollReveal>
             <h2
-              className="text-3xl font-bold mb-10 text-center"
+              className="text-3xl font-bold mb-6 md:mb-10 text-center"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               Recommended Planners
@@ -194,7 +194,7 @@ const DestinationDetailPage = () => {
       </section>
 
       {/* CTA */}
-      <section className="py-16 px-4 wedding-gradient">
+      <section className="pt-16 pb-40 md:pb-32 px-4 wedding-gradient -mb-24 md:-mb-16">
         <div className="max-w-3xl mx-auto text-center">
           <h2
             className="text-3xl font-bold text-background mb-4"

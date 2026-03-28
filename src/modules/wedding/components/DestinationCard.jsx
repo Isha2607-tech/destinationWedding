@@ -17,7 +17,7 @@ const DestinationCard = ({ destination }) => {
         />
 
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
-        
+
         <div className="absolute top-3 right-3 sm:top-4 sm:right-4">
           <span className="px-2.5 py-1 rounded-full text-[9px] font-bold uppercase tracking-wider bg-white/90 text-primary backdrop-blur-md shadow-sm">
             {destination.category}

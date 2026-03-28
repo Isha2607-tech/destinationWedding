@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import ScrollToTop from "./components/ScrollToTop";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -12,6 +13,7 @@ import PlannerDetailPage from "./modules/wedding/pages/PlannerDetailPage";
 import RealWeddingsByLocation from "./modules/wedding/pages/RealWeddingsByLocation";
 import RealWeddingGalleryPage from "./modules/wedding/pages/RealWeddingGalleryPage";
 import MyBookingsPage from "./modules/wedding/pages/MyBookingsPage";
+import BookingDetailPage from "./modules/wedding/pages/BookingDetailPage";
 import SavedDestinationsPage from "./modules/wedding/pages/SavedDestinationsPage";
 import MyEnquiriesPage from "./modules/wedding/pages/MyEnquiriesPage";
 import AccountSettingsPage from "./modules/wedding/pages/AccountSettingsPage";
@@ -27,6 +29,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Navigate to="/welcome" replace />} />
           <Route path="/welcome" element={<Welcome />} />
@@ -41,6 +44,7 @@ const App = () => (
             <Route path="planners/:id" element={<PlannerDetailPage />} />
             <Route path="enquiry" element={<WeddingEnquiryPage />} />
             <Route path="bookings" element={<MyBookingsPage />} />
+            <Route path="bookings/:bookingId" element={<BookingDetailPage />} />
             <Route path="saved" element={<SavedDestinationsPage />} />
             <Route path="my-enquiries" element={<MyEnquiriesPage />} />
             <Route path="settings" element={<AccountSettingsPage />} />

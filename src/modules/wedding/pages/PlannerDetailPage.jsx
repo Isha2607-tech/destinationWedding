@@ -98,7 +98,7 @@ const PlannerDetailPage = () => {
       </section>
 
       {/* Packages */}
-      <section className="py-8 md:py-16 px-4">
+      <section className="pt-2 pb-4 md:py-16 px-4">
         <div className="max-w-6xl mx-auto">
           <ScrollReveal>
             <h2
@@ -119,7 +119,7 @@ const PlannerDetailPage = () => {
       </section>
 
       {/* Reviews */}
-      <section className="py-8 md:py-16 px-4 wedding-gradient-soft">
+      <section className="pt-2 pb-8 md:py-16 px-4 wedding-gradient-soft">
         <div className="max-w-4xl mx-auto">
           <ScrollReveal>
             <h2

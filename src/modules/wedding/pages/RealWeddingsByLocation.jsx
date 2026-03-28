@@ -34,10 +34,10 @@ const RealWeddingsByLocation = () => {
                 <span className="px-4 py-1.5 rounded-full bg-slate-100 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-4 inline-block">
                   Wedding Stories
                 </span>
-                <h1 className="text-4xl md:text-6xl font-black text-foreground" style={{ fontFamily: "'Playfair Display', serif" }}>
+                <h1 className="text-3xl md:text-6xl font-black text-foreground" style={{ fontFamily: "'Playfair Display', serif" }}>
                   A legacy of love
                 </h1>
-                <p className="text-xl text-muted-foreground mt-4 max-w-2xl font-medium">
+                <p className="text-base md:text-xl text-muted-foreground mt-4 max-w-2xl font-normal md:font-medium">
                   Discover how couples celebrated their dream union in {destinationName}. 
                   Each story is a unique masterpiece of planning and emotion.
                 </p>
