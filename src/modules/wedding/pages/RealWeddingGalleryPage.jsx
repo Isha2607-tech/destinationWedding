@@ -125,23 +125,23 @@ const RealWeddingGalleryPage = () => {
         {/* CTA Section */}
         <div className="mt-12 text-center">
           <ScrollReveal>
-            <div className="bg-white rounded-[3rem] p-12 md:p-20 shadow-2xl shadow-primary/5 border border-slate-100 relative overflow-hidden">
-              <div className="relative z-10 max-w-xl mx-auto">
-                <h3 className="text-2xl md:text-4xl font-bold mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>
+            <div className="bg-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-primary/5 border border-slate-100 relative overflow-hidden">
+              <div className="relative z-10 max-w-lg mx-auto">
+                <h3 className="text-xl md:text-3xl font-bold mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
                   Inspired by this wedding?
                 </h3>
-                <p className="text-slate-500 mb-10 leading-relaxed font-medium">
+                <p className="text-xs md:text-sm text-slate-500 mb-6 leading-relaxed font-medium">
                   Let us help you plan your dream destination wedding. We'll handle everything from venues to vendors while you focus on making memories.
                 </p>
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                   <button 
                     onClick={() => setIsEnquiryOpen(true)}
-                    className="w-full sm:w-auto px-10 py-5 bg-[#ff7676] text-white rounded-full font-bold shadow-xl shadow-red-200 hover:bg-red-500 transition-all flex items-center justify-center gap-2 group active:scale-95"
+                    className="w-full sm:w-auto px-8 py-3.5 bg-[#ff7676] text-white rounded-full text-xs md:text-sm font-bold shadow-xl shadow-red-200 hover:bg-red-500 transition-all flex items-center justify-center gap-2 group active:scale-95"
                   >
-                    <Plus className="w-5 h-5 group-hover:rotate-180 transition-transform duration-500" />
+                    <Plus className="w-4 h-4 group-hover:rotate-180 transition-transform duration-500" />
                     <span>Plan Your Wedding</span>
                   </button>
-                  <button className="w-full sm:w-auto px-10 py-5 rounded-full border border-slate-200 font-bold text-slate-600 hover:bg-slate-50 transition-all active:scale-95">
+                  <button className="w-full sm:w-auto px-8 py-3.5 rounded-full border border-slate-200 text-xs md:text-sm font-bold text-slate-600 hover:bg-slate-50 transition-all active:scale-95">
                     Contact Planner
                   </button>
                 </div>

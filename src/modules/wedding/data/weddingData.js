@@ -5,6 +5,13 @@ import keralaImg from "@/assets/wedding-kerala.jpg";
 import rishikeshImg from "@/assets/wedding-rishikesh.jpg";
 import jimcorbettImg from "@/assets/wedding-jimcorbett.jpg";
 
+import rwGoaCouple from "@/assets/rw-goa-couple.png";
+import rwGoaCouple2 from "@/assets/rw-goa-couple-2.png";
+import rwUdaipurCouple from "@/assets/rw-udaipur-couple.png";
+import rwJaipurCouple from "@/assets/rw-jaipur-couple.png";
+import rwKeralaCouple from "@/assets/rw-kerala-couple.png";
+import rwRishikeshCouple from "@/assets/rw-rishikesh-couple.png";
+
 export const destinations = [
   {
     id: "goa",
@@ -627,8 +634,8 @@ export const realWeddings = [
     guests: 150,
     budgetMin: "₹35L",
     budgetMax: "₹50L",
-    coverImage: goaImg,
-    photos: [goaImg, jaipurImg, udaipurImg, keralaImg, rishikeshImg],
+    coverImage: rwGoaCouple,
+    photos: [rwGoaCouple, rwGoaCouple2, rwUdaipurCouple, rwJaipurCouple, rwKeralaCouple, rwRishikeshCouple],
   },
   {
     id: "rw-goa-2",
@@ -638,8 +645,8 @@ export const realWeddings = [
     guests: 120,
     budgetMin: "₹40L",
     budgetMax: "₹55L",
-    coverImage: jaipurImg,
-    photos: [jaipurImg, goaImg, udaipurImg],
+    coverImage: rwGoaCouple2,
+    photos: [rwGoaCouple2, rwGoaCouple, rwJaipurCouple, rwUdaipurCouple],
   },
   {
     id: "rw-udaipur-1",
@@ -649,8 +656,8 @@ export const realWeddings = [
     guests: 250,
     budgetMin: "₹55L",
     budgetMax: "₹75L",
-    coverImage: udaipurImg,
-    photos: [udaipurImg, jaipurImg, goaImg, keralaImg, jimcorbettImg],
+    coverImage: rwUdaipurCouple,
+    photos: [rwUdaipurCouple, rwJaipurCouple, rwGoaCouple, rwGoaCouple2, rwKeralaCouple],
   },
   {
     id: "rw-udaipur-2",
@@ -660,8 +667,8 @@ export const realWeddings = [
     guests: 200,
     budgetMin: "₹60L",
     budgetMax: "₹80L",
-    coverImage: keralaImg,
-    photos: [keralaImg, udaipurImg, rishikeshImg],
+    coverImage: rwUdaipurCouple,
+    photos: [rwUdaipurCouple, rwKeralaCouple, rwRishikeshCouple, rwGoaCouple2],
   },
   {
     id: "rw-jaipur-1",
@@ -671,8 +678,8 @@ export const realWeddings = [
     guests: 200,
     budgetMin: "₹45L",
     budgetMax: "₹60L",
-    coverImage: jaipurImg,
-    photos: [jaipurImg, udaipurImg, keralaImg],
+    coverImage: rwJaipurCouple,
+    photos: [rwJaipurCouple, rwUdaipurCouple, rwKeralaCouple, rwGoaCouple],
   },
 ];
 

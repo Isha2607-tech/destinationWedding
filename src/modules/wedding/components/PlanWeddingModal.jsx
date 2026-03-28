@@ -28,67 +28,70 @@ const PlanWeddingModal = ({ isOpen, onClose, initialLocation = "" }) => {
   };
 
   return createPortal(
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xl animate-in fade-in duration-500 overflow-hidden">
-      <div className="relative w-full max-w-lg bg-white/95 backdrop-blur-3xl rounded-[2.5rem] md:rounded-[3.rem] shadow-2xl overflow-y-auto max-h-[90vh] md:max-h-[85vh] animate-in slide-in-from-bottom duration-700 ease-out flex flex-col border border-white/20">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-500 overflow-hidden">
+      <div className="relative w-full max-w-lg md:max-w-2xl bg-white rounded-[2.5rem] md:rounded-[3rem] shadow-2xl overflow-y-auto max-h-[92vh] md:max-h-[85vh] animate-in slide-in-from-bottom duration-700 ease-out flex flex-col border border-white/20 scrollbar-thin scrollbar-thumb-slate-200">
         {/* Close Button */}
         <button 
           onClick={onClose}
-          className="absolute top-4 right-4 md:top-6 md:right-6 p-2 rounded-xl bg-white/50 backdrop-blur-md hover:bg-white/80 transition-all text-slate-900 border border-white/50 z-50 shadow-sm"
+          className="absolute top-4 right-4 md:top-8 md:right-8 p-2 rounded-xl bg-slate-50 hover:bg-slate-100 transition-all text-slate-400 hover:text-slate-900 z-50"
         >
-          <X className="w-4 h-4 md:w-6 md:h-6" />
+          <X className="w-4 h-4 md:w-5 h-5" />
         </button>
 
-        <div className="flex-1 p-6 md:p-10 pt-14 md:pt-14 relative z-40">
+        <div className="flex-1 p-6 md:p-14 pt-12 md:pt-14 relative z-40">
           <div className="mb-8">
-            <h2 className="text-2xl font-bold text-foreground mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>
+            <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>
               Plan your wedding
             </h2>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground md:text-base">
               Fill in your details and we'll be in touch.
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Full Name */}
-            <div>
-              <label className="block text-[10px] md:text-sm font-bold mb-1.5 text-foreground/60 uppercase tracking-widest">Full Name</label>
-              <input
-                type="text"
-                required
-                placeholder="Enter your Full Name"
-                className="w-full px-5 py-4 rounded-[1.25rem] border border-white/50 bg-white/40 backdrop-blur-md focus:outline-none focus:ring-2 focus:ring-[#ff7676]/20 focus:border-[#ff7676] transition-all text-sm placeholder:text-slate-400 shadow-inner"
-                value={formData.fullName}
-                onChange={(e) => setFormData({...formData, fullName: e.target.value})}
-              />
-            </div>
-
-            {/* Phone Number */}
-            <div>
-              <label className="block text-[10px] md:text-sm font-bold mb-1.5 text-foreground/60 uppercase tracking-widest">Phone Number</label>
-              <div className="flex gap-0 overflow-hidden rounded-[1.25rem] border border-white/50 shadow-inner group">
-                <div className="flex items-center gap-1 px-4 py-4 bg-white/60 backdrop-blur-md text-sm border-r border-white/50 cursor-pointer hover:bg-white/80 transition-colors">
-                  <span className="font-bold text-slate-700">+91</span>
-                  <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
-                </div>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Name & Phone Grid for Desktop */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+              {/* Full Name */}
+              <div>
+                <label className="block text-[10px] md:text-xs font-black mb-1.5 text-slate-400 uppercase tracking-widest">Full Name</label>
                 <input
-                  type="tel"
+                  type="text"
                   required
-                  placeholder="Enter Phone Number"
-                  className="flex-1 px-5 py-4 bg-white/40 backdrop-blur-md focus:outline-none transition-all text-sm placeholder:text-slate-400"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                  placeholder="Enter your Full Name"
+                  className="w-full px-5 py-4 rounded-2xl border border-slate-100 bg-slate-50/50 focus:outline-none focus:ring-2 focus:ring-[#ff7676]/20 focus:border-[#ff7676] transition-all text-sm placeholder:text-slate-400"
+                  value={formData.fullName}
+                  onChange={(e) => setFormData({...formData, fullName: e.target.value})}
                 />
+              </div>
+
+              {/* Phone Number */}
+              <div>
+                <label className="block text-[10px] md:text-xs font-black mb-1.5 text-slate-400 uppercase tracking-widest">Phone Number</label>
+                <div className="flex gap-0 overflow-hidden rounded-2xl border border-slate-100 group">
+                  <div className="flex items-center gap-1 px-4 py-4 bg-slate-50 text-sm border-r border-slate-100 cursor-pointer hover:bg-slate-100 transition-colors">
+                    <span className="font-bold text-slate-700">+91</span>
+                    <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+                  </div>
+                  <input
+                    type="tel"
+                    required
+                    placeholder="Enter Phone Number"
+                    className="flex-1 px-5 py-4 bg-slate-50/50 focus:outline-none transition-all text-sm placeholder:text-slate-400"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                  />
+                </div>
               </div>
             </div>
 
             {/* Event Month & Location */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4 md:gap-6">
               <div>
-                <label className="block text-[10px] md:text-sm font-bold mb-1.5 text-foreground/60 uppercase tracking-widest">Event Month</label>
+                <label className="block text-[10px] md:text-xs font-black mb-1.5 text-slate-400 uppercase tracking-widest">Event Month</label>
                 <div className="relative">
                   <select
                     required
-                    className="w-full appearance-none px-5 pr-10 py-4 rounded-[1.25rem] border border-white/50 bg-white/40 backdrop-blur-md focus:outline-none focus:ring-2 focus:ring-[#ff7676]/20 focus:border-[#ff7676] transition-all text-sm shadow-inner"
+                    className="w-full appearance-none px-5 pr-10 py-4 rounded-2xl border border-slate-100 bg-slate-50/50 focus:outline-none focus:ring-2 focus:ring-[#ff7676]/20 focus:border-[#ff7676] transition-all text-sm"
                     value={formData.eventMonth}
                     onChange={(e) => setFormData({...formData, eventMonth: e.target.value})}
                   >
@@ -99,11 +102,11 @@ const PlanWeddingModal = ({ isOpen, onClose, initialLocation = "" }) => {
                 </div>
               </div>
               <div>
-                <label className="block text-[10px] md:text-sm font-bold mb-1.5 text-foreground/60 uppercase tracking-widest">Event Location</label>
+                <label className="block text-[10px] md:text-xs font-black mb-1.5 text-slate-400 uppercase tracking-widest">Event Location</label>
                 <div className="relative">
                   <select
                     required
-                    className="w-full appearance-none px-5 pr-10 py-4 rounded-[1.25rem] border border-white/50 bg-white/40 backdrop-blur-md focus:outline-none focus:ring-2 focus:ring-[#ff7676]/20 focus:border-[#ff7676] transition-all text-sm shadow-inner"
+                    className="w-full appearance-none px-5 pr-10 py-4 rounded-2xl border border-slate-100 bg-slate-50/50 focus:outline-none focus:ring-2 focus:ring-[#ff7676]/20 focus:border-[#ff7676] transition-all text-sm"
                     value={formData.eventLocation}
                     onChange={(e) => setFormData({...formData, eventLocation: e.target.value})}
                   >
@@ -117,10 +120,10 @@ const PlanWeddingModal = ({ isOpen, onClose, initialLocation = "" }) => {
 
             {/* Venue Decided */}
             <div>
-              <p className="text-sm font-semibold mb-3 text-foreground/80">Have you already decided the venue?</p>
-              <div className="flex gap-6">
-                <label className="flex items-center gap-2 cursor-pointer group">
-                  <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${formData.venueDecided === 'yes' ? 'border-primary bg-primary' : 'border-slate-300 group-hover:border-primary'}`}>
+              <p className="text-sm font-bold mb-4 text-slate-700">Have you already decided the venue?</p>
+              <div className="flex gap-8">
+                <label className="flex items-center gap-3 cursor-pointer group">
+                  <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${formData.venueDecided === 'yes' ? 'border-[#ff7676] bg-[#ff7676]' : 'border-slate-200 group-hover:border-[#ff7676]'}`}>
                     {formData.venueDecided === 'yes' && <div className="w-2 h-2 rounded-full bg-white transition-all transform scale-100" />}
                   </div>
                   <input
@@ -131,10 +134,10 @@ const PlanWeddingModal = ({ isOpen, onClose, initialLocation = "" }) => {
                     checked={formData.venueDecided === 'yes'}
                     onChange={() => setFormData({...formData, venueDecided: 'yes'})}
                   />
-                  <span className="text-sm font-medium">Yes</span>
+                  <span className="text-sm font-bold text-slate-600">Yes, I have</span>
                 </label>
-                <label className="flex items-center gap-2 cursor-pointer group">
-                  <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${formData.venueDecided === 'no' ? 'border-primary bg-primary' : 'border-slate-300 group-hover:border-primary'}`}>
+                <label className="flex items-center gap-3 cursor-pointer group">
+                  <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${formData.venueDecided === 'no' ? 'border-[#ff7676] bg-[#ff7676]' : 'border-slate-200 group-hover:border-[#ff7676]'}`}>
                     {formData.venueDecided === 'no' && <div className="w-2 h-2 rounded-full bg-white transition-all transform scale-100" />}
                   </div>
                   <input
@@ -145,31 +148,30 @@ const PlanWeddingModal = ({ isOpen, onClose, initialLocation = "" }) => {
                     checked={formData.venueDecided === 'no'}
                     onChange={() => setFormData({...formData, venueDecided: 'no'})}
                   />
-                  <span className="text-sm font-medium">No</span>
+                  <span className="text-sm font-bold text-slate-600">Not yet</span>
                 </label>
               </div>
             </div>
 
-            {/* WhatsApp Updates */}
-            <div className="pt-2">
+            {/* Submit Button Section */}
+            <div className="pt-4 border-t border-slate-50 space-y-4">
               <label className="flex items-center gap-3 cursor-pointer group">
                 <div 
-                  className={`w-5 h-5 rounded flex items-center justify-center border-2 transition-all ${formData.whatsappUpdates ? 'bg-[#ff7676] border-[#ff7676]' : 'border-slate-300 group-hover:border-[#ff7676]'}`}
+                  className={`w-5 h-5 rounded flex items-center justify-center border-2 transition-all ${formData.whatsappUpdates ? 'bg-[#ff7676] border-[#ff7676]' : 'border-slate-200 group-hover:border-[#ff7676]'}`}
                   onClick={() => setFormData({...formData, whatsappUpdates: !formData.whatsappUpdates})}
                 >
                   {formData.whatsappUpdates && <X className="w-3.5 h-3.5 text-white" />}
                 </div>
-                <span className="text-sm font-medium text-slate-600">Send me updates on WhatsApp</span>
+                <span className="text-sm font-medium text-slate-500">Send me updates on WhatsApp</span>
               </label>
-            </div>
 
-            {/* Submit Button */}
-            <button
-              type="submit"
-              className="w-full py-4 mt-2 rounded-[1.25rem] bg-[#ff7676] text-white font-bold text-base shadow-lg shadow-red-100 hover:bg-[#ef6666] hover:scale-[1.02] transition-all"
-            >
-              Get a consultation
-            </button>
+              <button
+                type="submit"
+                className="w-full py-4.5 py-4 rounded-2xl bg-[#ff7676] text-white font-black text-sm md:text-base uppercase tracking-widest shadow-xl shadow-red-200 hover:bg-[#ef6666] transition-all transform hover:-translate-y-0.5"
+              >
+                Get a consultation
+              </button>
+            </div>
           </form>
         </div>
       </div>

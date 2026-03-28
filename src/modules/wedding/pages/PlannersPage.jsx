@@ -21,7 +21,7 @@ const PlannersPage = () => {
 
   return (
     <div>
-      <section className="relative py-12 md:py-24 px-4 overflow-hidden">
+      <section className="relative py-16 md:py-32 px-4 overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <img src={bgImg} alt="Planners Background" className="w-full h-full object-cover" />
