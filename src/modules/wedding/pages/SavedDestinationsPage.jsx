@@ -25,7 +25,7 @@ const SavedDestinationsPage = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         
         {/* Header Section */}
-        <div className="mb-6 md:mb-10 max-w-4xl mx-auto">
+        <div className="mb-6 md:mb-10 max-w-7xl mx-auto">
           <Link 
             to="/wedding" 
             className="inline-flex items-center gap-2 text-sm font-bold text-muted-foreground hover:text-primary transition-colors mb-4 md:mb-6 group"

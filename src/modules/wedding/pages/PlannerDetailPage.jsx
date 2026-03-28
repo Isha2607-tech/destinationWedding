@@ -32,7 +32,7 @@ const PlannerDetailPage = () => {
   return (
     <div>
       {/* Profile Header */}
-      <section className="pt-8 md:pt-16 pb-8 md:pb-16 px-4 wedding-gradient-soft">
+      <section className="pt-8 md:pt-10 pb-8 md:pb-10 px-4 wedding-gradient-soft">
         <div className="max-w-4xl mx-auto">
           <ScrollReveal>
             <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
@@ -98,11 +98,11 @@ const PlannerDetailPage = () => {
       </section>
 
       {/* Packages */}
-      <section className="pt-2 pb-4 md:py-16 px-4">
+      <section className="pt-2 pb-4 md:py-8 px-4">
         <div className="max-w-6xl mx-auto">
           <ScrollReveal>
             <h2
-              className="text-3xl font-bold mb-6 md:mb-10 text-center"
+              className="text-3xl font-bold mb-6 md:mb-6 text-center"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               Packages
@@ -119,17 +119,17 @@ const PlannerDetailPage = () => {
       </section>
 
       {/* Reviews */}
-      <section className="pt-2 pb-8 md:py-16 px-4 wedding-gradient-soft">
-        <div className="max-w-4xl mx-auto">
+      <section className="pt-2 pb-8 md:py-10 px-4 wedding-gradient-soft">
+        <div className="max-w-6xl mx-auto">
           <ScrollReveal>
             <h2
-              className="text-3xl font-bold mb-6 md:mb-10 text-center"
+              className="text-3xl font-bold mb-6 md:mb-6 text-center"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               Reviews
             </h2>
           </ScrollReveal>
-          <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
             {planner.reviews.map((review, i) => (
               <ScrollReveal key={i} delay={i * 100}>
                 <div className="p-6 rounded-2xl bg-card border border-border">
