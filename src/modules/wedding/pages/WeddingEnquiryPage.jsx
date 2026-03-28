@@ -80,12 +80,12 @@ const WeddingEnquiryPage = () => {
       </section>
       
       {/* Step indicator */}
-      <div className="max-w-lg mx-auto px-4 mb-8 md:mb-12">
-        <div className="flex items-center justify-between">
+      <div className="max-w-xl mx-auto px-6 mb-8 md:mb-12">
+        <div className="flex items-center">
           {[1, 2, 3].map((s) => (
-            <div key={s} className="flex items-center">
+            <div key={s} className={`flex items-center ${s < 3 ? 'flex-1' : ''}`}>
               <div
-                className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center text-xs md:text-sm font-semibold transition-all duration-500 ${
+                className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex shrink-0 items-center justify-center text-xs md:text-sm font-semibold transition-all duration-500 shadow-sm ${
                   step >= s
                     ? "wedding-gradient text-background"
                     : "bg-muted text-muted-foreground"
@@ -94,7 +94,7 @@ const WeddingEnquiryPage = () => {
                 {step > s ? <Check className="w-4 h-4 md:w-5 md:h-5" /> : s}
               </div>
               {s < 3 && (
-                <div className="w-12 sm:w-24 h-1 mx-2 rounded-full overflow-hidden bg-muted">
+                <div className="flex-1 h-1 mx-0 rounded-full overflow-hidden bg-muted">
                   <div
                     className="h-full wedding-gradient transition-all duration-700"
                     style={{ width: step > s ? "100%" : "0%" }}

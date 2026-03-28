@@ -33,7 +33,7 @@ const WeddingLayout = () => {
 
               {/* Desktop nav */}
               <div className="hidden md:flex items-center gap-8">
-                {navLinks.map((link) => (
+                {navLinks.filter(link => link.label !== "Enquiry").map((link) => (
                   <Link
                     key={link.to}
                     to={link.to}
