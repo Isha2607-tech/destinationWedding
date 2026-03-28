@@ -17,6 +17,7 @@ import BookingDetailPage from "./modules/wedding/pages/BookingDetailPage";
 import SavedDestinationsPage from "./modules/wedding/pages/SavedDestinationsPage";
 import MyEnquiriesPage from "./modules/wedding/pages/MyEnquiriesPage";
 import AccountSettingsPage from "./modules/wedding/pages/AccountSettingsPage";
+import VenueDetailPage from "./modules/wedding/pages/VenueDetailPage";
 import WeddingEnquiryPage from "./modules/wedding/pages/WeddingEnquiryPage";
 import NotFound from "./pages/NotFound.jsx";
 import Welcome from "./pages/Welcome.jsx";
@@ -39,6 +40,10 @@ const App = () => (
             <Route
               path="destinations/:id"
               element={<DestinationDetailPage />}
+            />
+            <Route
+              path="destinations/:destId/venues/:venueId"
+              element={<VenueDetailPage />}
             />
             <Route path="planners" element={<PlannersPage />} />
             <Route path="planners/:id" element={<PlannerDetailPage />} />

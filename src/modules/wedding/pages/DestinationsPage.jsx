@@ -54,14 +54,14 @@ const DestinationsPage = () => {
           >
             Explore Destinations
           </h1>
-          <div className="relative max-w-lg mx-auto">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+          <div className="relative max-w-lg mx-auto px-4 md:px-0">
+            <Search className="absolute left-8 md:left-4 top-1/2 -translate-y-1/2 w-4 h-4 md:w-5 md:h-5 text-muted-foreground" />
             <input
               type="text"
               placeholder="Search destinations..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-12 pr-4 py-4 rounded-full bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 wedding-shadow"
+              className="w-full pl-10 md:pl-12 pr-4 py-3 md:py-4 rounded-full bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 wedding-shadow"
             />
           </div>
         </div>

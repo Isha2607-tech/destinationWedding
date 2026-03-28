@@ -145,27 +145,29 @@ const DestinationDetailPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {dest.venues.map((venue, i) => (
               <ScrollReveal key={venue.id} delay={i * 100}>
-                <div className="p-6 rounded-2xl bg-card border border-border transition-all duration-300 hover:wedding-shadow">
-                  <h3
-                    className="text-xl font-semibold"
-                    style={{ fontFamily: "'Playfair Display', serif" }}
-                  >
-                    {venue.name}
-                  </h3>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    {venue.type}
-                  </p>
-                  <div className="mt-4 space-y-2">
-                    <div className="flex items-center gap-2 text-sm">
-                      <Users className="w-4 h-4 text-primary" /> Up to{" "}
-                      {venue.capacity} guests
-                    </div>
-                    <div className="flex items-center gap-2 text-sm">
-                      <IndianRupee className="w-4 h-4 text-primary" />{" "}
-                      {formatPrice(venue.pricePerDay)}/day
+                <Link to={`/wedding/destinations/${id}/venues/${venue.id}`} className="block h-full group">
+                  <div className="p-6 rounded-2xl bg-card border border-border h-full transition-all duration-300 group-hover:wedding-shadow group-hover:-translate-y-1">
+                    <h3
+                      className="text-xl font-semibold"
+                      style={{ fontFamily: "'Playfair Display', serif" }}
+                    >
+                      {venue.name}
+                    </h3>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      {venue.type}
+                    </p>
+                    <div className="mt-4 space-y-2">
+                      <div className="flex items-center gap-2 text-sm text-foreground/80">
+                        <Users className="w-4 h-4 text-primary" /> Up to{" "}
+                        {venue.capacity} guests
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-foreground/80">
+                        <IndianRupee className="w-4 h-4 text-primary" />{" "}
+                        {formatPrice(venue.pricePerDay)}/day
+                      </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               </ScrollReveal>
             ))}
           </div>
