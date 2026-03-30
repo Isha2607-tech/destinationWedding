@@ -1,0 +1,177 @@
+import React, { useState, useMemo } from "react";
+import { useSearchParams, Link } from "react-router-dom";
+import { Search, ChevronRight, SlidersHorizontal, LayoutGrid, LayoutList } from "lucide-react";
+import { mockVendors, vendorCategories, citiesData } from "../data/vendorListingData";
+import VendorCard from "../components/VendorCard";
+import FilterDropdown from "../components/FilterDropdown";
+import VendorHubPage from "./VendorHubPage";
+import ScrollReveal from "../components/ScrollReveal";
+
+const budgetOptions = ["Under 50K", "50K-1L", "1L+"];
+const ratingOptions = ["4.5+", "4+", "3+"];
+const serviceOptions = [
+  "Candid Photography", "Cinematic Films", "Drone Shots", "Bridal Makeup",
+  "HD Makeup", "Airbrush Makeup", "Floral Decor", "DJ Services", "Live Band",
+  "Pre-Wedding Shoot", "Full Planning", "Destination Weddings",
+];
+
+const VendorListingPage = () => {
+  const [searchParams] = useSearchParams();
+  const categoryParam = searchParams.get("category");
+  const cityParam = searchParams.get("city");
+
+  // If no category selected → show hub
+  if (!categoryParam) {
+    return <VendorHubPage />;
+  }
+
+  return <ListingView category={categoryParam} cityFromUrl={cityParam} />;
+};
+
+const ListingView = ({ category, cityFromUrl }) => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedRating, setSelectedRating] = useState(null);
+  const [selectedBudget, setSelectedBudget] = useState(null);
+  const [selectedServices, setSelectedServices] = useState([]);
+  const [selectedCity, setSelectedCity] = useState(cityFromUrl || null);
+  const [viewMode, setViewMode] = useState("grid"); // "list" | "grid"
+
+  const allCities = useMemo(() => {
+    return [...new Set(mockVendors.filter(v => v.category === category).map(v => v.city))];
+  }, [category]);
+
+  const filteredVendors = useMemo(() => {
+    return mockVendors.filter((v) => {
+      const matchCategory = v.category.toLowerCase() === category.toLowerCase();
+      const matchSearch =
+        v.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        v.location.toLowerCase().includes(searchQuery.toLowerCase());
+      const minRating =
+        selectedRating === "4.5+"
+          ? 4.5
+          : selectedRating === "4+"
+          ? 4
+          : selectedRating === "3+"
+          ? 3
+          : 0;
+      const matchRating = v.rating >= minRating;
+      const matchBudget = !selectedBudget || v.budget === selectedBudget;
+      const matchCity = !selectedCity || v.city === selectedCity;
+      const matchServices =
+        selectedServices.length === 0 ||
+        selectedServices.some((s) => v.services?.includes(s));
+      return matchCategory && matchSearch && matchRating && matchBudget && matchCity && matchServices;
+    });
+  }, [category, searchQuery, selectedRating, selectedBudget, selectedCity, selectedServices]);
+
+  const resetAll = () => {
+    setSearchQuery("");
+    setSelectedRating(null);
+    setSelectedBudget(null);
+    setSelectedServices([]);
+    setSelectedCity(null);
+  };
+
+  const hasFilters = !!(searchQuery || selectedRating || selectedBudget || selectedCity || selectedServices.length);
+
+  // Sidebar: budget circles and type cards
+  const budgetCircles = [
+    { label: "Under ₹50K", value: "Under 50K", emoji: "🌸" },
+    { label: "₹50K – 1L", value: "50K-1L", emoji: "💫" },
+    { label: "Above ₹1L", value: "1L+", emoji: "👑" },
+  ];
+
+  return (
+    <div className="bg-[#FFF5F6] min-h-screen">
+      {/* ── Header Section ── */}
+      <section className="bg-white py-6">
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          {/* Breadcrumb */}
+          <div className="flex items-center gap-1.5 text-[12px] text-slate-500 mb-6">
+            <Link to="/wedding" className="hover:text-primary transition-colors">Home</Link>
+            <ChevronRight className="w-3.5 h-3.5" />
+            <span className="text-slate-500">Vendors</span>
+          </div>
+
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+            {/* Title & Count */}
+            <div>
+              <h1 className="text-2xl md:text-3xl font-bold text-slate-800 mb-1">
+                Wedding {category}
+              </h1>
+              <p className="text-[13px] text-slate-600">
+                Showing <span className="font-bold text-slate-800">{filteredVendors.length} results</span> as per your search criteria
+              </p>
+            </div>
+
+            {/* Search Bar - Fixed to Left */}
+            <div className="flex flex-col sm:flex-row items-center gap-4">
+              <div className="relative w-full sm:w-[320px]">
+                <input
+                  type="text"
+                  placeholder={`Search Wedding ${category}...`}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-9 pr-4 py-2.5 rounded-lg border border-slate-200 text-[14px] bg-white focus:outline-none focus:border-primary w-full shadow-sm"
+                />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── City Circles ── */}
+      <div className="bg-white border-b border-slate-100 py-4">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 flex gap-4 overflow-x-auto no-scrollbar">
+          {citiesData.map((city) => (
+            <button
+              key={city.name}
+              onClick={() => setSelectedCity(selectedCity === city.name ? null : city.name)}
+              className="flex flex-col items-center gap-1.5 shrink-0 group"
+            >
+              <div className={`w-14 h-14 rounded-full overflow-hidden border-2 transition-all duration-300 ${selectedCity === city.name ? "border-primary shadow-md" : "border-transparent group-hover:border-primary/50"}`}>
+                <img src={city.image} alt={city.name} className="w-full h-full object-cover" />
+              </div>
+              <span className={`text-[11px] font-bold text-center leading-tight whitespace-nowrap transition-colors ${selectedCity === city.name ? "text-primary" : "text-slate-500 group-hover:text-primary"}`}>
+                {city.name}
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Main Content ── */}
+      <main className="max-w-7xl mx-auto px-4 md:px-8 py-8">
+        <div>
+          {/* Vendor List */}
+          {filteredVendors.length > 0 ? (
+            <div className={`grid grid-cols-1 ${viewMode === 'list' ? 'sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8' : 'sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6'}`}>
+              {filteredVendors.map((vendor, i) => (
+                <ScrollReveal key={vendor.id} delay={i * 40}>
+                  <VendorCard vendor={vendor} viewMode={viewMode} />
+                </ScrollReveal>
+              ))}
+            </div>
+          ) : (
+            <div className="bg-white rounded-2xl p-16 text-center shadow-sm border border-slate-100 max-w-3xl mx-auto mt-10">
+              <div className="text-5xl mb-4">🔍</div>
+              <h3 className="text-xl font-bold text-slate-800 mb-2">No results found</h3>
+              <p className="text-slate-500 max-w-xs mx-auto text-sm leading-relaxed mb-6">
+                We couldn't find any vendors matching your current filters.
+              </p>
+              <button
+                onClick={resetAll}
+                className="px-8 py-3 bg-primary text-white font-bold rounded-full text-sm hover:shadow-lg transition-all"
+              >
+                Clear All Filters
+              </button>
+            </div>
+          )}
+        </div>
+      </main>
+    </div>
+  );
+};
+
+export default VendorListingPage;

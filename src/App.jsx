@@ -10,6 +10,8 @@ import DestinationsPage from "./modules/wedding/views/DestinationsPage";
 import DestinationDetailPage from "./modules/wedding/views/DestinationDetailPage";
 import PlannersPage from "./modules/wedding/views/PlannersPage";
 import PlannerDetailPage from "./modules/wedding/views/PlannerDetailPage";
+import VendorListingPage from "./modules/wedding/views/VendorListingPage";
+import VendorDetailPage from "./modules/wedding/views/VendorDetailPage";
 import RealWeddingsByLocation from "./modules/wedding/views/RealWeddingsByLocation";
 import RealWeddingGalleryPage from "./modules/wedding/views/RealWeddingGalleryPage";
 import MyBookingsPage from "./modules/wedding/views/MyBookingsPage";
@@ -21,17 +23,19 @@ import VenueDetailPage from "./modules/wedding/views/VenueDetailPage";
 import WeddingEnquiryPage from "./modules/wedding/views/WeddingEnquiryPage";
 import NotFound from "./app-pages/NotFound.jsx";
 import Welcome from "./app-pages/Welcome.jsx";
-import VendorLayout from "./modules/vendor/components/VendorLayout";
+import OnboardingLayout from "./modules/vendor/components/VendorLayout";
 import Step1BasicInfo from "./modules/vendor/onboarding/views/Step1BasicInfo";
 import Step2Portfolio from "./modules/vendor/onboarding/views/Step2Portfolio";
 import Step3Services from "./modules/vendor/onboarding/views/Step3Services";
 import Step4Pricing from "./modules/vendor/onboarding/views/Step4Pricing";
+import Step5KYC from "./modules/vendor/onboarding/views/Step5KYC";
 import ReviewSubmit from "./modules/vendor/onboarding/views/ReviewSubmit";
-import VendorDashboard from "./modules/vendor/dashboard/views/VendorDashboard";
-import VendorServices from "./modules/vendor/services/views/VendorServices";
-import VendorPortfolio from "./modules/vendor/portfolio/views/VendorPortfolio";
-import VendorLeads from "./modules/vendor/leads/views/VendorLeads";
-import LeadDetails from "./modules/vendor/leads/views/LeadDetails";
+import DashboardHome from "./modules/vendor/panel/views/DashboardHome";
+import ProfileEditor from "./modules/vendor/panel/views/ProfileEditor";
+import WorkManager from "./modules/vendor/panel/views/WorkManager";
+import LeadsInbox from "./modules/vendor/panel/views/LeadsInbox";
+import ReviewsManager from "./modules/vendor/panel/views/ReviewsManager";
+import VendorSettings from "./modules/vendor/panel/views/VendorSettings";
 
 import VendorSignup from "./modules/vendor/auth/views/VendorSignup";
 import VendorLogin from "./modules/vendor/auth/views/VendorLogin";
@@ -62,6 +66,8 @@ const App = () => (
             />
             <Route path="planners" element={<PlannersPage />} />
             <Route path="planners/:id" element={<PlannerDetailPage />} />
+            <Route path="vendors" element={<VendorListingPage />} />
+            <Route path="vendors/:vendorId" element={<VendorDetailPage />} />
             <Route path="enquiry" element={<WeddingEnquiryPage />} />
             <Route path="bookings" element={<MyBookingsPage />} />
             <Route path="bookings/:bookingId" element={<BookingDetailPage />} />
@@ -73,19 +79,23 @@ const App = () => (
           </Route>
           
           <Route path="/vendor/*" element={<AuthProvider><Routes>
-            <Route element={<VendorLayout />}>
+            <Route element={<OnboardingLayout />}>
               <Route index element={<Navigate to="/vendor/login" replace />} />
               <Route path="onboarding/step-1" element={<Step1BasicInfo />} />
               <Route path="onboarding/step-2" element={<Step2Portfolio />} />
               <Route path="onboarding/step-3" element={<Step3Services />} />
               <Route path="onboarding/step-4" element={<Step4Pricing />} />
+              <Route path="onboarding/step-5" element={<Step5KYC />} />
               <Route path="onboarding/review" element={<ReviewSubmit />} />
-              <Route path="dashboard" element={<VendorDashboard />} />
-              <Route path="services" element={<VendorServices />} />
-              <Route path="portfolio" element={<VendorPortfolio />} />
-              <Route path="leads" element={<VendorLeads />} />
-              <Route path="leads/:id" element={<LeadDetails />} />
             </Route>
+
+            {/* Dashboard routes use their own Layout internally */}
+            <Route path="dashboard" element={<DashboardHome />} />
+            <Route path="profile" element={<ProfileEditor />} />
+            <Route path="work" element={<WorkManager />} />
+            <Route path="leads" element={<LeadsInbox />} />
+            <Route path="reviews" element={<ReviewsManager />} />
+            <Route path="settings" element={<VendorSettings />} />
             {/* Auth routes outside of layout but inside AuthProvider */}
             <Route path="login" element={<VendorLogin />} />
             <Route path="signup" element={<VendorSignup />} />

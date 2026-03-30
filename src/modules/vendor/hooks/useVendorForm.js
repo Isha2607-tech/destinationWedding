@@ -39,6 +39,7 @@ const useVendorForm = () => {
       portfolio: ctx.portfolio,
       services: ctx.services.filter((s) => s.name.trim()),
       pricing: ctx.pricing,
+      kyc: ctx.kyc,
     };
     const result = await createVendor(payload);
     if (result.success) {
@@ -52,6 +53,7 @@ const useVendorForm = () => {
     portfolio: ctx.portfolio,
     services: ctx.services,
     pricing: ctx.pricing,
+    kyc: ctx.kyc,
     status: ctx.status,
     updateBasicInfo: ctx.updateBasicInfo,
     updatePortfolio: ctx.updatePortfolio,
@@ -59,6 +61,7 @@ const useVendorForm = () => {
     removeService: ctx.removeService,
     updateService: ctx.updateService,
     updatePricing: ctx.updatePricing,
+    updateKYC: ctx.updateKYC,
     setStatus: ctx.setStatus,
     resetForm: ctx.resetForm,
     isStepValid,

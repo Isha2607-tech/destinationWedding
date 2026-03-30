@@ -15,7 +15,7 @@ const Step4Pricing = () => {
       return;
     }
     setError("");
-    navigate("/vendor/onboarding/review");
+    navigate("/vendor/onboarding/step-5");
   };
 
   const inputClass =
@@ -107,7 +107,7 @@ const Step4Pricing = () => {
               onClick={handleNext}
               className="flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium wedding-gradient text-background transition-all duration-300 hover:shadow-lg hover:scale-105"
             >
-              Review <ChevronRight className="w-4 h-4" />
+              Next <ChevronRight className="w-4 h-4" />
             </button>
           </div>
         </div>

@@ -15,19 +15,32 @@ import DestinationCard from "../components/DestinationCard";
 import TestimonialSlider from "../components/TestimonialSlider";
 import ScrollReveal from "../components/ScrollReveal";
 import { destinations, budgetBuckets } from "../data/weddingData";
+import StackedCarousel from "../components/StackedCarousel";
 
 const steps = [
   {
     icon: Compass,
     title: "Discover",
     desc: "Browse stunning destinations across India",
+    image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=1000&auto=format&fit=crop",
   },
-  { icon: Eye, title: "Visit", desc: "Tour venues virtually or in person" },
-  { icon: Calendar, title: "Book", desc: "Reserve your dream date and venue" },
+  { 
+    icon: Eye, 
+    title: "Visit", 
+    desc: "Tour venues virtually or in person",
+    image: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=1000&auto=format&fit=crop",
+  },
+  { 
+    icon: Calendar, 
+    title: "Book", 
+    desc: "Reserve your dream date and venue",
+    image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=1000&auto=format&fit=crop",
+  },
   {
     icon: Heart,
     title: "Celebrate",
     desc: "Let us handle the rest — you just enjoy",
+    image: "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1000&auto=format&fit=crop",
   },
 ];
 
@@ -56,11 +69,11 @@ const whyUs = [
 
 const WeddingHomePage = () => {
   return (
-    <div>
+    <div className="overflow-x-hidden">
       <HeroSection />
 
       {/* How It Works */}
-      <section className="pt-8 pb-6 md:pb-16 md:pt-24 px-4">
+      <section className="pt-8 pb-2 md:pb-4 md:pt-24 px-4">
         <div className="max-w-6xl mx-auto">
           <ScrollReveal>
             <div className="text-center mb-6 md:mb-16">
@@ -76,30 +89,8 @@ const WeddingHomePage = () => {
             </div>
           </ScrollReveal>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 gap-y-6">
-            {steps.map((step, i) => (
-              <ScrollReveal key={step.title} delay={i * 100}>
-                <div className="relative text-center group bg-white/60 backdrop-blur-lg p-3.5 sm:p-6 rounded-[1.5rem] border border-pink-100/50 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_15px_40px_-10px_rgba(157,49,61,0.15)] hover:bg-white hover:border-primary/20">
-                  <div className="absolute top-2 right-2 flex items-center justify-center w-6 h-6 rounded-full bg-primary/5 text-primary text-[10px] font-bold border border-primary/10 transition-colors duration-300 group-hover:bg-primary group-hover:text-white">
-                    {i + 1}
-                  </div>
-
-                  <div className="w-11 h-11 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl wedding-gradient flex items-center justify-center mx-auto mb-3 sm:mb-4 shadow-lg shadow-primary/20 transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
-                    <step.icon className="w-5 h-5 sm:w-7 sm:h-7 text-background" />
-                  </div>
-
-                  <h3
-                    className="text-base sm:text-xl font-bold mb-1 sm:mb-2 text-primary/90"
-                    style={{ fontFamily: "'Playfair Display', serif" }}
-                  >
-                    {step.title}
-                  </h3>
-                  <p className="text-[10px] sm:text-sm text-muted-foreground leading-snug sm:leading-relaxed">
-                    {step.desc}
-                  </p>
-                </div>
-              </ScrollReveal>
-            ))}
+          <div className="mt-8 md:mt-12 pb-4">
+            <StackedCarousel items={steps} />
           </div>
         </div>
       </section>

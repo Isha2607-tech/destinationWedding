@@ -9,13 +9,15 @@ import {
   IndianRupee,
   Edit3,
   Loader2,
+  ShieldCheck,
+  FileCheck,
 } from "lucide-react";
 import ProgressBar from "../components/ProgressBar";
 import useVendorForm from "../../hooks/useVendorForm";
 
 const ReviewSubmit = () => {
   const navigate = useNavigate();
-  const { basicInfo, portfolio, services, pricing, submitForm } = useVendorForm();
+  const { basicInfo, portfolio, services, pricing, kyc, submitForm } = useVendorForm();
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
@@ -69,7 +71,7 @@ const ReviewSubmit = () => {
         </p>
       </section>
 
-      <ProgressBar currentStep={5} />
+      <ProgressBar currentStep={6} totalSteps={6} />
 
       <div className="max-w-2xl mx-auto px-4 pb-16 md:pb-24">
         <div className="p-5 md:p-8 rounded-2xl bg-card border border-border wedding-shadow animate-wedding-fade-up space-y-5">
@@ -152,10 +154,46 @@ const ReviewSubmit = () => {
             )}
           </SectionCard>
 
+          {/* KYC */}
+          <SectionCard icon={ShieldCheck} title="KYC Verification" editPath="/vendor/onboarding/step-5">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="space-y-1">
+                <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest">Aadhar Card</p>
+                {kyc.aadhar ? (
+                  <div className="flex items-center gap-2 text-emerald-600 text-xs font-bold">
+                    <FileCheck className="w-4 h-4" /> Uploaded
+                  </div>
+                ) : (
+                  <p className="text-destructive text-xs font-bold">Not Uploaded</p>
+                )}
+              </div>
+              <div className="space-y-1">
+                <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest">Vendor Photo</p>
+                {kyc.photo ? (
+                  <div className="w-12 h-12 rounded-full overflow-hidden border border-[#F3E9E2] shadow-sm">
+                    <img src={kyc.photo} alt="KYC Vendor" className="w-full h-full object-cover" />
+                  </div>
+                ) : (
+                  <p className="text-destructive text-xs font-bold">Not Uploaded</p>
+                )}
+              </div>
+              <div className="space-y-1">
+                <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest">PAN Card</p>
+                {kyc.pan ? (
+                  <div className="flex items-center gap-2 text-emerald-600 text-xs font-bold">
+                    <FileCheck className="w-4 h-4" /> Uploaded
+                  </div>
+                ) : (
+                  <p className="text-muted-foreground text-xs font-medium italic">Optional / Not Uploaded</p>
+                )}
+              </div>
+            </div>
+          </SectionCard>
+
           {/* Submit */}
           <div className="flex justify-between mt-8 pt-4 border-t border-border">
             <button
-              onClick={() => navigate("/vendor/onboarding/step-4")}
+              onClick={() => navigate("/vendor/onboarding/step-5")}
               className="flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium bg-muted text-muted-foreground transition-all duration-300 hover:bg-primary/10"
             >
               <ChevronLeft className="w-4 h-4" /> Back

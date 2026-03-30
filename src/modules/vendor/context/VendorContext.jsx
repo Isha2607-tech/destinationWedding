@@ -14,9 +14,13 @@ const defaultState = {
   portfolio: [],
   services: [{ name: "", description: "" }],
   pricing: {
-    basePrice: "",
     premiumPrice: "",
     description: "",
+  },
+  kyc: {
+    aadhar: null,
+    pan: null,
+    photo: null,
   },
   status: "draft",
 };
@@ -74,6 +78,9 @@ export const VendorProvider = ({ children }) => {
   const updatePricing = (pricing) =>
     setState((prev) => ({ ...prev, pricing: { ...prev.pricing, ...pricing } }));
 
+  const updateKYC = (data) => 
+    setState((prev) => ({ ...prev, kyc: { ...prev.kyc, ...data } }));
+
   const setStatus = (status) =>
     setState((prev) => ({ ...prev, status }));
 
@@ -92,6 +99,7 @@ export const VendorProvider = ({ children }) => {
         removeService,
         updateService,
         updatePricing,
+        updateKYC,
         setStatus,
         resetForm,
       }}
