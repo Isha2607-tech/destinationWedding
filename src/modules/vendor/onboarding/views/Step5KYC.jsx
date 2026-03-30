@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChevronRight, ChevronLeft, Upload, FileCheck, AlertCircle } from "lucide-react";
+import { ChevronRight, ChevronLeft, Upload, FileCheck, AlertCircle, X } from "lucide-react";
 import ProgressBar from "../components/ProgressBar";
 import useVendorForm from "../../hooks/useVendorForm";
 
@@ -16,6 +16,11 @@ const Step5KYC = () => {
       updateKYC({ [field]: URL.createObjectURL(file) });
       setErrors(prev => ({ ...prev, [field]: null }));
     }
+  };
+
+  const handleDelete = (field, e) => {
+    e.stopPropagation();
+    updateKYC({ [field]: null });
   };
 
   const handleNext = () => {
@@ -72,15 +77,21 @@ const Step5KYC = () => {
                   onChange={(e) => handleFileChange('aadhar', e)} 
                 />
                 {kyc.aadhar ? (
-                  <>
+                  <div className="flex flex-col items-center">
                     <FileCheck className="w-10 h-10 text-emerald-500 mb-3" />
                     <p className="text-xs font-bold text-emerald-600">Aadhar Uploaded</p>
-                  </>
+                    <button 
+                      onClick={(e) => handleDelete('aadhar', e)}
+                      className="absolute top-4 right-4 p-2 bg-white rounded-full shadow-md border border-border hover:bg-red-50 hover:text-red-500 transition-all"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
                 ) : (
                   <>
                     <Upload className="w-10 h-10 text-muted-foreground mb-3" />
                     <p className="text-xs font-bold text-[#4A3730]">Click to upload Aadhar</p>
-                    <p className="text-[10px] text-muted-foreground mt-1 text-center">Front & Back combined or PDF (Max 2MB)</p>
+                    <p className="text-[10px] text-muted-foreground mt-1 text-center">Images (JPG/PNG) or PDF allowed</p>
                   </>
                 )}
               </div>
@@ -96,7 +107,7 @@ const Step5KYC = () => {
                 <input 
                   id="photo-input"
                   type="file" 
-                  accept="image/*" 
+                  accept="image/*,.pdf" 
                   className="hidden" 
                   onChange={(e) => handleFileChange('photo', e)} 
                 />
@@ -104,12 +115,18 @@ const Step5KYC = () => {
                   <div className="relative">
                     <img src={kyc.photo} alt="Vendor" className="w-24 h-24 rounded-full object-cover border-2 border-emerald-200" />
                     <div className="absolute -bottom-1 -right-1 bg-emerald-500 text-white p-1 rounded-full"><FileCheck className="w-3 h-3" /></div>
+                    <button 
+                      onClick={(e) => handleDelete('photo', e)}
+                      className="absolute -top-2 -right-12 p-2 bg-white rounded-full shadow-md border border-border hover:bg-red-50 hover:text-red-500 transition-all"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
                   </div>
                 ) : (
                   <>
                     <Upload className="w-10 h-10 text-muted-foreground mb-3" />
                     <p className="text-xs font-bold text-[#4A3730]">Click to upload Professional Photo</p>
-                    <p className="text-[10px] text-muted-foreground mt-1 text-center">This will be your primary profile avatar</p>
+                    <p className="text-[10px] text-muted-foreground mt-1 text-center">Images or PDF allowed</p>
                   </>
                 )}
               </div>
@@ -133,14 +150,21 @@ const Step5KYC = () => {
                   onChange={(e) => handleFileChange('pan', e)} 
                 />
                 {kyc.pan ? (
-                  <>
+                  <div className="flex flex-col items-center">
                     <FileCheck className="w-10 h-10 text-emerald-500 mb-3" />
                     <p className="text-xs font-bold text-emerald-600">PAN Card Uploaded</p>
-                  </>
+                    <button 
+                      onClick={(e) => handleDelete('pan', e)}
+                      className="absolute top-4 right-4 p-2 bg-white rounded-full shadow-md border border-border hover:bg-red-50 hover:text-red-500 transition-all"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
                 ) : (
                   <>
                     <Upload className="w-10 h-10 text-muted-foreground mb-3" />
                     <p className="text-xs font-bold text-[#4A3730]">Click to upload PAN Card</p>
+                    <p className="text-[10px] text-muted-foreground mt-1 text-center">Images or PDF allowed</p>
                   </>
                 )}
               </div>
