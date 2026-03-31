@@ -41,12 +41,12 @@ const ReviewsManager = () => {
 
            <div className="lg:col-span-2 bg-[#4A3730] rounded-[2.5rem] p-8 flex items-center justify-between text-white shadow-xl shadow-[#4A3730]/10">
               <div className="flex items-center gap-5">
-                 <div className="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center text-[#D28A8C]">
+                 <div className="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center text-[#B06A6C]">
                     <TrendingUp className="w-7 h-7" />
                  </div>
                  <div className="space-y-1">
-                    <h3 className="text-xl font-black italic font-serif" style={{ fontFamily: "'Playfair Display', serif" }}>Rating Boost</h3>
-                    <p className="text-xs text-white/70 font-medium">Get 5 more 5-star reviews to reach <span className="text-[#D28A8C] font-bold">Elite Status</span>.</p>
+                    <h3 className="text-xl font-black  " >Rating Boost</h3>
+                    <p className="text-xs text-white/70 font-medium">Get 5 more 5-star reviews to reach <span className="text-[#B06A6C] font-bold">Elite Status</span>.</p>
                  </div>
               </div>
               <button className="bg-white/10 hover:bg-white/20 text-white font-bold text-xs px-5 py-3 rounded-2xl transition-all">
@@ -58,7 +58,7 @@ const ReviewsManager = () => {
         {/* Reviews List */}
         <div className="space-y-6">
            <div className="flex items-center justify-between px-2">
-              <h3 className="text-xl font-black text-[#4A3730] italic" style={{ fontFamily: "'Playfair Display', serif" }}>Latest Reviews</h3>
+              <h3 className="text-xl font-black text-[#4A3730] " >Latest Reviews</h3>
               <button className="flex items-center gap-2 text-[11px] font-black text-[#8E7E77] uppercase tracking-widest bg-white border border-[#F3E9E2] px-4 py-2 rounded-xl">
                  <Filter className="w-3.5 h-3.5" /> Latest
               </button>
@@ -73,14 +73,14 @@ const ReviewsManager = () => {
                             <img src={rev.image} alt={rev.user} className="w-full h-full object-cover" />
                          </div>
                          <div className="space-y-1">
-                            <h4 className="font-black text-[#4A3730] italic text-lg" style={{ fontFamily: "'Playfair Display', serif" }}>{rev.user}</h4>
+                            <h4 className="font-black text-[#4A3730]  text-lg" >{rev.user}</h4>
                             <div className="flex items-center gap-4 text-[10px] font-bold text-[#8E7E77] uppercase tracking-widest leading-none">
                                <div className="flex items-center gap-0.5">
                                   {[1,2,3,4,5].map(s => (
                                     <Star key={s} className={`w-3 h-3 ${s <= rev.rating ? 'fill-amber-400 text-amber-400' : 'text-slate-100'}`} />
                                   ))}
                                </div>
-                               <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5 text-[#D28A8C]" /> {rev.date}</span>
+                               <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5 text-[#B06A6C]" /> {rev.date}</span>
                             </div>
                          </div>
                       </div>
@@ -92,22 +92,22 @@ const ReviewsManager = () => {
                    </div>
 
                    <div className="bg-[#F3E9E2]/30 p-6 rounded-[2rem] border border-[#F3E9E2]/50">
-                      <p className="text-[14px] text-[#4A3730] font-medium leading-relaxed italic line-clamp-3">
+                      <p className="text-[14px] text-[#4A3730] font-medium leading-relaxed  line-clamp-3">
                          "{rev.comment}"
                       </p>
                    </div>
 
                    {/* Reply Input */}
                    <div className="flex items-center gap-4 pl-4 pt-2">
-                      <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-[#D28A8C] border border-[#F3E9E2]">
+                      <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-[#B06A6C] border border-[#F3E9E2]">
                          <User className="w-5 h-5 transition-transform group-hover:scale-110" />
                       </div>
                       <div className="flex-1 relative">
                          <input 
                             placeholder="Write a public reply..."
-                            className="w-full pl-6 pr-14 py-4 bg-white border border-[#F3E9E2] rounded-2xl text-xs font-bold text-slate-800 outline-none focus:border-[#D28A8C]/20 transition-all shadow-inner"
+                            className="w-full pl-6 pr-14 py-4 bg-white border border-[#F3E9E2] rounded-2xl text-xs font-bold text-slate-800 outline-none focus:border-[#B06A6C]/20 transition-all shadow-inner"
                          />
-                         <button className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-[#D28A8C] text-white rounded-xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-lg shadow-[#D28A8C]/20">
+                         <button className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-[#B06A6C] text-white rounded-xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-lg shadow-[#B06A6C]/20">
                             <Send className="w-4 h-4" />
                          </button>
                       </div>

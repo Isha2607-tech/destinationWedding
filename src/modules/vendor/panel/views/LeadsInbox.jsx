@@ -39,10 +39,10 @@ const LeadsInbox = () => {
         {/* LEFT: Inbox List */}
         <div className="w-full md:w-[380px] flex flex-col gap-5 h-full">
            <div className="relative group">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300 group-focus-within:text-[#D28A8C] transition-colors" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300 group-focus-within:text-[#B06A6C] transition-colors" />
               <input 
                  placeholder="Search Leads..."
-                 className="w-full pl-11 pr-4 py-4 bg-white border border-[#F3E9E2] rounded-[2rem] text-sm font-bold text-slate-800 outline-none focus:border-[#D28A8C]/30 focus:shadow-lg focus:shadow-[#D28A8C]/5 transition-all"
+                 className="w-full pl-11 pr-4 py-4 bg-white border border-[#F3E9E2] rounded-[2rem] text-sm font-bold text-slate-800 outline-none focus:border-[#B06A6C]/30 focus:shadow-lg focus:shadow-[#B06A6C]/5 transition-all"
                  value={searchQuery}
                  onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -55,7 +55,7 @@ const LeadsInbox = () => {
                   onClick={() => setSelectedLead(lead)}
                   className={`w-full text-left p-4 md:p-5 rounded-[2rem] border transition-all duration-300 group ${
                     selectedLead.id === lead.id 
-                    ? "bg-[#D28A8C] text-white shadow-xl shadow-[#D28A8C]/20 border-transparent" 
+                    ? "bg-[#B06A6C] text-white shadow-xl shadow-[#B06A6C]/20 border-transparent" 
                     : "bg-white border-[#F3E9E2] hover:bg-slate-50 text-slate-500"
                   }`}
                 >
@@ -65,7 +65,7 @@ const LeadsInbox = () => {
                      </div>
                      <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between mb-0.5">
-                           <h4 className={`text-sm font-black italic truncate ${selectedLead.id === lead.id ? "text-white" : "text-[#4A3730]"}`} style={{ fontFamily: "'Playfair Display', serif" }}>
+                           <h4 className={`text-sm font-black  truncate ${selectedLead.id === lead.id ? "text-white" : "text-[#4A3730]"}`} >
                              {lead.name}
                            </h4>
                            <span className={`text-[9px] font-black uppercase tracking-tighter ${selectedLead.id === lead.id ? "text-white/70" : "text-slate-300"}`}>
@@ -98,16 +98,16 @@ const LeadsInbox = () => {
                 {/* Header */}
                 <div className="flex items-center justify-between border-b border-[#F3E9E2] pb-6 mb-8">
                    <div className="flex items-center gap-5">
-                      <div className="w-16 h-16 rounded-[1.5rem] border-2 border-[#D28A8C]/10 shadow-lg overflow-hidden group">
+                      <div className="w-16 h-16 rounded-[1.5rem] border-2 border-[#B06A6C]/10 shadow-lg overflow-hidden group">
                          <img src={selectedLead.image} alt="" className="w-full h-full object-cover" />
                       </div>
                       <div className="space-y-1">
-                         <h3 className="text-2xl font-black text-[#4A3730] italic" style={{ fontFamily: "'Playfair Display', serif" }}>
+                         <h3 className="text-2xl font-black text-[#4A3730] " >
                            {selectedLead.name}
                          </h3>
                          <div className="flex items-center gap-4 text-[10px] font-bold text-[#8E7E77] uppercase tracking-widest">
-                            <span className="flex items-center gap-1.5"><Calendar className="w-3 h-3 text-[#D28A8C]" /> {selectedLead.date}</span>
-                            <span className="flex items-center gap-1.5 font-black text-[#D28A8C]">{selectedLead.budget}</span>
+                            <span className="flex items-center gap-1.5"><Calendar className="w-3 h-3 text-[#B06A6C]" /> {selectedLead.date}</span>
+                            <span className="flex items-center gap-1.5 font-black text-[#B06A6C]">{selectedLead.budget}</span>
                          </div>
                       </div>
                    </div>
@@ -121,11 +121,11 @@ const LeadsInbox = () => {
                 {/* Content Body: Chat Bubble style */}
                 <div className="flex-1 overflow-y-auto no-scrollbar space-y-6 pb-10">
                    <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-[#D28A8C] shrink-0 border border-[#F3E9E2]">
+                      <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-[#B06A6C] shrink-0 border border-[#F3E9E2]">
                          <User className="w-5 h-5" />
                       </div>
                       <div className="max-w-[80%] bg-[#F3E9E2]/30 p-6 rounded-[2rem] rounded-tl-lg border border-[#F3E9E2]/50">
-                         <p className="text-[14px] text-[#4A3730] font-medium leading-relaxed italic">
+                         <p className="text-[14px] text-[#4A3730] font-medium leading-relaxed ">
                            "{selectedLead.message}"
                          </p>
                       </div>
@@ -162,7 +162,7 @@ const LeadsInbox = () => {
 
                 {/* Footer Controls */}
                 <div className="flex flex-col sm:flex-row items-center gap-4 pt-6 border-t border-[#F3E9E2]">
-                   <button className="w-full sm:flex-1 py-4 bg-[#D28A8C] text-white font-black text-sm rounded-2xl shadow-xl shadow-[#D28A8C]/20 flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-95 transition-all">
+                   <button className="w-full sm:flex-1 py-4 bg-[#B06A6C] text-white font-black text-sm rounded-2xl shadow-xl shadow-[#B06A6C]/20 flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-95 transition-all">
                       <CheckCircle className="w-5 h-5" /> Mark as Booked
                    </button>
                    <button className="w-full sm:flex-1 py-4 bg-emerald-50 text-emerald-600 font-black text-sm rounded-2xl flex items-center justify-center gap-2 hover:bg-emerald-100 active:scale-95 transition-all">
@@ -175,11 +175,11 @@ const LeadsInbox = () => {
              </div>
            ) : (
              <div className="h-full flex flex-col items-center justify-center p-10 text-center gap-4">
-                <div className="w-20 h-20 rounded-full bg-[#F3E9E2]/50 flex items-center justify-center text-[#D28A8C]/20 border-2 border-dashed border-[#F3E9E2]">
+                <div className="w-20 h-20 rounded-full bg-[#F3E9E2]/50 flex items-center justify-center text-[#B06A6C]/20 border-2 border-dashed border-[#F3E9E2]">
                    <Heart className="w-10 h-10" />
                 </div>
                 <div className="space-y-1">
-                   <h3 className="text-2xl font-black text-[#4A3730] italic font-serif" style={{ fontFamily: "'Playfair Display', serif" }}>
+                   <h3 className="text-2xl font-black text-[#4A3730]  " >
                      Select a Lead
                    </h3>
                    <p className="text-[#8E7E77] text-sm font-medium">Click on an enquiry to view full customer details.</p>
@@ -191,7 +191,7 @@ const LeadsInbox = () => {
         {/* Mobile View Placeholder Hint for selection */}
         {!selectedLead && (
            <div className="md:hidden text-center py-20 px-8 text-slate-300">
-              <p className="italic">Select a lead from the list to view details.</p>
+              <p className="">Select a lead from the list to view details.</p>
            </div>
         )}
       </div>

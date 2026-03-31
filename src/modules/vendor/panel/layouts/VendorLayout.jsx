@@ -6,7 +6,7 @@ const VendorLayout = ({ children, title = "Dashboard" }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#FFFDFB]">
+    <div className="min-h-screen bg-[#F7F1ED]">
       {/* Navigation Sidebar */}
       <VendorSidebar 
         isOpen={isSidebarOpen} 
@@ -14,15 +14,15 @@ const VendorLayout = ({ children, title = "Dashboard" }) => {
       />
 
       {/* Main Framework */}
-      <div className="lg:ml-72 flex flex-col min-h-screen relative transition-all duration-300">
+      <div className="flex flex-col min-h-screen relative transition-all duration-500 lg:pl-[20rem]">
         <VendorNavbar 
           onOpenSidebar={() => setIsSidebarOpen(true)} 
           title={title}
         />
         
-        {/* Dynamic Content Area */}
-        <main className="flex-1 p-5 md:p-8 md:px-10 animate-wedding-fade-up">
-          <div className="max-w-7xl mx-auto pb-10">
+        {/* Dynamic Content Area with Darker Workspace Background */}
+        <main className="flex-1 p-6 md:p-10 md:px-14 animate-wedding-fade-up bg-gradient-to-tr from-[#F7F1ED] via-[#F3E9E2] to-white/30">
+          <div className="max-w-[1600px] mx-auto pb-16">
             {children}
           </div>
         </main>
