@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { 
   Bell, 
   Lock, 
@@ -13,6 +13,23 @@ import {
 import VendorLayout from "../layouts/VendorLayout";
 
 const VendorSettings = () => {
+  const [vendorName, setVendorName] = useState("Zoya Khan");
+
+  useEffect(() => {
+    const saved = localStorage.getItem('vendorPreviewData');
+    if (saved) {
+      const data = JSON.parse(saved);
+      if (data.name) setVendorName(data.name);
+    }
+
+    const handleUpdate = (e) => {
+      if (e.detail && e.detail.name) setVendorName(e.detail.name);
+    };
+
+    window.addEventListener('vendorProfileUpdate', handleUpdate);
+    return () => window.removeEventListener('vendorProfileUpdate', handleUpdate);
+  }, []);
+
   return (
     <VendorLayout title="Settings">
       <div className="max-w-3xl mx-auto space-y-8 animate-wedding-fade-up">
@@ -24,7 +41,7 @@ const VendorSettings = () => {
               <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent" />
            </div>
            <div className="text-center sm:text-left space-y-1">
-              <h3 className="text-2xl font-black text-[#4A3730]  " >Zoya Khan</h3>
+              <h3 className="text-2xl font-black text-[#4A3730]">{vendorName}</h3>
               <p className="text-[11px] font-bold text-[#8E7E77] uppercase tracking-widest leading-none">Photographer • Mumbai</p>
               <div className="flex items-center gap-1.5 text-emerald-500 font-black text-[10px] mt-2 justify-center sm:justify-start">
                  <ShieldCheck className="w-3.5 h-3.5" /> VERIFIED ACCOUNT

@@ -35,6 +35,15 @@ const LivePreview = () => {
     if (saved) {
       setVendorData(prev => ({ ...prev, ...JSON.parse(saved) }));
     }
+
+    const handleUpdate = (e) => {
+      if (e.detail) {
+        setVendorData(prev => ({ ...prev, ...e.detail }));
+      }
+    };
+
+    window.addEventListener('vendorProfileUpdate', handleUpdate);
+    return () => window.removeEventListener('vendorProfileUpdate', handleUpdate);
   }, []);
 
   return (

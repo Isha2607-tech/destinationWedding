@@ -23,9 +23,9 @@ const ReviewsManager = () => {
       <div className="space-y-8 animate-wedding-fade-up">
         
         {/* Rating Summary Row */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-           <div className="bg-white rounded-[2.5rem] p-8 border border-[#F3E9E2] flex items-center justify-between shadow-sm">
-              <div className="space-y-1">
+        <div className="flex justify-start">
+           <div className="bg-white rounded-[2rem] p-6 border border-[#F3E9E2] flex items-center gap-10 shadow-sm">
+              <div className="space-y-0.5">
                  <div className="flex items-center gap-2">
                     <span className="text-4xl font-black text-[#4A3730]">4.8</span>
                     <Star className="w-6 h-6 fill-amber-400 text-amber-400" />
@@ -38,25 +38,10 @@ const ReviewsManager = () => {
                  <p className="text-[10px] font-bold text-[#8E7E77]">Positive Sentiment</p>
               </div>
            </div>
-
-           <div className="lg:col-span-2 bg-[#4A3730] rounded-[2.5rem] p-8 flex items-center justify-between text-white shadow-xl shadow-[#4A3730]/10">
-              <div className="flex items-center gap-5">
-                 <div className="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center text-[#B06A6C]">
-                    <TrendingUp className="w-7 h-7" />
-                 </div>
-                 <div className="space-y-1">
-                    <h3 className="text-xl font-black  " >Rating Boost</h3>
-                    <p className="text-xs text-white/70 font-medium">Get 5 more 5-star reviews to reach <span className="text-[#B06A6C] font-bold">Elite Status</span>.</p>
-                 </div>
-              </div>
-              <button className="bg-white/10 hover:bg-white/20 text-white font-bold text-xs px-5 py-3 rounded-2xl transition-all">
-                 Learn How
-              </button>
-           </div>
         </div>
 
         {/* Reviews List */}
-        <div className="space-y-6">
+        <div className="space-y-4">
            <div className="flex items-center justify-between px-2">
               <h3 className="text-xl font-black text-[#4A3730] " >Latest Reviews</h3>
               <button className="flex items-center gap-2 text-[11px] font-black text-[#8E7E77] uppercase tracking-widest bg-white border border-[#F3E9E2] px-4 py-2 rounded-xl">
@@ -64,9 +49,9 @@ const ReviewsManager = () => {
               </button>
            </div>
 
-           <div className="space-y-5">
+           <div className="space-y-4">
               {reviews.map((rev) => (
-                <div key={rev.id} className="bg-white rounded-[2.5rem] border border-[#F3E9E2] p-8 shadow-sm space-y-6 group">
+                <div key={rev.id} className="bg-white rounded-[2rem] border border-[#F3E9E2] p-5 shadow-sm space-y-4 group">
                    <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                       <div className="flex items-center gap-4">
                          <div className="w-14 h-14 rounded-2xl overflow-hidden shadow-sm border border-[#F3E9E2]">
@@ -91,11 +76,12 @@ const ReviewsManager = () => {
                       </div>
                    </div>
 
-                   <div className="bg-[#F3E9E2]/30 p-6 rounded-[2rem] border border-[#F3E9E2]/50">
-                      <p className="text-[14px] text-[#4A3730] font-medium leading-relaxed  line-clamp-3">
+                   <div className="bg-[#F3E9E2]/30 p-4 rounded-[1.5rem] border border-[#F3E9E2]/50">
+                      <p className="text-[13px] text-[#4A3730] font-medium leading-relaxed">
                          "{rev.comment}"
                       </p>
                    </div>
+
 
                    {/* Reply Input */}
                    <div className="flex items-center gap-4 pl-4 pt-2">

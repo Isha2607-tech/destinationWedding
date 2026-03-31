@@ -155,6 +155,7 @@ const Toast = ({ message, type, visible }) => {
 };
 
 const LeadsInbox = () => {
+  const [leads, setLeads] = useState(initialLeads);
   const [activeFilter, setActiveFilter] = useState("All");
   const [selectedLead, setSelectedLead] = useState(initialLeads[0]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -162,6 +163,16 @@ const LeadsInbox = () => {
   const [leadStatuses, setLeadStatuses] = useState({});
   // Toast state
   const [toast, setToast] = useState({ visible: false, message: "", type: "" });
+
+  const handleDeleteLead = (id) => {
+    if (window.confirm("Are you sure you want to delete this lead?")) {
+      const updatedLeads = leads.filter(l => l.id !== id);
+      setLeads(updatedLeads);
+      setSelectedLead(updatedLeads[0] || null);
+      setToast({ visible: true, message: "Lead removed from inbox", type: "Rejected" });
+      setTimeout(() => setToast((t) => ({ ...t, visible: false })), 2800);
+    }
+  };
 
   const getLeadStatus = (id) => leadStatuses[id] || "Pending";
 
@@ -179,7 +190,7 @@ const LeadsInbox = () => {
   // Filter tabs — All / New / Contacted / Completed
   const filters = ["All", "New", "Contacted", "Completed"];
 
-  const filteredLeads = initialLeads.filter((l) => {
+   const filteredLeads = leads.filter((l) => {
     const matchesSearch =
       l.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       l.event.toLowerCase().includes(searchQuery.toLowerCase());
@@ -191,6 +202,7 @@ const LeadsInbox = () => {
       (activeFilter === "Completed" && vendorStatus === "Completed");
     return matchesSearch && matchesFilter;
   });
+
 
   const currentStatus = selectedLead ? getLeadStatus(selectedLead.id) : "Pending";
   const currentStatusStyle = STATUS_CONFIG[currentStatus];
@@ -217,13 +229,14 @@ const LeadsInbox = () => {
             {filters.map((f) => (
               <button
                 key={f}
-                onClick={() => {
+                 onClick={() => {
                   setActiveFilter(f);
-                  const next = initialLeads.filter(
+                  const next = leads.filter(
                     (l) => f === "All" || l.status === f
                   );
                   setSelectedLead(next[0] || null);
                 }}
+
                 className={`flex-1 py-2.5 px-1 text-[9px] font-black uppercase tracking-widest rounded-xl transition-all ${
                   activeFilter === f
                     ? "bg-gradient-to-r from-[#B06A6C] to-[#C17A7C] text-white shadow-md shadow-[#B06A6C]/20"
@@ -462,7 +475,10 @@ const LeadsInbox = () => {
                       <MessageCircle className="w-3.5 h-3.5" />
                       Contact on WhatsApp
                     </button>
-                    <button className="w-10 h-10 bg-white border border-rose-100 text-rose-400 rounded-xl flex items-center justify-center hover:bg-rose-50 transition-all shrink-0">
+                    <button 
+                      onClick={() => handleDeleteLead(selectedLead.id)}
+                      className="w-10 h-10 bg-white border border-rose-100 text-rose-400 rounded-xl flex items-center justify-center hover:bg-rose-50 transition-all shrink-0 active:scale-95 shadow-sm"
+                    >
                       <Archive className="w-4 h-4" />
                     </button>
                   </div>

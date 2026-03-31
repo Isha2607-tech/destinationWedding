@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { 
   LayoutDashboard, 
@@ -24,6 +24,22 @@ const navItems = [
 
 const VendorSidebar = ({ isOpen, onClose }) => {
   const location = useLocation();
+  const [vendorName, setVendorName] = useState("Zoya Khan");
+
+  useEffect(() => {
+    const saved = localStorage.getItem('vendorPreviewData');
+    if (saved) {
+      const data = JSON.parse(saved);
+      if (data.name) setVendorName(data.name);
+    }
+
+    const handleUpdate = (e) => {
+      if (e.detail && e.detail.name) setVendorName(e.detail.name);
+    };
+
+    window.addEventListener('vendorProfileUpdate', handleUpdate);
+    return () => window.removeEventListener('vendorProfileUpdate', handleUpdate);
+  }, []);
 
   return (
     <>
@@ -103,7 +119,7 @@ const VendorSidebar = ({ isOpen, onClose }) => {
                 </div>
                 <div className="flex flex-col">
                   <div className="flex items-center gap-1.5">
-                    <span className="text-sm font-black text-[#4A3730]">Zoya Khan</span>
+                    <span className="text-sm font-black text-[#4A3730]">{vendorName}</span>
                     <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                   </div>
                   <span className="text-[10px] font-bold text-[#7B6A62] uppercase tracking-widest leading-none mt-0.5">Vendor Admin</span>

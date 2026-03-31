@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { 
   Bell, 
   Search, 
@@ -8,6 +8,23 @@ import {
 } from "lucide-react";
 
 const VendorNavbar = ({ onOpenSidebar, title = "Dashboard" }) => {
+  const [vendorName, setVendorName] = useState("Zoya Khan");
+  
+  useEffect(() => {
+    const saved = localStorage.getItem('vendorPreviewData');
+    if (saved) {
+      const data = JSON.parse(saved);
+      if (data.name) setVendorName(data.name);
+    }
+
+    const handleUpdate = (e) => {
+      if (e.detail && e.detail.name) setVendorName(e.detail.name);
+    };
+
+    window.addEventListener('vendorProfileUpdate', handleUpdate);
+    return () => window.removeEventListener('vendorProfileUpdate', handleUpdate);
+  }, []);
+
   return (
     <header className="sticky top-0 right-0 left-0 bg-[#F7F1ED] border-b border-[#DED0C5] z-40 transition-all duration-500 shadow-sm">
       <div className="flex h-20 items-center justify-between px-6 md:px-12">
@@ -66,7 +83,7 @@ const VendorNavbar = ({ onOpenSidebar, title = "Dashboard" }) => {
             </div>
             <div className="hidden sm:flex flex-col gap-0.5">
               <div className="flex items-center gap-1.5">
-                <span className="text-sm font-black text-[#4A3730]">Zoya Khan</span>
+                <span className="text-sm font-black text-[#4A3730]">{vendorName}</span>
                 <ChevronDown className="w-3.5 h-3.5 text-[#8E7E77] group-hover:translate-y-0.5 transition-transform" />
               </div>
               <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest leading-none">Verified</span>
