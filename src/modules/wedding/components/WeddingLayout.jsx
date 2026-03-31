@@ -136,6 +136,44 @@ const WeddingLayout = () => {
                 <img src={logoImg} alt="Weddings Logo" className="h-12 md:h-14 w-auto object-contain scale-110 transition-transform duration-300" />
               </Link>
 
+              {/* Brand Text */}
+              <div className="hidden md:flex items-center">
+                <div className="flex flex-col items-center select-none">
+                  <span
+                    style={{
+                      fontFamily: "'Playfair Display', serif",
+                      color: "#81313A",
+                      fontSize: "15px",
+                      fontWeight: "900",
+                      letterSpacing: "0.18em",
+                      lineHeight: "1.15",
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    My Destination
+                  </span>
+                  <span
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "6px",
+                      color: "#81313A",
+                      fontSize: "10px",
+                      fontFamily: "'Noto Serif Devanagari', 'Devanagari', serif",
+                      fontWeight: "500",
+                      letterSpacing: "0.04em",
+                      opacity: "0.78",
+                      lineHeight: "1.4",
+                      marginTop: "1px",
+                    }}
+                  >
+                    <span style={{ fontSize: "8px", opacity: 0.6 }}>—</span>
+                    अतिथि देवो भवः
+                    <span style={{ fontSize: "8px", opacity: 0.6 }}>—</span>
+                  </span>
+                </div>
+              </div>
+
               {/* Desktop nav */}
               <div className="hidden md:flex items-center gap-8 h-full">
                 {navLinks.filter(link => link.label !== "Enquiry").map((link) => {

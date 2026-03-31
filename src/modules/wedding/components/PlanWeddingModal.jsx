@@ -10,6 +10,7 @@ const PlanWeddingModal = ({ isOpen, onClose, initialLocation = "" }) => {
     eventLocation: initialLocation,
     venueDecided: "no",
     whatsappUpdates: true,
+    description: "",
   });
 
   if (!isOpen) return null;
@@ -116,6 +117,17 @@ const PlanWeddingModal = ({ isOpen, onClose, initialLocation = "" }) => {
                   <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
                 </div>
               </div>
+            </div>
+
+            {/* Description */}
+            <div>
+              <label className="block text-[10px] md:text-xs font-black mb-1.5 text-slate-400 uppercase tracking-widest">Description</label>
+              <textarea
+                placeholder="Enter Description"
+                className="w-full px-5 py-4 rounded-2xl border border-slate-100 bg-slate-50/50 focus:outline-none focus:ring-2 focus:ring-[#ff7676]/20 focus:border-[#ff7676] transition-all text-sm placeholder:text-slate-400 min-h-[100px] resize-none"
+                value={formData.description}
+                onChange={(e) => setFormData({...formData, description: e.target.value})}
+              />
             </div>
 
             {/* Venue Decided */}
