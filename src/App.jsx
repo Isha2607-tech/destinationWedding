@@ -42,6 +42,18 @@ import VendorSignup from "./modules/vendor/auth/views/VendorSignup";
 import VendorLogin from "./modules/vendor/auth/views/VendorLogin";
 import { AuthProvider } from "./modules/vendor/context/AuthContext";
 
+// Admin Module Imports
+import AdminLayout from "./modules/admin/components/AdminLayout";
+import AdminDashboard from "./modules/admin/views/AdminDashboard";
+import ManageVendors from "./modules/admin/views/ManageVendors";
+import ManageEnquiries from "./modules/admin/views/ManageEnquiries";
+import AddVendors from "./modules/admin/views/AddVendors";
+import { 
+  ManageDestinations, 
+  ManageGallery, 
+  AdminSettings 
+} from "./modules/admin/views/PlaceholderViews";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -102,6 +114,18 @@ const App = () => (
             <Route path="login" element={<VendorLogin />} />
             <Route path="signup" element={<VendorSignup />} />
           </Routes></AuthProvider>} />
+
+          {/* Admin Routes */}
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<Navigate to="/admin/dashboard" replace />} />
+            <Route path="dashboard" element={<AdminDashboard />} />
+            <Route path="vendors/*" element={<ManageVendors />} />
+            <Route path="add-vendor" element={<AddVendors />} />
+            <Route path="enquiries" element={<ManageEnquiries />} />
+            <Route path="destinations" element={<ManageDestinations />} />
+            <Route path="gallery" element={<ManageGallery />} />
+            <Route path="settings" element={<AdminSettings />} />
+          </Route>
 
           <Route path="*" element={<NotFound />} />
         </Routes>
