@@ -1,5 +1,4 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { 
   Users, 
   MessageSquare, 
@@ -12,6 +11,8 @@ import { adminStats, recentEnquiries, pendingVendors } from '../data/adminMockDa
 import { adminStyles } from '../theme/themeConfig';
 
 const AdminDashboard = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="space-y-8 animate-in fade-in duration-700">
       {/* Stats Cards */}
@@ -19,9 +20,13 @@ const AdminDashboard = () => {
         {adminStats.map((stat, index) => {
           const Icon = { Users, MessageSquare, TrendingUp, Clock }[stat.icon];
           return (
-            <div key={index} className={`${adminStyles.glassCard} p-6 rounded-3xl group hover:translate-y-[-4px] transition-all duration-300`}>
+            <div 
+              key={index} 
+              onClick={() => navigate(stat.path || '/admin/dashboard')}
+              className={`${adminStyles.glassCard} p-6 rounded-3xl group cursor-pointer transition-all duration-300`}
+            >
               <div className="flex justify-between items-start mb-4">
-                <div className="p-3 bg-[hsl(353,45%,35%)]/10 text-[hsl(353,45%,35%)] rounded-2xl group-hover:scale-110 transition-transform">
+                <div className="p-3 bg-[hsl(353,45%,35%)]/10 text-[hsl(353,45%,35%)] rounded-2xl transition-transform">
                   <Icon size={24} />
                 </div>
                 <span className="text-xs font-medium px-2 py-1 bg-green-100 text-green-700 rounded-full">

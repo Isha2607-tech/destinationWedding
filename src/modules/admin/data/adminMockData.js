@@ -3,10 +3,10 @@
  */
 
 export const adminStats = [
-  { label: "Total Vendors", value: "124", change: "+12% from last month", icon: "Users" },
-  { label: "Pending Approvals", value: "8", change: "Requires attention", icon: "Clock" },
-  { label: "Total Enquiries", value: "458", change: "+25% from last month", icon: "MessageSquare" },
-  { label: "Gross Leads Value", value: "₹45.2L", change: "+18% from last month", icon: "TrendingUp" }
+  { label: "Total Vendors", value: "124", change: "+12% from last month", icon: "Users", path: "/admin/vendors/all" },
+  { label: "Pending Approvals", value: "8", change: "Requires attention", icon: "Clock", path: "/admin/vendors/pending" },
+  { label: "Total Enquiries", value: "458", change: "+25% from last month", icon: "MessageSquare", path: "/admin/enquiries" },
+  { label: "Gross Leads Value", value: "₹45.2L", change: "+18% from last month", icon: "TrendingUp", path: "/admin/dashboard" }
 ];
 
 export const pendingVendors = [

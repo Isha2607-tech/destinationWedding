@@ -38,7 +38,7 @@ const AdminSidebar = () => {
   const [expanded, setExpanded] = useState(true); // Keep vendors expanded by default if active
 
   return (
-    <aside className={`w-72 h-screen fixed left-0 top-0 ${adminStyles.glassCard} border-r z-50 flex flex-col`}>
+    <aside className={`w-72 h-screen fixed left-0 top-0 bg-[#F8E2E5] border-r border-[#F3E9E2] z-50 flex flex-col shadow-sm`}>
       <div className="p-8">
         <h1 className={`${adminStyles.heading} text-2xl font-bold tracking-tight`}>
           MY DESTINATION
@@ -56,7 +56,11 @@ const AdminSidebar = () => {
               <NavLink
                 to={item.path}
                 className={({ isActive }) => 
-                  `${adminStyles.sidebarItem} ${isActive ? adminStyles.sidebarItemActive : ''} ${hasSubItems ? 'justify-between' : ''}`
+                  `flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-[hsl(353,20%,15%)] ${
+                    isActive 
+                    ? 'bg-[hsl(353,45%,35%)] text-white shadow-md active-sidebar-item' 
+                    : 'hover:bg-[hsl(353,45%,35%)]/10'
+                  } ${hasSubItems ? 'justify-between' : ''}`
                 }
                 onClick={(e) => {
                   if (hasSubItems) {

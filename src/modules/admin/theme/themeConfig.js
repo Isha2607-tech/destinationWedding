@@ -9,8 +9,8 @@ export const ADMIN_THEME = {
     primaryForeground: "hsl(0 0% 100%)",
     secondary: "hsl(353 30% 94%)", // Soft Pink
     secondaryForeground: "hsl(353 45% 25%)",
-    background: "linear-gradient(180deg, #FFFFFF 0%, #FFF0F3 100%)",
-    card: "rgba(255, 255, 255, 0.8)", // Glassmorphism base
+    background: "#FFF5F7", 
+    card: "#FFFFFF", 
     border: "hsl(353 20% 88%)",
     accent: "hsl(353 45% 45%)",
     muted: "hsl(353 15% 45%)"
@@ -31,9 +31,9 @@ export const ADMIN_THEME = {
 };
 
 export const adminStyles = {
-  glassCard: "bg-white/70 backdrop-blur-md border border-white/30 shadow-lg",
+  glassCard: "bg-white border border-[#F3E9E2] shadow-sm hover:shadow-md transition-all duration-300",
   primaryButton: "bg-[hsl(353,45%,35%)] text-white hover:bg-[hsl(353,45%,40%)] transition-all",
   heading: "font-serif text-[hsl(353,45%,35%)]",
-  sidebarItem: "flex items-center gap-3 px-4 py-3 rounded-xl transition-all hover:bg-[hsl(353,30%,94%)] text-[hsl(353,20%,15%)]",
+  sidebarItem: "flex items-center gap-3 px-4 py-3 rounded-xl transition-all hover:bg-[hsl(353,45%,35%)]/10 text-[hsl(353,20%,15%)]",
   sidebarItemActive: "bg-[hsl(353,45%,35%)] text-white shadow-md"
 };

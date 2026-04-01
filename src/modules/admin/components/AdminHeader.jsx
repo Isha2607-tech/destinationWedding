@@ -28,7 +28,7 @@ const AdminHeader = ({ title = "Dashboard" }) => {
   }, []);
 
   return (
-    <header className={`h-20 w-[calc(100%-18rem)] fixed right-0 top-0 ${adminStyles.glassCard} z-40 px-8 flex items-center justify-between border-b`}>
+    <header className={`h-20 w-[calc(100%-18rem)] fixed right-0 top-0 bg-[#F8E2E5] border-b border-[#F3E9E2] z-40 px-8 flex items-center justify-between shadow-sm`}>
       <div className="flex items-center gap-4">
         <h2 className={`${adminStyles.heading} text-2xl font-semibold`}>
           {title}
