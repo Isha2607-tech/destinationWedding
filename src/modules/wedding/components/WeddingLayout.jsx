@@ -284,23 +284,30 @@ const WeddingLayout = () => {
 
       {/* Bottom Navbar for Mobile */}
       {!hideNav && (
-        <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg border-t border-border shadow-[0_-4px_20px_-5px_rgba(0,0,0,0.1)]">
-          <div className="flex items-center justify-around py-2 px-2">
+        <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-100 shadow-[0_-8px_30px_rgba(0,0,0,0.04)] pb-safe">
+          <div className="flex items-center justify-around py-2.5 px-2">
             {navLinks.map((link) => {
               const Icon = link.icon;
-              const isActive = location.pathname === link.to;
+              const isActive = location.pathname === link.to || (link.to !== '/wedding' && location.pathname.startsWith(link.to));
+              
               return (
                 <Link
                   key={link.to}
                   to={link.to}
-                  className={`flex flex-col items-center gap-1 min-w-[64px] transition-all duration-300 ${
-                    isActive ? "text-primary scale-105" : "text-muted-foreground hover:text-primary"
+                  className={`flex flex-col items-center gap-1 min-w-[70px] transition-all duration-300 ${
+                    isActive ? "scale-105" : "hover:scale-105"
                   }`}
                 >
-                  <div className={`p-1.5 rounded-xl transition-all duration-300 ${isActive ? "bg-primary/10" : ""}`}>
-                    <Icon className={`w-5 h-5 ${isActive ? "stroke-[2.5px]" : "stroke-[2px]"}`} />
+                  <div className={`w-12 h-11 rounded-[1.25rem] flex items-center justify-center transition-all duration-500 ${
+                    isActive 
+                      ? "bg-[#81313A]/10 text-[#81313A]" 
+                      : "text-slate-400"
+                  }`}>
+                    <Icon className={`w-5.5 h-5.5 ${isActive ? "stroke-[2.5px]" : "stroke-[1.8px]"}`} />
                   </div>
-                  <span className={`text-[10px] font-bold uppercase tracking-wider ${isActive ? "opacity-100" : "opacity-70"}`}>
+                  <span className={`text-[9px] font-black uppercase tracking-[0.12em] ${
+                    isActive ? "text-[#81313A]" : "text-slate-400"
+                  }`}>
                     {link.label}
                   </span>
                 </Link>

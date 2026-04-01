@@ -19,7 +19,6 @@ const navItems = [
   { id: "leads", label: "Enquiry Inbox", icon: MessageSquare, path: "/vendor/leads" },
   { id: "reviews", label: "Client Love", icon: Star, path: "/vendor/reviews" },
   { id: "settings", label: "Vendor Settings", icon: Settings, path: "/vendor/settings" },
-  { id: "live_preview", label: "Live Preview", icon: Eye, path: "/vendor/preview" },
 ];
 
 const VendorSidebar = ({ isOpen, onClose }) => {
@@ -27,12 +26,6 @@ const VendorSidebar = ({ isOpen, onClose }) => {
   const [vendorName, setVendorName] = useState("Zoya Khan");
 
   useEffect(() => {
-    const saved = localStorage.getItem('vendorPreviewData');
-    if (saved) {
-      const data = JSON.parse(saved);
-      if (data.name) setVendorName(data.name);
-    }
-
     const handleUpdate = (e) => {
       if (e.detail && e.detail.name) setVendorName(e.detail.name);
     };

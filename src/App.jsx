@@ -36,7 +36,6 @@ import WorkManager from "./modules/vendor/panel/views/WorkManager";
 import LeadsInbox from "./modules/vendor/panel/views/LeadsInbox";
 import ReviewsManager from "./modules/vendor/panel/views/ReviewsManager";
 import VendorSettings from "./modules/vendor/panel/views/VendorSettings";
-import LivePreview from "./modules/vendor/panel/views/LivePreview";
 
 import VendorSignup from "./modules/vendor/auth/views/VendorSignup";
 import VendorLogin from "./modules/vendor/auth/views/VendorLogin";
@@ -93,7 +92,6 @@ const App = () => (
             {/* Dashboard routes use their own Layout internally */}
             <Route path="dashboard" element={<DashboardHome />} />
             <Route path="profile" element={<ProfileEditor />} />
-            <Route path="preview" element={<LivePreview />} />
             <Route path="work" element={<WorkManager />} />
             <Route path="leads" element={<LeadsInbox />} />
             <Route path="reviews" element={<ReviewsManager />} />

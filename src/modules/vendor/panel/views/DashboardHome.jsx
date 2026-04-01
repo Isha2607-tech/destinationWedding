@@ -16,7 +16,7 @@ import VendorLayout from "../layouts/VendorLayout";
 const stats = [
   { label: "Total Enquiries", value: "1,280", icon: MessageCircle, growth: "+12%", color: "bg-blue-50 text-blue-500 shadow-blue-500/10", path: "/vendor/leads" },
   { label: "New Leads", value: "48", icon: Users, growth: "+5%", color: "bg-emerald-50 text-emerald-500 shadow-emerald-500/10", path: "/vendor/leads" },
-  { label: "Profile Views", value: "12.4K", icon: Eye, growth: "+18%", color: "bg-amber-50 text-amber-500 shadow-amber-500/10", path: "/vendor/preview" },
+  { label: "Profile Views", value: "12.4K", icon: Eye, growth: "+18%", color: "bg-amber-50 text-amber-500 shadow-amber-500/10", path: "/vendor/profile" },
   { label: "Shortlisted", value: "450", icon: Heart, growth: "+7%", color: "bg-[#B06A6C]/10 text-[#B06A6C] shadow-[#B06A6C]/10", path: "/vendor/reviews" },
 ];
 
@@ -39,28 +39,28 @@ const DashboardHome = () => {
       <div className="space-y-8">
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
           {stats.map((stat, i) => {
             const Icon = stat.icon;
             return (
               <div 
                 key={stat.label} 
                 onClick={() => navigate(stat.path || '/vendor/leads')}
-                className="bg-white rounded-3xl border border-[#F3E9E2] p-5 md:p-6 shadow-sm hover:shadow-xl hover:shadow-[#B06A6C]/5 transition-all duration-500 group animate-wedding-fade-up cursor-pointer hover:-translate-y-1"
+                className="bg-white rounded-[2rem] border border-[#F3E9E2] p-3.5 md:p-6 shadow-sm hover:shadow-xl hover:shadow-[#B06A6C]/5 transition-all duration-500 group animate-wedding-fade-up cursor-pointer hover:-translate-y-1"
                 style={{ animationDelay: `${(i + 1) * 100}ms` }}
               >
-                <div className="flex items-center justify-between mb-4">
-                  <div className={`p-3 rounded-2xl ${stat.color} group-hover:scale-110 transition-transform`}>
-                    <Icon className="w-5 h-5 md:w-6 md:h-6" />
+                <div className="flex items-center justify-between mb-2 md:mb-4">
+                  <div className={`p-2 md:p-3 rounded-lg md:rounded-2xl ${stat.color} group-hover:scale-110 transition-transform`}>
+                    <Icon className="w-4 h-4 md:w-6 md:h-6" />
                   </div>
-                  <div className="flex items-center gap-1 text-emerald-500 text-xs font-black">
-                     <TrendingUp className="w-3.5 h-3.5" />
+                  <div className="flex items-center gap-0.5 text-emerald-500 text-[9px] md:text-xs font-black">
+                     <TrendingUp className="w-2.5 h-2.5 md:w-3.5 md:h-3.5" />
                      {stat.growth}
                   </div>
                 </div>
-                <div className="space-y-1">
-                  <h3 className="text-2xl md:text-3xl font-black text-[#4A3730] tracking-tight">{stat.value}</h3>
-                  <p className="text-[11px] md:text-xs font-bold text-[#8E7E77] uppercase tracking-widest leading-none">
+                <div className="space-y-0">
+                  <h3 className="text-lg md:text-3xl font-black text-[#4A3730] tracking-tight">{stat.value}</h3>
+                  <p className="text-[8px] md:text-xs font-bold text-[#8E7E77] uppercase tracking-wider leading-none">
                     {stat.label}
                   </p>
                 </div>
@@ -85,9 +85,9 @@ const DashboardHome = () => {
                  <div 
                    key={lead.id}
                    onClick={() => navigate('/vendor/leads')}
-                   className="group bg-white rounded-3xl border border-[#F3E9E2] p-4 flex items-center gap-4 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 relative overflow-hidden cursor-pointer"
+                   className="group bg-white rounded-[2rem] border border-[#F3E9E2] p-3 md:p-4 flex items-center gap-3 md:gap-4 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 relative overflow-hidden cursor-pointer"
                  >
-                   <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl overflow-hidden shadow-sm shrink-0">
+                   <div className="w-12 h-12 md:w-16 md:h-16 rounded-[1.25rem] md:rounded-2xl overflow-hidden shadow-sm shrink-0">
                      <img src={lead.image} alt={lead.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                    </div>
                    <div className="flex-1 min-w-0 pr-8">

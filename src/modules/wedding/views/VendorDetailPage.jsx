@@ -73,7 +73,34 @@ const VendorDetailPage = () => {
   const heroRef = useRef(null);
   const tabRef = useRef(null);
 
-  const vendor = useMemo(() => mockVendors.find((v) => v.id === vendorId) || mockVendors[0], [vendorId]);
+  const vendor = useMemo(() => {
+    // 1. Check Custom Vendors from Dashboard
+    const saved = localStorage.getItem('vendorProjects');
+    if (saved) {
+      try {
+        const projects = JSON.parse(saved);
+        const custom = projects.find(p => p.id?.toString() === vendorId);
+        if (custom) {
+          return {
+            ...custom,
+            images: [custom.banner, ...(custom.portfolio || [])].filter(Boolean),
+            image: custom.banner || custom.portfolio?.[0] || "https://images.unsplash.com/photo-1627494548482-12be5c192bc5?q=80&w=800",
+            price: custom.basePackage?.price || "₹0",
+            priceUnit: custom.basePackage?.unit || "per day",
+            services: custom.services?.map(s => s.name) || [],
+            rating: custom.rating || 5.0,
+            reviews: custom.reviews || 0,
+            reviewHighlights: [],
+            isFeatured: true,
+            isCustom: true
+          };
+        }
+      } catch (e) {}
+    }
+    // 2. Fallback to Mock Data
+    return mockVendors.find((v) => v.id === vendorId) || mockVendors[0];
+  }, [vendorId]);
+
   const similarVendors = useMemo(
     () => mockVendors.filter((v) => v.category === vendor.category && v.id !== vendor.id).slice(0, 3),
     [vendor]
@@ -330,9 +357,9 @@ const VendorDetailPage = () => {
                     {/* Sub tabs hierarchy */}
                     <div className="flex border-b border-slate-100 mb-6 bg-white overflow-x-auto no-scrollbar shadow-[inset_-20px_0_20px_-20px_rgba(0,0,0,0.05)]">
                       {[
-                        { label: "Portfolio", count: portfolioImages.length + 341 },
-                        { label: "Albums", count: albums.length + 49 },
-                        { label: "Videos", count: videos.length + 19 },
+                        { label: "Portfolio", count: vendor.isCustom ? portfolioImages.length : portfolioImages.length + 341 },
+                        { label: "Albums", count: vendor.isCustom ? albums.length : albums.length + 49 },
+                        { label: "Videos", count: vendor.isCustom ? videos.length : videos.length + 19 },
                       ].map((sub) => (
                         <button
                           key={sub.label}
@@ -366,11 +393,14 @@ const VendorDetailPage = () => {
                             </div>
                           ))}
                         </div>
-                        <div className="mt-8 flex justify-center">
-                          <button className="px-10 py-2.5 border border-[#9d313d] text-[#9d313d] text-[13px] font-bold rounded-full hover:bg-[#9d313d] hover:text-white transition-all">
-                            View 337 more
-                          </button>
-                        </div>
+                        {!vendor.isCustom && (
+                          <div className="mt-8 flex justify-center">
+                            <button className="px-10 py-2.5 border border-[#9d313d] text-[#9d313d] text-[13px] font-bold rounded-full hover:bg-[#9d313d] hover:text-white transition-all">
+                              View 337 more
+                            </button>
+                          </div>
+                        )}
+
                       </div>
                     )}
 
@@ -401,11 +431,14 @@ const VendorDetailPage = () => {
                             </div>
                           ))}
                         </div>
-                        <div className="mt-8 flex justify-center">
-                          <button className="px-10 py-2.5 border border-[#9d313d] text-[#9d313d] text-[13px] font-bold rounded-full hover:bg-[#9d313d] hover:text-white transition-all shadow-sm">
-                            View 49 more
-                          </button>
-                        </div>
+                        {!vendor.isCustom && (
+                          <div className="mt-8 flex justify-center">
+                            <button className="px-10 py-2.5 border border-[#9d313d] text-[#9d313d] text-[13px] font-bold rounded-full hover:bg-[#9d313d] hover:text-white transition-all shadow-sm">
+                              View 49 more
+                            </button>
+                          </div>
+                        )}
+
                       </div>
                     )}
 
@@ -429,11 +462,14 @@ const VendorDetailPage = () => {
                             </div>
                           ))}
                         </div>
-                        <div className="mt-8 flex justify-center">
-                          <button className="px-10 py-2.5 border border-[#9d313d] text-[#9d313d] text-[13px] font-bold rounded-full hover:bg-[#9d313d] hover:text-white transition-all">
-                            View 19 more
-                          </button>
-                        </div>
+                        {!vendor.isCustom && (
+                          <div className="mt-8 flex justify-center">
+                            <button className="px-10 py-2.5 border border-[#9d313d] text-[#9d313d] text-[13px] font-bold rounded-full hover:bg-[#9d313d] hover:text-white transition-all">
+                              View 19 more
+                            </button>
+                          </div>
+                        )}
+
                       </div>
                     )}
                   </div>

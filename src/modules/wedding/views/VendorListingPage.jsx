@@ -36,12 +36,40 @@ const ListingView = ({ category, cityFromUrl }) => {
   const [selectedCity, setSelectedCity] = useState(cityFromUrl || null);
   const [viewMode, setViewMode] = useState("grid"); // "list" | "grid"
 
+  const allVendors = useMemo(() => {
+    const saved = localStorage.getItem('vendorProjects');
+    let customVendors = [];
+    if (saved) {
+      try {
+        const projects = JSON.parse(saved);
+        customVendors = projects.map(p => ({
+          id: p.id || `custom-${Date.now()}-${Math.random()}`,
+          name: p.name || "New Portfolio",
+          category: p.category || "Photographers",
+          rating: p.rating || 5.0,
+          reviews: p.reviews || 1,
+          location: p.location || "Custom Location",
+          city: p.city || p.location?.split(',').pop()?.trim() || "Mumbai",
+          price: p.basePackage?.price || "₹0",
+          priceUnit: p.basePackage?.unit || "per day",
+          startingPrice: parseInt(p.basePackage?.price?.replace(/[^0-9]/g, '') || '0'),
+          image: p.banner || p.portfolio?.[0] || "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?q=80&w=1200",
+          tags: p.services?.map(s => s.name) || ["Verified", "New"],
+          isFeatured: true,
+          isCustom: true
+        }));
+      } catch (e) {}
+    }
+    return [...customVendors, ...mockVendors];
+  }, []);
+
   const allCities = useMemo(() => {
-    return [...new Set(mockVendors.filter(v => v.category === category).map(v => v.city))];
-  }, [category]);
+    return [...new Set(allVendors.filter(v => v.category.toLowerCase() === category.toLowerCase()).map(v => v.city))];
+  }, [category, allVendors]);
 
   const filteredVendors = useMemo(() => {
-    return mockVendors.filter((v) => {
+    return allVendors.filter((v) => {
+
       const matchCategory = v.category.toLowerCase() === category.toLowerCase();
       const matchSearch =
         v.name.toLowerCase().includes(searchQuery.toLowerCase()) ||

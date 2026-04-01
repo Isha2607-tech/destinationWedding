@@ -15,6 +15,7 @@ import {
   CheckCheck,
   Inbox,
   Sparkles,
+  ChevronLeft
 } from "lucide-react";
 import VendorLayout from "../layouts/VendorLayout";
 
@@ -163,6 +164,7 @@ const LeadsInbox = () => {
   const [leadStatuses, setLeadStatuses] = useState({});
   // Toast state
   const [toast, setToast] = useState({ visible: false, message: "", type: "" });
+  const [showMobileDetail, setShowMobileDetail] = useState(false);
 
   const handleDeleteLead = (id) => {
     if (window.confirm("Are you sure you want to delete this lead?")) {
@@ -265,15 +267,18 @@ const LeadsInbox = () => {
               return (
                 <button
                   key={lead.id}
-                  onClick={() => setSelectedLead(lead)}
-                  className={`w-full text-left p-4 rounded-[1.75rem] border transition-all duration-300 group ${
+                  onClick={() => {
+                    setSelectedLead(lead);
+                    setShowMobileDetail(true);
+                  }}
+                  className={`w-full text-left p-3.5 md:p-4 rounded-[1.5rem] md:rounded-[1.75rem] border transition-all duration-300 group ${
                     isSelected
                       ? "bg-[#B06A6C] border-transparent shadow-xl shadow-[#B06A6C]/20"
                       : "bg-white border-[#F3E9E2] hover:border-[#B06A6C]/20 hover:shadow-md"
                   }`}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-11 h-11 rounded-2xl overflow-hidden border-2 border-white shadow-sm shrink-0 group-hover:scale-105 transition-transform">
+                    <div className="w-10 h-10 md:w-11 md:h-11 rounded-[0.85rem] md:rounded-2xl overflow-hidden border-2 border-white shadow-sm shrink-0 group-hover:scale-105 transition-transform">
                       <img src={lead.image} alt="" className="w-full h-full object-cover" />
                     </div>
                     <div className="flex-1 min-w-0">
@@ -432,41 +437,47 @@ const LeadsInbox = () => {
 
                   <div className="flex items-center gap-2">
                     {/* Contacted */}
-                    <button
-                      onClick={() => handleSetStatus(selectedLead.id, "Contacted")}
-                      className={`flex-1 py-3 rounded-xl text-[11px] font-black flex items-center justify-center gap-1.5 transition-all duration-300 active:scale-95 ${
-                        currentStatus === "Contacted"
-                          ? "bg-emerald-500 text-white shadow-lg shadow-emerald-200"
-                          : "bg-emerald-50 text-emerald-600 hover:bg-emerald-100 border border-emerald-100"
-                      }`}
-                    >
-                      <MessageCircle className="w-3.5 h-3.5" />
-                      Contacted
-                    </button>
+                    {(currentStatus === "Pending" || currentStatus === "Contacted") && (
+                      <button
+                        onClick={() => handleSetStatus(selectedLead.id, "Contacted")}
+                        className={`flex-1 py-3 rounded-xl text-[11px] font-black flex items-center justify-center gap-1.5 transition-all duration-300 active:scale-95 ${
+                          currentStatus === "Contacted"
+                            ? "bg-emerald-500 text-white shadow-lg shadow-emerald-200"
+                            : "bg-emerald-50 text-emerald-600 hover:bg-emerald-100 border border-emerald-100"
+                        }`}
+                      >
+                        <MessageCircle className="w-3.5 h-3.5" />
+                        Contacted
+                      </button>
+                    )}
                     {/* Reject */}
-                    <button
-                      onClick={() => handleSetStatus(selectedLead.id, "Rejected")}
-                      className={`flex-1 py-3 rounded-xl text-[11px] font-black flex items-center justify-center gap-1.5 transition-all duration-300 active:scale-95 ${
-                        currentStatus === "Rejected"
-                          ? "bg-rose-500 text-white shadow-lg shadow-rose-200"
-                          : "bg-rose-50 text-rose-500 hover:bg-rose-100 border border-rose-100"
-                      }`}
-                    >
-                      <XCircle className="w-3.5 h-3.5" />
-                      Reject
-                    </button>
+                    {(currentStatus === "Pending" || currentStatus === "Rejected") && (
+                      <button
+                        onClick={() => handleSetStatus(selectedLead.id, "Rejected")}
+                        className={`flex-1 py-3 rounded-xl text-[11px] font-black flex items-center justify-center gap-1.5 transition-all duration-300 active:scale-95 ${
+                          currentStatus === "Rejected"
+                            ? "bg-rose-500 text-white shadow-lg shadow-rose-200"
+                            : "bg-rose-50 text-rose-500 hover:bg-rose-100 border border-rose-100"
+                        }`}
+                      >
+                        <XCircle className="w-3.5 h-3.5" />
+                        Reject
+                      </button>
+                    )}
                     {/* Completed */}
-                    <button
-                      onClick={() => handleSetStatus(selectedLead.id, "Completed")}
-                      className={`flex-1 py-3 rounded-xl text-[11px] font-black flex items-center justify-center gap-1.5 transition-all duration-300 active:scale-95 ${
-                        currentStatus === "Completed"
-                          ? "bg-purple-500 text-white shadow-lg shadow-purple-200"
-                          : "bg-purple-50 text-purple-600 hover:bg-purple-100 border border-purple-100"
-                      }`}
-                    >
-                      <CheckCheck className="w-3.5 h-3.5" />
-                      Completed
-                    </button>
+                    {(currentStatus === "Pending" || currentStatus === "Completed") && (
+                      <button
+                        onClick={() => handleSetStatus(selectedLead.id, "Completed")}
+                        className={`flex-1 py-3 rounded-xl text-[11px] font-black flex items-center justify-center gap-1.5 transition-all duration-300 active:scale-95 ${
+                          currentStatus === "Completed"
+                            ? "bg-purple-500 text-white shadow-lg shadow-purple-200"
+                            : "bg-purple-50 text-purple-600 hover:bg-purple-100 border border-purple-100"
+                        }`}
+                      >
+                        <CheckCheck className="w-3.5 h-3.5" />
+                        Completed
+                      </button>
+                    )}
                   </div>
 
                   {/* WhatsApp + Archive */}
@@ -504,6 +515,117 @@ const LeadsInbox = () => {
         {!selectedLead && (
           <div className="md:hidden text-center py-20 px-8 text-slate-300">
             <p>Select a lead from the list to view details.</p>
+          </div>
+        )}
+
+        {/* Mobile Detail Overlay */}
+        {showMobileDetail && selectedLead && (
+          <div className="md:hidden fixed inset-0 z-40 bg-gradient-to-tr from-[#F7F1ED] via-[#F3E9E2] to-[#FDFBF9] backdrop-blur-xl animate-wedding-fade-up overflow-y-auto no-scrollbar pb-24">
+            <div className="p-4 pt-16 relative">
+              {/* Floating Back Button */}
+              <button 
+                onClick={() => setShowMobileDetail(false)}
+                className="absolute top-5 left-6 w-10 h-10 rounded-xl bg-white shadow-lg border border-[#F3E9E2] text-[#B06A6C] flex items-center justify-center z-20 active:scale-95 transition-all"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+
+              <div className="flex flex-col gap-5">
+                {/* Profile Header Segment */}
+                <div className="bg-white rounded-[2rem] border border-[#F3E9E2] p-5 shadow-sm flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-[1rem] border-2 border-[#B06A6C]/10 shadow-md overflow-hidden shrink-0">
+                      <img src={selectedLead.image} alt="" className="w-full h-full object-cover" />
+                    </div>
+                    <div>
+                      <h3 className="text-base font-black text-[#4A3730] leading-tight">{selectedLead.name}</h3>
+                      <div className="flex items-center gap-3 text-[9px] font-bold text-[#8E7E77] uppercase tracking-widest mt-0.5">
+                        <span className="flex items-center gap-1">
+                          <Calendar className="w-2.5 h-2.5 text-[#B06A6C]" />
+                          {selectedLead.date}
+                        </span>
+                        <span className="font-black text-[#B06A6C]">{selectedLead.budget}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <span className={`flex items-center gap-1.5 text-[8px] font-black uppercase tracking-widest px-2.5 py-1.5 rounded-full border ${currentStatusStyle.bg} ${currentStatusStyle.text} ${currentStatusStyle.border}`}>
+                    {currentStatusStyle.label}
+                  </span>
+                </div>
+
+                {/* Message Segment */}
+                <div className="bg-white rounded-[2rem] border border-[#F3E9E2] p-6 shadow-sm">
+                   <div className="flex items-center gap-2 mb-3">
+                      <MessageCircle className="w-4 h-4 text-[#B06A6C]" />
+                      <span className="text-[10px] font-black uppercase tracking-widest text-[#B06A6C]">Inquiry Message</span>
+                   </div>
+                   <p className="text-[13px] text-[#4A3730] font-medium leading-relaxed italic opacity-80">
+                    "{selectedLead.message}"
+                   </p>
+                </div>
+
+                {/* Contact Segment */}
+                <div className="grid grid-cols-1 gap-3">
+                  <div className="bg-white p-4 rounded-[1.5rem] border border-[#F3E9E2] shadow-sm flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-lg bg-blue-50 text-blue-500 flex items-center justify-center shrink-0">
+                      <Phone className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <p className="text-[8px] font-black uppercase tracking-widest text-[#8E7E77] opacity-60">Mobile Number</p>
+                      <p className="text-[12px] font-bold text-[#4A3730]">{selectedLead.phone}</p>
+                    </div>
+                  </div>
+                  <div className="bg-white p-4 rounded-[1.5rem] border border-[#F3E9E2] shadow-sm flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-lg bg-orange-50 text-orange-400 flex items-center justify-center shrink-0">
+                      <Mail className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <p className="text-[8px] font-black uppercase tracking-widest text-[#8E7E77] opacity-60">Email Address</p>
+                      <p className="text-[12px] font-bold text-[#4A3730] break-all">{selectedLead.email}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Status Update Segment */}
+                <div className="bg-white rounded-[2.5rem] border border-[#F3E9E2] p-5 shadow-sm space-y-4">
+                   <p className="text-[9px] font-black uppercase tracking-widest text-[#8E7E77] text-center">Update Enquiry Status</p>
+                   <div className="flex flex-col gap-2">
+                      {(currentStatus === "Pending" || currentStatus === "Contacted") && (
+                        <button onClick={() => handleSetStatus(selectedLead.id, "Contacted")} className={`w-full py-4 rounded-xl text-[11px] font-black flex items-center justify-center gap-2 ${currentStatus === "Contacted" ? "bg-emerald-500 text-white shadow-lg shadow-emerald-100" : "bg-emerald-50 text-emerald-600"}`}>
+                          <MessageCircle className="w-4 h-4" /> Contacted
+                        </button>
+                      )}
+                      
+                      {currentStatus === "Pending" ? (
+                        <div className="flex gap-2">
+                          <button onClick={() => handleSetStatus(selectedLead.id, "Rejected")} className="flex-1 py-4 rounded-xl text-[11px] font-black flex items-center justify-center gap-2 bg-rose-50 text-rose-500">
+                            <XCircle className="w-4 h-4" /> Reject
+                          </button>
+                          <button onClick={() => handleSetStatus(selectedLead.id, "Completed")} className="flex-1 py-4 rounded-xl text-[11px] font-black flex items-center justify-center gap-2 bg-purple-50 text-purple-600">
+                            <CheckCheck className="w-4 h-4" /> Done
+                          </button>
+                        </div>
+                      ) : (
+                        <>
+                          {currentStatus === "Rejected" && (
+                            <button className="w-full py-4 rounded-xl text-[11px] font-black flex items-center justify-center gap-2 bg-rose-500 text-white shadow-lg shadow-rose-100">
+                              <XCircle className="w-4 h-4" /> Rejected
+                            </button>
+                          )}
+                          {currentStatus === "Completed" && (
+                            <button className="w-full py-4 rounded-xl text-[11px] font-black flex items-center justify-center gap-2 bg-purple-500 text-white shadow-lg shadow-purple-100">
+                              <CheckCheck className="w-4 h-4" /> Completed
+                            </button>
+                          )}
+                        </>
+                      )}
+                   </div>
+                   <button className="w-full py-4 bg-[#4A3730] text-white font-black text-[11px] rounded-xl flex items-center justify-center gap-2 shadow-xl shadow-[#4A3730]/20 hover:scale-[1.02] active:scale-95 transition-all">
+                      <MessageCircle className="w-4 h-4" /> Contact on WhatsApp
+                   </button>
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </div>

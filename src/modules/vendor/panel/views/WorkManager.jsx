@@ -186,10 +186,10 @@ const WorkManager = () => {
         {/* VIEW MODE: PROJECT HUB */}
         {viewMode === "hub" ? (
           <div className="space-y-8">
-            <div className="bg-white rounded-[2.5rem] border border-[#F3E9E2] p-8 shadow-sm">
+            <div className="bg-white rounded-[2rem] md:rounded-[2.5rem] border border-[#F3E9E2] p-5 md:p-8 shadow-sm">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
                 <div className="space-y-1">
-                  <h2 className="text-3xl font-black text-[#4A3730]">My Portfolios</h2>
+                  <h2 className="text-2xl md:text-3xl font-black text-[#4A3730]">My Portfolios</h2>
                   <p className="text-[#8E7E77] text-sm font-medium tracking-wide">Manage your work units across different locations and brands.</p>
                 </div>
                 <button 
@@ -203,46 +203,47 @@ const WorkManager = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {projects.map((proj) => (
-                <div key={proj.id} className="group bg-white rounded-[2.5rem] border border-[#F3E9E2] overflow-hidden hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
-                  <div className="aspect-[16/10] bg-slate-100 relative group-hover:aspect-[16/9] transition-all duration-700">
+                <div key={proj.id} className="group bg-white rounded-[2rem] md:rounded-[2.5rem] border border-[#F3E9E2] overflow-hidden hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
+                  <div className="aspect-[2.4/1] md:aspect-[16/10] bg-slate-100 relative transition-all duration-700">
                     {proj.portfolio && proj.portfolio[0] ? (
                       <img src={proj.portfolio[0]} alt="" className="w-full h-full object-cover" />
                     ) : (
-                      <div className="w-full h-full flex flex-col items-center justify-center text-slate-300 gap-2">
-                        <Camera className="w-8 h-8 opacity-20" />
-                        <span className="text-[10px] uppercase font-black tracking-widest opacity-40">No Images Yet</span>
+                      <div className="w-full h-full flex flex-col items-center justify-center text-slate-300 gap-1">
+                        <Camera className="w-6 h-6 md:w-8 md:h-8 opacity-20" />
+                        <span className="text-[8px] md:text-[10px] uppercase font-black tracking-widest opacity-40">No Images</span>
                       </div>
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500" />
-                    <div className="absolute bottom-4 left-6 right-6 flex items-center justify-between translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-100">
+                    
+                    {/* Floating Action Icons over the image */}
+                    <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-100 md:translate-x-2 md:opacity-0 md:group-hover:translate-x-0 md:group-hover:opacity-100 transition-all duration-500">
                       <button 
                         onClick={() => navigate('/vendor/profile', { state: { id: proj.id } })}
-                        className="flex-1 py-3.5 bg-white text-[#4A3730] rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-[#F3E9E2] transition-all"
+                        className="w-8 h-8 md:w-10 md:h-10 bg-white/90 backdrop-blur text-[#4A3730] rounded-xl flex items-center justify-center shadow-lg hover:bg-[#B06A6C] hover:text-white transition-all active:scale-90"
                       >
-                        Edit Profile
+                        <Edit2 className="w-4 h-4 md:w-4.5 md:h-4.5" />
                       </button>
                       <button 
                         onClick={(e) => deleteProject(e, proj.id)}
-                        className="flex-1 py-3.5 bg-rose-500 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-rose-600 transition-all ml-2"
+                        className="w-8 h-8 md:w-10 md:h-10 bg-rose-500 shadow-lg shadow-rose-200 text-white rounded-xl flex items-center justify-center hover:bg-rose-600 transition-all active:scale-90"
                       >
-                        Delete
+                        <Trash2 className="w-4 h-4 md:w-4.5 md:h-4.5" />
                       </button>
                     </div>
                   </div>
-                  <div className="p-7">
+                  <div className="p-3.5 md:p-6">
 
-                    <div className="flex items-start justify-between mb-4">
-                      <div>
-                        <h3 className="text-xl font-black text-[#4A3730] leading-tight mb-1">{proj.name || 'Untitled Portfolio'}</h3>
-                        <p className="text-[#8E7E77] text-xs font-bold uppercase tracking-widest">{proj.location || 'Location Not Set'}</p>
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="min-w-0 flex-1 pr-2">
+                        <h3 className="text-sm md:text-lg font-black text-[#4A3730] leading-tight mb-0.5 truncate">{proj.name || 'Untitled Portfolio'}</h3>
+                        <p className="text-[9px] md:text-xs font-bold text-[#8E7E77] uppercase tracking-widest truncate">{proj.location || 'Location Not Set'}</p>
                       </div>
-                      <div className="w-10 h-10 rounded-xl bg-[#F3E9E2]/40 flex items-center justify-center text-[#B06A6C]">
-                        <Settings2 className="w-5 h-5" />
+                      <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-[#F3E9E2]/40 flex items-center justify-center text-[#B06A6C] shrink-0 border border-[#F3E9E2]">
+                        <Settings2 className="w-4 h-4 md:w-5 md:h-5" />
                       </div>
                     </div>
                     <button 
                       onClick={() => selectProject(proj)}
-                      className="w-full py-4 rounded-xl bg-[#F7F1ED] text-[#B06A6C] text-[10px] font-black uppercase tracking-[0.2em] hover:bg-[#B06A6C] hover:text-white transition-all shadow-inner"
+                      className="w-full py-3.5 md:py-4 rounded-xl bg-[#B06A6C] text-white text-[9px] md:text-[10px] font-black uppercase tracking-[0.15em] shadow-lg shadow-[#B06A6C]/20 hover:scale-[1.02] active:scale-95 transition-all"
                     >
                       Manage Portfolio & Work
                     </button>
