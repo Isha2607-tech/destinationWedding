@@ -114,7 +114,34 @@ const VendorDetailPage = () => {
       } catch (err) {}
     }
 
-    // 1. Check Custom Vendors from Dashboard
+    // 1. Check Static Venues from destinations
+    const allDests = getAllDestinations() || [];
+    for (const d of allDests) {
+      const staticVenue = d.venues?.find(v => v.id === vendorId);
+      if (staticVenue) {
+        return {
+          id: staticVenue.id,
+          name: staticVenue.name,
+          category: "Venues",
+          rating: 4.8,
+          reviews: 20,
+          location: d.location,
+          city: d.name,
+          price: `₹${(staticVenue.pricePerDay || '').toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
+          priceUnit: "per day",
+          image: staticVenue.image || d.image,
+          images: [staticVenue.image || d.image].filter(Boolean),
+          portfolio: [staticVenue.image || d.image].filter(Boolean),
+          about: `${staticVenue.name} is a premier ${staticVenue.type?.toLowerCase() || 'venue'} in ${d.name}.`,
+          workingStyle: `Capacity: ${staticVenue.capacity} guests. Ideal for destination weddings in ${d.name}.`,
+          services: ["Venue Rental", "Basic Decor", "Power Backup"],
+          isFeatured: true,
+          isVenue: true,
+        };
+      }
+    }
+
+    // 2. Check Custom Vendors from Dashboard
     const saved = localStorage.getItem('vendorProjects');
     if (saved) {
       try {
@@ -143,7 +170,7 @@ const VendorDetailPage = () => {
         }
       } catch (e) {}
     }
-    // 2. Fallback to Mock Data
+    // 3. Fallback to Mock Data
     return mockVendors.find((v) => v.id === vendorId) || mockVendors[0];
   }, [vendorId]);
 

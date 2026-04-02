@@ -156,7 +156,7 @@ const DestinationDetailPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[...dest.venues, ...dynamicVenues].map((venue, i) => (
               <ScrollReveal key={venue.id} delay={i * 100}>
-                <Link to={`/wedding/destinations/${id}/venues/${venue.id}`} className="block h-full group">
+                <Link to={`/wedding/vendors/${venue.id}`} className="block h-full group">
                   <div className="p-6 rounded-2xl bg-card border border-border h-full transition-all duration-300 group-hover:wedding-shadow group-hover:-translate-y-1">
                     <h3
                       className="text-xl font-semibold"
