@@ -26,3 +26,20 @@ export const destinations = [
   { id: "DEST02", name: "Goa", state: "Goa", venues: 68, realWeddings: 24 },
   { id: "DEST03", name: "Jaipur", state: "Rajasthan", venues: 52, realWeddings: 18 }
 ];
+
+export const mockCustomers = [
+  { id: "CUST001", name: "Aditya Sharma", email: "aditya@example.com", bookings: 1, status: "Active", joinDate: "2024-01-15" },
+  { id: "CUST002", name: "Priya Malhotra", email: "priya@example.com", bookings: 2, status: "Active", joinDate: "2024-02-10" },
+  { id: "CUST003", name: "Ananya Iyer", email: "ananya@example.com", bookings: 0, status: "Inactive", joinDate: "2024-03-05" }
+];
+
+export const mockFinancials = {
+  totalRevenue: "₹1.2 Cr",
+  commissionsEarned: "₹12.4 L",
+  pendingPayouts: "₹3.8 L",
+  netProfit: "₹8.6 L",
+  recentTransactions: [
+    { id: "TXN001", vendor: "Royal Photography", client: "Aditya & Priya", amount: "₹85,000", commission: "₹8,500", date: "2024-03-25", status: "Paid" },
+    { id: "TXN002", vendor: "Gourmet Flavors", client: "Anil & Sunita", amount: "₹1,20,000", commission: "₹12,000", date: "2024-03-24", status: "Pending" }
+  ]
+};

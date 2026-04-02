@@ -2,6 +2,7 @@ import React, { useState, useMemo } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { Search, ChevronRight, SlidersHorizontal, LayoutGrid, LayoutList } from "lucide-react";
 import { mockVendors, vendorCategories, citiesData } from "../data/vendorListingData";
+import { getVendorVenues, getAllDestinations } from '../../../services/storage';
 import VendorCard from "../components/VendorCard";
 import FilterDropdown from "../components/FilterDropdown";
 import VendorHubPage from "./VendorHubPage";
@@ -42,26 +43,67 @@ const ListingView = ({ category, cityFromUrl }) => {
     if (saved) {
       try {
         const projects = JSON.parse(saved);
-        customVendors = projects.map(p => ({
-          id: p.id || `custom-${Date.now()}-${Math.random()}`,
-          name: p.name || "New Portfolio",
-          category: p.category || "Photographers",
-          rating: p.rating || 5.0,
-          reviews: p.reviews || 1,
-          location: p.location || "Custom Location",
-          city: p.city || p.location?.split(',').pop()?.trim() || "Mumbai",
-          price: p.basePackage?.price || "₹0",
-          priceUnit: p.basePackage?.unit || "per day",
-          startingPrice: parseInt(p.basePackage?.price?.replace(/[^0-9]/g, '') || '0'),
-          image: p.banner || p.portfolio?.[0] || "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?q=80&w=1200",
-          tags: p.services?.map(s => s.name) || ["Verified", "New"],
-          isFeatured: true,
-          isCustom: true
-        }));
+        const users = JSON.parse(localStorage.getItem('vendor_users_db') || '[]');
+        
+        customVendors = projects
+          .filter(p => {
+            if (!p.ownerId) return false; // Hide legacy projects
+            const owner = users.find(u => u.id === p.ownerId);
+            return owner?.status === 'Approved';
+          })
+          .map(p => ({
+            id: p.id || `custom-${Date.now()}-${Math.random()}`,
+            name: p.name || "New Portfolio",
+            category: p.category || "Photographers",
+            rating: p.rating || 5.0,
+            reviews: p.reviews || 1,
+            location: p.location || "Custom Location",
+            city: p.city || p.location?.split(',').pop()?.trim() || "Mumbai",
+            price: p.basePackage?.price || "₹0",
+            priceUnit: p.basePackage?.unit || "per day",
+            startingPrice: parseInt(p.basePackage?.price?.replace(/[^0-9]/g, '') || '0'),
+            image: p.banner || p.portfolio?.[0] || "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?q=80&w=1200",
+            tags: p.services?.map(s => s.name) || ["Verified", "New"],
+            isFeatured: true,
+            isCustom: true
+          }));
       } catch (e) {}
     }
-    return [...customVendors, ...mockVendors];
-  }, []);
+
+    let approvedVenuesAsVendors = [];
+    try {
+      if (category && category.toLowerCase() === 'venues') {
+        const allVenues = getVendorVenues() || [];
+        const dests = getAllDestinations() || [];
+        
+        approvedVenuesAsVendors = allVenues
+          .filter(v => v.status === 'approved')
+          .map(v => {
+            const dest = dests.find(d => d.id === v.destinationId) || {};
+            return {
+              id: v.id,
+              name: v.name,
+              category: "Venues",
+              rating: 4.8,
+              reviews: Math.floor(Math.random() * 50) + 10,
+              location: dest.location || dest.name || "Multiple Locations",
+              city: dest.name || "Destination",
+              price: `₹${(v.pricePerDay || '').toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
+              priceUnit: "per day",
+              startingPrice: Number(v.pricePerDay) || 0,
+              image: v.image || dest.image || "https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=600",
+              tags: v.amenities?.slice(0, 3) || ["Verified", "Premium"],
+              services: v.amenities || [],
+              isFeatured: true,
+              isVenue: true,
+              destinationId: v.destinationId
+            };
+          });
+      }
+    } catch(err) {}
+
+    return [...approvedVenuesAsVendors, ...customVendors, ...mockVendors];
+  }, [category]);
 
   const allCities = useMemo(() => {
     return [...new Set(allVendors.filter(v => v.category.toLowerCase() === category.toLowerCase()).map(v => v.city))];

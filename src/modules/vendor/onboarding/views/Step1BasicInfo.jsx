@@ -4,7 +4,8 @@ import { ChevronRight, ChevronDown } from "lucide-react";
 import ProgressBar from "../components/ProgressBar";
 import useVendorForm from "../../hooks/useVendorForm";
 import { useAuth } from "../../context/AuthContext";
-import { vendorCategories, vendorLocations } from "../../data/vendorMockData";
+import { getCategories } from "../../data/categoryApi";
+import { vendorLocations } from "../../data/vendorMockData";
 import {
   Select,
   SelectContent,
@@ -18,6 +19,25 @@ const Step1BasicInfo = () => {
   const { basicInfo, updateBasicInfo } = useVendorForm();
   const { user } = useAuth();
   const [errors, setErrors] = useState({});
+  const [availableCategories, setAvailableCategories] = useState([]);
+  const [loadingCats, setLoadingCats] = useState(true);
+
+  // Fetch categories
+  useEffect(() => {
+    const fetchCats = async () => {
+      try {
+        const res = await getCategories();
+        if (res.success) {
+          setAvailableCategories(res.categories);
+        }
+      } catch (error) {
+        console.error("Failed to load categories", error);
+      } finally {
+        setLoadingCats(false);
+      }
+    };
+    fetchCats();
+  }, []);
 
   // Auto-fill from Auth if vendor basicInfo is empty
   useEffect(() => {
@@ -91,17 +111,18 @@ const Step1BasicInfo = () => {
                 <label className="block text-xs font-semibold mb-1.5 uppercase tracking-wider text-muted-foreground">
                   Category *
                 </label>
-                <Select
+                 <Select
                   value={basicInfo.category}
                   onValueChange={(val) => updateBasicInfo({ category: val })}
+                  disabled={loadingCats}
                 >
                   <SelectTrigger className={`${inputClass} h-[50px] md:h-[52px]`}>
-                    <SelectValue placeholder="Select Category" />
+                    <SelectValue placeholder={loadingCats ? "Loading..." : "Select Category"} />
                   </SelectTrigger>
                   <SelectContent position="popper" side="bottom" avoidCollisions={false} className="max-h-[200px] overflow-y-auto">
-                    {vendorCategories.map((cat) => (
-                      <SelectItem key={cat} value={cat}>
-                        {cat}
+                    {availableCategories.map((cat) => (
+                      <SelectItem key={cat.id} value={cat.name}>
+                        {cat.name}
                       </SelectItem>
                     ))}
                   </SelectContent>

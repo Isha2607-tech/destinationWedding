@@ -11,7 +11,14 @@ import {
   ChevronRight,
   ChevronDown,
   UserCheck,
-  UserPlus
+  UserPlus,
+  CreditCard,
+  BarChart,
+  LifeBuoy,
+  Bell,
+  Megaphone,
+  Briefcase,
+  Building2
 } from 'lucide-react';
 import { adminStyles } from '../theme/themeConfig';
 
@@ -27,9 +34,15 @@ const menuItems = [
     ]
   },
   { icon: UserPlus, label: 'Add Vendors', path: '/admin/add-vendor' },
+  { icon: Briefcase, label: 'Manage Customers', path: '/admin/customers' },
   { icon: MessageSquare, label: 'Enquiries', path: '/admin/enquiries' },
+  { icon: CreditCard, label: 'Financials', path: '/admin/financials' },
   { icon: MapPin, label: 'Destinations', path: '/admin/destinations' },
+  { icon: Building2, label: 'Venue Approval', path: '/admin/venues' },
   { icon: Image, label: 'Real Weddings', path: '/admin/gallery' },
+  { icon: Megaphone, label: 'Marketing', path: '/admin/marketing' },
+  { icon: Bell, label: 'Notifications', path: '/admin/notifications' },
+  { icon: LifeBuoy, label: 'Support', path: '/admin/support' },
   { icon: Settings, label: 'Settings', path: '/admin/settings' },
 ];
 

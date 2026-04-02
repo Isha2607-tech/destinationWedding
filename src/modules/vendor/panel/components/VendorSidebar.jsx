@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import { 
   LayoutDashboard, 
   UserCircle, 
@@ -9,21 +10,34 @@ import {
   Settings, 
   X,
   LogOut,
-  Eye
+  Eye,
+  Building2
 } from "lucide-react";
 
-const navItems = [
-  { id: "dashboard", label: "Vendor Dashboard", icon: LayoutDashboard, path: "/vendor/dashboard" },
-  { id: "profile", label: "Vendor Profile", icon: UserCircle, path: "/vendor/profile" },
-  { id: "work", label: "Portfolio & Work", icon: ImageIcon, path: "/vendor/work" },
-  { id: "leads", label: "Enquiry Inbox", icon: MessageSquare, path: "/vendor/leads" },
-  { id: "reviews", label: "Client Love", icon: Star, path: "/vendor/reviews" },
-  { id: "settings", label: "Vendor Settings", icon: Settings, path: "/vendor/settings" },
+const allNavItems = [
+  { id: "dashboard", label: "Vendor Dashboard", icon: LayoutDashboard, path: "/vendor/dashboard", venueOnly: false },
+  { id: "profile", label: "Vendor Profile", icon: UserCircle, path: "/vendor/profile", venueOnly: false },
+  { id: "work", label: "Portfolio & Work", icon: ImageIcon, path: "/vendor/work", venueOnly: false },
+  { id: "add-venue", label: "Add Venue", icon: Building2, path: "/vendor/venues/add", venueOnly: true },
+  { id: "my-venues", label: "My Venues", icon: Building2, path: "/vendor/venues/my", venueOnly: true },
+  { id: "leads", label: "Enquiry Inbox", icon: MessageSquare, path: "/vendor/leads", venueOnly: false },
+  { id: "reviews", label: "Client Love", icon: Star, path: "/vendor/reviews", venueOnly: false },
+  { id: "settings", label: "Vendor Settings", icon: Settings, path: "/vendor/settings", venueOnly: false },
 ];
 
 const VendorSidebar = ({ isOpen, onClose }) => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+  const isVenueManager = user?.category === "Venue Manager";
+  const navItems = allNavItems.filter((item) => !item.venueOnly || isVenueManager);
   const [vendorName, setVendorName] = useState("Zoya Khan");
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+
+  const handleLogout = () => {
+    logout();
+    navigate("/vendor/login");
+  };
 
   useEffect(() => {
     const handleUpdate = (e) => {
@@ -119,7 +133,10 @@ const VendorSidebar = ({ isOpen, onClose }) => {
                 </div>
               </div>
               
-              <button className="w-full flex items-center justify-center gap-2.5 px-6 py-4 rounded-2xl font-black text-[12px] bg-white/40 text-rose-600 border border-rose-200/50 hover:bg-rose-500 hover:text-white transition-all group">
+              <button
+                onClick={() => setShowLogoutModal(true)}
+                className="w-full flex items-center justify-center gap-2.5 px-6 py-4 rounded-2xl font-black text-[12px] bg-white/40 text-rose-600 border border-rose-200/50 hover:bg-rose-500 hover:text-white transition-all group"
+              >
                 <LogOut className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-300" />
                 Sign Out Vendor
               </button>
@@ -127,6 +144,63 @@ const VendorSidebar = ({ isOpen, onClose }) => {
           </div>
         </div>
       </aside>
+      {/* Logout Confirmation Modal */}
+      {showLogoutModal && (
+        <div
+          className="fixed inset-0 z-[999] flex items-center justify-center p-4"
+          style={{ background: "rgba(30,15,10,0.55)", backdropFilter: "blur(8px)" }}
+          onClick={() => setShowLogoutModal(false)}
+        >
+          <div
+            className="relative w-full max-w-sm rounded-[2rem] border border-[#DED0C5] shadow-2xl overflow-hidden"
+            style={{
+              background: "linear-gradient(135deg, #F9F3EE 0%, #EFE5DC 100%)",
+              boxShadow: "0 30px 80px rgba(176,106,108,0.25)",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Top accent bar */}
+            <div className="h-1.5 w-full" style={{ background: "linear-gradient(90deg, #B06A6C, #C17A7C, #B06A6C)" }} />
+
+            <div className="px-8 pt-8 pb-8 flex flex-col items-center gap-5">
+              {/* Icon */}
+              <div
+                className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg"
+                style={{ background: "linear-gradient(135deg, #B06A6C22, #B06A6C44)" }}
+              >
+                <LogOut className="w-7 h-7 text-[#B06A6C]" />
+              </div>
+
+              {/* Text */}
+              <div className="text-center">
+                <h3 className="text-xl font-black text-[#4A3730] tracking-tight" style={{ fontFamily: "'Playfair Display', serif" }}>
+                  Sign Out?
+                </h3>
+                <p className="text-sm text-[#7B6A62] font-semibold mt-1.5 leading-relaxed">
+                  Are you sure you want to sign out of your vendor workspace?
+                </p>
+              </div>
+
+              {/* Actions */}
+              <div className="flex gap-3 w-full mt-1">
+                <button
+                  onClick={() => setShowLogoutModal(false)}
+                  className="flex-1 py-3.5 rounded-2xl font-black text-[13px] text-[#7B6A62] bg-white/70 border border-[#DED0C5] hover:bg-white transition-all"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className="flex-1 py-3.5 rounded-2xl font-black text-[13px] text-white transition-all"
+                  style={{ background: "linear-gradient(135deg, #B06A6C, #C17A7C)" }}
+                >
+                  Logout
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

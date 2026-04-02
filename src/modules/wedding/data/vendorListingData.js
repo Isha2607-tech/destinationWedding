@@ -1,5 +1,14 @@
 export const vendorCategories = [
   {
+    name: "Venues",
+    icon: "🏰",
+    count: 245,
+    subcategories: "Banquet Halls, Farmhouses, Destination Venues",
+    image: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=600&auto=format&fit=crop",
+    bgColor: "#E5F0E5",
+    textColor: "#2D5A2D",
+  },
+  {
     name: "Photographers",
     icon: "📷",
     count: 2481,

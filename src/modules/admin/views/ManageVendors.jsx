@@ -23,16 +23,40 @@ const ManageVendors = () => {
   // Initialize state from localStorage or use defaults
   const [pendingList, setPendingList] = useState(() => {
     const saved = localStorage.getItem('admin_pending_vendors');
-    return saved ? JSON.parse(saved) : pendingVendors;
+    const dbVendors = JSON.parse(localStorage.getItem('vendor_users_db') || '[]')
+      .filter(u => u.status === 'pending')
+      .map(u => ({
+        id: u.id,
+        name: u.name,
+        category: u.category,
+        location: u.location || "Not Set",
+        status: "Pending",
+        date: new Date(u.createdAt).toLocaleDateString(),
+        realUser: true
+      }));
+    const staticPending = saved ? JSON.parse(saved) : pendingVendors;
+    return [...dbVendors, ...staticPending.filter(s => !dbVendors.find(d => d.id === s.id))];
   });
 
   const [allVendorsList, setAllVendorsList] = useState(() => {
     const saved = localStorage.getItem('admin_all_vendors');
-    return saved ? JSON.parse(saved) : [
+    const dbApproved = JSON.parse(localStorage.getItem('vendor_users_db') || '[]')
+      .filter(u => u.status === 'Approved' || u.status === 'Rejected')
+      .map(u => ({
+        id: u.id,
+        name: u.name,
+        category: u.category,
+        location: u.location || "Not Set",
+        status: u.status,
+        date: new Date(u.createdAt).toLocaleDateString(),
+        realUser: true
+      }));
+    const staticAll = saved ? JSON.parse(saved) : [
       { id: 101, name: "Sunset Shoots", category: "Photography", location: "Jaipur", status: "Approved", date: "2024-03-15" },
       { id: 102, name: "Royal Bites", category: "Catering", location: "Mumbai", status: "Rejected", date: "2024-03-10" },
       { id: 103, name: "Bloom Decor", category: "Decoration", location: "Delhi", status: "Approved", date: "2024-03-20" }
     ];
+    return [...dbApproved, ...staticAll.filter(s => !dbApproved.find(d => d.id === s.id))];
   });
 
   const [selectedVendor, setSelectedVendor] = useState(null);
@@ -46,6 +70,40 @@ const ManageVendors = () => {
     localStorage.setItem('admin_all_vendors', JSON.stringify(allVendorsList));
   }, [allVendorsList]);
 
+  const handleAction = (id, type) => {
+    // 1. Update Local UI State
+    const vendorToMove = pendingList.find(v => v.id === id);
+    if (!vendorToMove) return;
+
+    const statusValue = type === 'Approved' ? 'Approved' : 'Rejected';
+    const updatedVendor = { ...vendorToMove, status: statusValue };
+
+    setAllVendorsList(prev => [updatedVendor, ...prev]);
+    setPendingList(prev => prev.filter(v => v.id !== id));
+
+    // 2. Persist to real vendor DB if it's a real user
+    if (vendorToMove.realUser) {
+      const dbRows = JSON.parse(localStorage.getItem('vendor_users_db') || '[]');
+      const userIdx = dbRows.findIndex(u => u.id === id);
+      if (userIdx !== -1) {
+        dbRows[userIdx].status = statusValue;
+        localStorage.setItem('vendor_users_db', JSON.stringify(dbRows));
+        
+        // Also update active session if this is the current user (for testing purposes)
+        const activeSession = JSON.parse(localStorage.getItem('vendor_active_session') || '{}');
+        if (activeSession.id === id) {
+          activeSession.status = statusValue;
+          localStorage.setItem('vendor_active_session', JSON.stringify(activeSession));
+          // Trigger event for UI updates
+          window.dispatchEvent(new CustomEvent('vendorProfileUpdate', { detail: activeSession }));
+        }
+      }
+    }
+
+    if (selectedVendor?.id === id) setSelectedVendor(null);
+    alert(`Vendor ${type} successfully!`);
+  };
+
   // Lock body scroll when modal is open
   useEffect(() => {
     if (selectedVendor) {
@@ -57,20 +115,9 @@ const ManageVendors = () => {
       document.body.style.overflow = 'unset';
     };
   }, [selectedVendor]);
+
   const isPendingView = location.pathname.includes('/pending');
   const isAllView = location.pathname.includes('/all') || location.pathname === '/admin/vendors';
-
-  const handleAction = (id, type) => {
-    // In a real app, this would be an API call
-    const vendorToMove = pendingList.find(v => v.id === id);
-    if (vendorToMove) {
-      const updatedVendor = { ...vendorToMove, status: type === 'Approved' ? 'Approved' : 'Rejected' };
-      setAllVendorsList(prev => [updatedVendor, ...prev]);
-      setPendingList(prev => prev.filter(v => v.id !== id));
-    }
-    if (selectedVendor?.id === id) setSelectedVendor(null);
-    alert(`Vendor ${type} and moved to Directory!`);
-  };
 
   const handleApproveAll = () => {
     const movedVendors = pendingList.map(v => ({ ...v, status: 'Approved' }));

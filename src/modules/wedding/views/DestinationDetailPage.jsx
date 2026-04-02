@@ -18,13 +18,24 @@ import {
   removeFavourite,
   getFavourites,
 } from "../data/weddingData";
-import { useState } from "react";
+import { getAllDestinations, getApprovedVenuesByDestination } from "../../../services/storage";
+import { useState, useEffect } from "react";
 
 const DestinationDetailPage = () => {
   const { id } = useParams();
-  const dest = destinations.find((d) => d.id === id);
+  const [dest, setDest] = useState(null);
   const [favs, setFavs] = useState(getFavourites());
   const [selectedImg, setSelectedImg] = useState(null);
+  const [dynamicVenues, setDynamicVenues] = useState([]);
+
+  useEffect(() => {
+    const allDests = getAllDestinations();
+    const found = allDests.find((d) => d.id === id);
+    setDest(found);
+    if (found) {
+      setDynamicVenues(getApprovedVenuesByDestination(id));
+    }
+  }, [id]);
 
   if (!dest) {
     return (
@@ -100,14 +111,14 @@ const DestinationDetailPage = () => {
       <section className="py-6 md:py-12 px-4 border-b border-border">
         <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
           {[
-            { icon: IndianRupee, label: "Avg Cost", value: dest.avgCost },
-            { icon: Calendar, label: "Best Season", value: dest.bestSeason },
+            { icon: IndianRupee, label: "Avg Cost", value: dest.avgCost || (dest.startingPrice ? `₹${(dest.startingPrice / 100000).toFixed(1)}L+` : "Varies") },
+            { icon: Calendar, label: "Best Season", value: dest.bestSeason || "Oct - Mar" },
             {
               icon: Building2,
               label: "Venues",
-              value: `${dest.venueCount} Venues`,
+              value: `${dest.venueCount || dynamicVenues.length || 5}+ Venues`,
             },
-            { icon: Star, label: "Category", value: dest.category },
+            { icon: Star, label: "Category", value: dest.category || "Heritage" },
           ].map((stat) => (
             <div key={stat.label} className="text-center">
               <stat.icon className="w-6 h-6 text-primary mx-auto mb-2" />
@@ -143,7 +154,7 @@ const DestinationDetailPage = () => {
             </h2>
           </ScrollReveal>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {dest.venues.map((venue, i) => (
+            {[...dest.venues, ...dynamicVenues].map((venue, i) => (
               <ScrollReveal key={venue.id} delay={i * 100}>
                 <Link to={`/wedding/destinations/${id}/venues/${venue.id}`} className="block h-full group">
                   <div className="p-6 rounded-2xl bg-card border border-border h-full transition-all duration-300 group-hover:wedding-shadow group-hover:-translate-y-1">

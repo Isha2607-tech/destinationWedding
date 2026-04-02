@@ -38,6 +38,7 @@ export const AuthProvider = ({ children }) => {
       const newUser = {
         ...userData,
         id: `vendor-usr-${Date.now()}`,
+        status: "pending",
         createdAt: new Date().toISOString(),
       };
 

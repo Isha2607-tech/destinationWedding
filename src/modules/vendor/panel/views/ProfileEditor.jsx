@@ -28,9 +28,11 @@ import {
   Check
 } from "lucide-react";
 import VendorLayout from "../layouts/VendorLayout";
+import { useAuth } from "../../context/AuthContext";
 
 const ProfileEditor = () => {
   const location = useLocation();
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState(location.state?.tab || "Profile");
   const [activeWorkTab, setActiveWorkTab] = useState("Portfolio");
   const [showToast, setShowToast] = useState(false);
@@ -154,18 +156,19 @@ const ProfileEditor = () => {
 
   const handleSave = () => {
     try {
+      const dataToSave = { ...vendorData, ownerId: user?.id };
       const allProjects = JSON.parse(localStorage.getItem('vendorProjects') || '[]');
       const projectIndex = allProjects.findIndex(p => p.id === vendorData.id);
       
       let updatedProjects;
       if (projectIndex > -1) {
-        updatedProjects = allProjects.map(p => p.id === vendorData.id ? vendorData : p);
+        updatedProjects = allProjects.map(p => p.id === vendorData.id ? dataToSave : p);
       } else {
-        updatedProjects = [...allProjects, vendorData];
+        updatedProjects = [...allProjects, dataToSave];
       }
       
       localStorage.setItem('vendorProjects', JSON.stringify(updatedProjects));
-      window.dispatchEvent(new CustomEvent('vendorProfileUpdate', { detail: vendorData }));
+      window.dispatchEvent(new CustomEvent('vendorProfileUpdate', { detail: dataToSave }));
       
       setShowToast(true);
       setTimeout(() => setShowToast(false), 3000);

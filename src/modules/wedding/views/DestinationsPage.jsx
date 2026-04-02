@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
 import DestinationCard from "../components/DestinationCard";
 import ScrollReveal from "../components/ScrollReveal";
-import { destinations } from "../data/weddingData";
+import { getAllDestinations } from "../../../services/storage";
 import heroImg from "@/assets/wedding-hero.jpg";
 
 const categories = ["All", "Beach", "Heritage", "Hill", "Resort"];
@@ -13,6 +13,11 @@ const DestinationsPage = () => {
   const [search, setSearch] = useState("");
   const [searchParams] = useSearchParams();
   const budgetParam = searchParams.get("budget");
+  const [destinations, setDestinations] = useState([]);
+
+  useEffect(() => {
+    setDestinations(getAllDestinations());
+  }, []);
 
   const filtered = destinations.filter((d) => {
     const matchCat = active === "All" || d.category === active;

@@ -3,9 +3,10 @@ import { useParams, Link } from "react-router-dom";
 import {
   Star, MapPin, Heart, Share2, Phone, MessageSquare, Mail,
   ChevronRight, CheckCircle, Image as ImageIcon,
-  Calendar, Flag, ChevronLeft, X, Award, Play
+  Calendar, Flag, ChevronLeft, X, Award, Play, ShieldCheck, Clock
 } from "lucide-react";
 import { mockVendors } from "../data/vendorListingData";
+import { getVendorVenues, getAllDestinations } from "../../../services/storage";
 
 /* ─── Lightbox ─── */
 const Lightbox = ({ images, startIdx, onClose }) => {
@@ -74,13 +75,57 @@ const VendorDetailPage = () => {
   const tabRef = useRef(null);
 
   const vendor = useMemo(() => {
+    // 0. Check Venues
+    if (vendorId?.startsWith('v-custom-')) {
+      try {
+        const allVenues = getVendorVenues() || [];
+        const venue = allVenues.find(v => v.id === vendorId);
+        if (venue) {
+          const dests = getAllDestinations() || [];
+          const dest = dests.find(d => d.id === venue.destinationId) || {};
+          return {
+            id: venue.id,
+            name: venue.name,
+            category: "Venues",
+            rating: 4.8,
+            reviews: 15,
+            reviewHighlights: [],
+            location: venue.location || dest.name || "Multiple Locations",
+            city: dest.name || "Destination",
+            price: `₹${(venue.pricePerDay || '').toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
+            priceUnit: "per day",
+            budget: venue.budget || "1L+",
+            image: venue.image || dest.image || "https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=600",
+            images: [venue.image || dest.image || "https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=600"].filter(Boolean),
+            portfolio: [venue.image || dest.image || "https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=600"].filter(Boolean),
+            albums: [],
+            videos: [],
+            tags: venue.amenities?.slice(0, 3) || ["Verified", "Premium"],
+            services: venue.amenities || [],
+            about: venue.description || `${venue.name} is a beautiful venue located in ${dest.name || 'India'}. Perfect for your destination wedding.`,
+            workingStyle: `Booking Policy: ${venue.rentalHours || '12 Hrs'}. ${venue.outsideCatering || 'Permitted'} outside catering. ${venue.alcoholPolicy || 'Allowed'} alcohol. Cancellation: ${venue.cancellationPolicy || 'Flexible'}.`,
+            isFeatured: true,
+            isCustom: true,
+            isVenue: true,
+            destinationId: venue.destinationId,
+            enquiriesLastWeek: Math.floor(Math.random() * 10) + 1
+          };
+        }
+      } catch (err) {}
+    }
+
     // 1. Check Custom Vendors from Dashboard
     const saved = localStorage.getItem('vendorProjects');
     if (saved) {
       try {
         const projects = JSON.parse(saved);
         const custom = projects.find(p => p.id?.toString() === vendorId);
+        
         if (custom) {
+          const users = JSON.parse(localStorage.getItem('vendor_users_db') || '[]');
+          const owner = users.find(u => u.id === custom.ownerId);
+          const isApproved = owner?.status === 'Approved';
+
           return {
             ...custom,
             images: [custom.banner, ...(custom.portfolio || [])].filter(Boolean),
@@ -92,7 +137,8 @@ const VendorDetailPage = () => {
             reviews: custom.reviews || 0,
             reviewHighlights: [],
             isFeatured: true,
-            isCustom: true
+            isCustom: true,
+            pendingApproval: !isApproved
           };
         }
       } catch (e) {}
@@ -121,6 +167,35 @@ const VendorDetailPage = () => {
   const portfolioImages = vendor.portfolio || [vendor.image];
   const albums = vendor.albums || [];
   const videos = vendor.videos || [];
+
+  if (vendor.pendingApproval) {
+    return (
+      <div className="min-h-screen bg-[#FFF5F6] flex items-center justify-center p-4">
+        <div className="max-w-md w-full text-center space-y-6">
+           <div className="relative inline-block">
+              <div className="w-24 h-24 rounded-full bg-amber-50 flex items-center justify-center text-amber-500 mx-auto">
+                 <ShieldCheck className="w-12 h-12" />
+              </div>
+              <div className="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-white border border-amber-100 flex items-center justify-center shadow-sm">
+                 <Clock className="w-4 h-4 text-amber-500 animate-pulse" />
+              </div>
+           </div>
+           <div className="space-y-2">
+              <h2 className="text-3xl font-bold text-slate-800" style={{ fontFamily: "'Playfair Display', serif" }}>Under Verification</h2>
+              <p className="text-slate-500 text-sm leading-relaxed">
+                 The profile for <span className="font-bold text-slate-700">{vendor.name}</span> is currently being verified by our wedding experts. Please check back later.
+              </p>
+           </div>
+           <button 
+             onClick={() => window.history.back()}
+             className="px-8 py-3 bg-white border border-slate-200 text-slate-600 font-bold rounded-full text-sm hover:shadow-lg transition-all"
+           >
+              explore other vendors
+           </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-[#FFF5F6] min-h-screen">

@@ -16,7 +16,8 @@ import {
 } from "lucide-react";
 import ScrollReveal from "../components/ScrollReveal";
 import { toast } from "sonner";
-import { destinations, formatPrice } from "../data/weddingData";
+import { formatPrice } from "../data/weddingData";
+import { getAllDestinations, getVendorVenues } from "../../../services/storage";
 import PlanWeddingModal from "../components/PlanWeddingModal";
 
 const VenueDetailPage = () => {
@@ -24,6 +25,30 @@ const VenueDetailPage = () => {
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
   const [isFav, setIsFav] = useState(false);
+  const [dest, setDest] = useState(null);
+  const [venue, setVenue] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const allDests = getAllDestinations();
+    const foundDest = allDests.find(d => d.id === destId);
+    
+    if (foundDest) {
+      setDest(foundDest);
+      // Check static venues first
+      let foundVenue = foundDest.venues.find(v => v.id === venueId);
+      
+      // If not found, check approved vendor venues
+      if (!foundVenue) {
+        const vendorVenues = getVendorVenues();
+        foundVenue = vendorVenues.find(v => v.id === venueId && v.status === 'approved');
+      }
+      
+      setVenue(foundVenue);
+    }
+    setLoading(false);
+  }, [destId, venueId]);
 
   const handleShare = () => {
     if (navigator.share) {
@@ -38,13 +63,8 @@ const VenueDetailPage = () => {
     }
   };
 
-  // Find destination and specific venue
-  const dest = destinations.find(d => d.id === destId);
-  const venue = dest?.venues.find(v => v.id === venueId);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  if (loading) return <div className="min-h-screen flex items-center justify-center p-4"><div className="h-10 w-10 border-4 border-primary/30 border-t-primary rounded-full animate-spin" /></div>;
 
   if (!dest || !venue) {
     return (
@@ -65,7 +85,7 @@ const VenueDetailPage = () => {
     return <Trees className="w-5 h-5" />;
   };
 
-  const amenities = [
+  const amenities = venue.amenities && venue.amenities.length > 0 ? venue.amenities : [
     "Bridal Suite",
     "On-site Catering",
     "Decor & Design",
@@ -81,7 +101,7 @@ const VenueDetailPage = () => {
       {/* Hero Gallery Section */}
       <section className="relative h-[50vh] md:h-[65vh] overflow-hidden">
         <img 
-          src={dest.image} 
+          src={venue.image || dest.image} 
           alt={venue.name} 
           className="w-full h-full object-cover"
         />
@@ -179,15 +199,23 @@ const VenueDetailPage = () => {
                 <h3 className="text-2xl md:text-3xl font-bold text-slate-800" style={{ fontFamily: "'Playfair Display', serif" }}>
                   About the Venue
                 </h3>
-                <p className="text-slate-600 leading-relaxed md:text-lg">
-                  Experience true luxury at {venue.name}, one of the most prestigious venues in {dest.name}. 
-                  Located in the heart of {dest.location}, this {venue.type.toLowerCase()} offers a perfect blend of 
-                  traditional elegance and modern sophistication for your dream destination wedding.
-                </p>
-                <p className="text-slate-600 leading-relaxed md:text-lg">
-                  Whether you're planning an intimate gathering or a grand celebration of up to {venue.capacity} guests, 
-                  our dedicated team ensures every detail of your special day is executed with perfection.
-                </p>
+                {venue.description ? (
+                  <p className="text-slate-600 leading-relaxed md:text-lg whitespace-pre-wrap">
+                    {venue.description}
+                  </p>
+                ) : (
+                  <>
+                    <p className="text-slate-600 leading-relaxed md:text-lg">
+                      Experience true luxury at {venue.name}, one of the most prestigious venues in {dest.name}. 
+                      Located in the heart of {dest.location}, this {venue.type.toLowerCase()} offers a perfect blend of 
+                      traditional elegance and modern sophistication for your dream destination wedding.
+                    </p>
+                    <p className="text-slate-600 leading-relaxed md:text-lg">
+                      Whether you're planning an intimate gathering or a grand celebration of up to {venue.capacity} guests, 
+                      our dedicated team ensures every detail of your special day is executed with perfection.
+                    </p>
+                  </>
+                )}
               </div>
             </ScrollReveal>
 
@@ -221,21 +249,21 @@ const VenueDetailPage = () => {
                   <div className="space-y-5">
                     <div className="flex justify-between items-center border-b border-slate-100 pb-3">
                       <span className="text-slate-500 font-medium">Venue rental time</span>
-                      <span className="text-slate-900 font-black tracking-tight">12 PM – 12 AM</span>
+                      <span className="text-slate-900 font-black tracking-tight">{venue.rentalHours || '12 PM – 12 AM'}</span>
                     </div>
                     <div className="flex justify-between items-center border-b border-slate-100 pb-3">
                       <span className="text-slate-500 font-medium">Cancellation policy</span>
-                      <span className="text-primary font-black tracking-tight">Flexible (4 weeks)</span>
+                      <span className="text-primary font-black tracking-tight">{venue.cancellationPolicy || 'Flexible (4 weeks)'}</span>
                     </div>
                   </div>
                   <div className="space-y-5">
                     <div className="flex justify-between items-center border-b border-slate-100 pb-3">
                       <span className="text-slate-500 font-medium">Outside catering</span>
-                      <span className="text-slate-900 font-black tracking-tight">Permitted</span>
+                      <span className="text-slate-900 font-black tracking-tight">{venue.outsideCatering || 'Permitted'}</span>
                     </div>
                     <div className="flex justify-between items-center border-b border-slate-100 pb-3">
                       <span className="text-slate-500 font-medium">Alcohol policy</span>
-                      <span className="text-slate-900 font-black tracking-tight">Allowed</span>
+                      <span className="text-slate-900 font-black tracking-tight">{venue.alcoholPolicy || 'Allowed'}</span>
                     </div>
                   </div>
                 </div>

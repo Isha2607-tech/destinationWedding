@@ -47,11 +47,21 @@ import AdminDashboard from "./modules/admin/views/AdminDashboard";
 import ManageVendors from "./modules/admin/views/ManageVendors";
 import ManageEnquiries from "./modules/admin/views/ManageEnquiries";
 import AddVendors from "./modules/admin/views/AddVendors";
+import ManageCustomers from "./modules/admin/views/ManageCustomers";
+import ManageFinancials from "./modules/admin/views/ManageFinancials";
+import ManageMarketing from "./modules/admin/views/ManageMarketing";
+import ManageNotifications from "./modules/admin/views/ManageNotifications";
+import ManageSupport from "./modules/admin/views/ManageSupport";
+import ManageDestinations from "./modules/admin/views/ManageDestinations";
 import { 
-  ManageDestinations, 
   ManageGallery, 
   AdminSettings 
 } from "./modules/admin/views/PlaceholderViews";
+
+// Vendor MVP Imports
+import AddVenue from "./modules/vendor/panel/views/AddVenue.jsx";
+import MyVenues from "./modules/vendor/panel/views/MyVenues.jsx";
+import ManageVenues from "./modules/admin/views/ManageVenues.jsx";
 
 const queryClient = new QueryClient();
 
@@ -107,6 +117,8 @@ const App = () => (
             <Route path="work" element={<WorkManager />} />
             <Route path="leads" element={<LeadsInbox />} />
             <Route path="reviews" element={<ReviewsManager />} />
+            <Route path="venues/add" element={<AddVenue />} />
+            <Route path="venues/my" element={<MyVenues />} />
             <Route path="settings" element={<VendorSettings />} />
             {/* Auth routes outside of layout but inside AuthProvider */}
             <Route path="login" element={<VendorLogin />} />
@@ -120,7 +132,13 @@ const App = () => (
             <Route path="vendors/*" element={<ManageVendors />} />
             <Route path="add-vendor" element={<AddVendors />} />
             <Route path="enquiries" element={<ManageEnquiries />} />
+            <Route path="customers" element={<ManageCustomers />} />
+            <Route path="financials" element={<ManageFinancials />} />
+            <Route path="marketing" element={<ManageMarketing />} />
+            <Route path="notifications" element={<ManageNotifications />} />
+            <Route path="support" element={<ManageSupport />} />
             <Route path="destinations" element={<ManageDestinations />} />
+            <Route path="venues" element={<ManageVenues />} />
             <Route path="gallery" element={<ManageGallery />} />
             <Route path="settings" element={<AdminSettings />} />
           </Route>
