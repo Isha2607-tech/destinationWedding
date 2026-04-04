@@ -37,9 +37,9 @@ const MyVenues = () => {
 
   const getStatusStyle = (status) => {
     switch (status) {
-      case 'approved': return 'bg-green-50 text-green-600 border-green-100';
-      case 'rejected': return 'bg-red-50 text-red-600 border-red-100';
-      default: return 'bg-orange-50 text-orange-600 border-orange-100';
+      case 'approved': return 'bg-emerald-50 text-emerald-600 border-emerald-200 shadow-sm shadow-emerald-100/50 ring-2 ring-emerald-500/10';
+      case 'rejected': return 'bg-rose-50 text-rose-600 border-rose-200 shadow-sm shadow-rose-100/50 ring-2 ring-rose-500/10';
+      default: return 'bg-amber-50 text-amber-600 border-amber-200 shadow-sm shadow-amber-100/50 animate-pulse ring-2 ring-amber-500/10';
     }
   };
 
@@ -54,20 +54,7 @@ const MyVenues = () => {
   return (
     <VendorLayout title="My Venues">
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-12">
-      <div className="flex flex-col gap-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-3xl font-serif text-[hsl(353,45%,35%)]">My Venues</h2>
-            <p className="text-gray-500 text-sm mt-1">Manage and track the status of your property listings</p>
-          </div>
-          <Link 
-            to="/vendor/venues/add"
-            className="flex items-center gap-2 px-6 py-3 bg-[hsl(353,45%,35%)] text-white rounded-2xl text-sm font-bold shadow-lg hover:shadow-xl transition-all active:scale-95 leading-none"
-          >
-             <Plus size={18} /> Add New Venue
-          </Link>
-        </div>
-      </div>
+
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
          {venues.map((venue) => (
@@ -126,21 +113,27 @@ const MyVenues = () => {
            </div>
          ))}
 
-         {venues.length === 0 && (
-           <div className="col-span-full py-24 flex flex-col items-center justify-center border-2 border-dashed border-[#B06A6C]/20 rounded-[3rem] bg-white/20 backdrop-blur-md">
-              <div className="h-20 w-20 rounded-full bg-[#B06A6C]/10 flex items-center justify-center mb-6">
-                 <Building2 size={40} className="text-[#B06A6C]/30" />
-              </div>
-              <h3 className="text-xl font-serif text-[hsl(353,45%,35%)] mb-2">No Venues Found</h3>
-              <p className="text-slate-500 text-sm mb-8 text-center max-w-xs">You haven't added any properties to your profile yet. Start by adding your first venue.</p>
-              <Link 
-                to="/vendor/venues/add"
-                className="px-8 py-3 bg-[hsl(353,45%,35%)] text-white rounded-2xl text-sm font-bold shadow-lg hover:scale-105 active:scale-95 transition-all"
-              >
-                 Add Your First Venue
-              </Link>
-           </div>
-         )}
+          {venues.length === 0 && (
+            <div className="col-span-full py-20 px-6 flex flex-col items-center justify-center border-2 border-dashed border-[#B06A6C]/20 rounded-[3rem] bg-white/30 backdrop-blur-lg relative overflow-hidden group">
+               <div className="absolute inset-0 bg-gradient-to-b from-white/0 to-[#B06A6C]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+               <div className="relative mb-8">
+                  <div className="h-24 w-24 rounded-[2rem] bg-white shadow-2xl shadow-[#B06A6C]/10 flex items-center justify-center rotate-3 group-hover:rotate-0 transition-transform duration-700">
+                     <Building2 size={44} className="text-[#B06A6C]/40" />
+                  </div>
+                  <div className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-[#B06A6C] text-white flex items-center justify-center shadow-lg animate-pulse">
+                     <Plus size={16} />
+                  </div>
+               </div>
+               <h3 className="text-2xl font-serif text-[hsl(353,45%,35%)] mb-3 relative z-10">Start Your Portfolio</h3>
+               <p className="text-slate-500 text-sm mb-8 text-center max-w-xs font-medium leading-relaxed relative z-10">You haven't listed any venues yet. Let's create your first premium property profile to start receiving enquiries.</p>
+               <Link 
+                 to="/vendor/venues/add"
+                 className="px-10 py-5 bg-[hsl(353,45%,35%)] text-white rounded-[2rem] text-sm font-black shadow-xl shadow-[hsl(353,45%,35%)]/30 hover:scale-105 active:scale-95 transition-all relative z-10"
+               >
+                  Create First Venue Listing
+               </Link>
+            </div>
+          )}
       </div>
     </div>
     </VendorLayout>

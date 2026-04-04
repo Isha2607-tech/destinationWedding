@@ -6,23 +6,31 @@ import {
   Image as ImageIcon, 
   MessageSquare, 
   Star,
-  Settings
+  Settings,
+  Building2,
+  PlusCircle
 } from "lucide-react";
+import { useAuth } from "../../context/AuthContext";
 
-const navItems = [
-  { id: "dashboard", label: "Home", icon: LayoutDashboard, path: "/vendor/dashboard" },
-  { id: "leads", label: "Leads", icon: MessageSquare, path: "/vendor/leads" },
-  { id: "work", label: "Work", icon: ImageIcon, path: "/vendor/work" },
-  { id: "reviews", label: "Love", icon: Star, path: "/vendor/reviews" },
-  { id: "profile", label: "Profile", icon: UserCircle, path: "/vendor/profile" },
-  { id: "settings", label: "Admin", icon: Settings, path: "/vendor/settings" },
+const allNavItems = [
+  { id: "dashboard", label: "Home", icon: LayoutDashboard, path: "/vendor/dashboard", venueOnly: false },
+  { id: "leads", label: "Leads", icon: MessageSquare, path: "/vendor/leads", venueOnly: false },
+  { id: "work", label: "Work", icon: ImageIcon, path: "/vendor/work", venueOnly: false },
+  { id: "add-venue", label: "Add Venue", icon: PlusCircle, path: "/vendor/venues/add", venueOnly: true },
+  { id: "my-venues", label: "My Venues", icon: Building2, path: "/vendor/venues/my", venueOnly: true },
+  { id: "reviews", label: "Love", icon: Star, path: "/vendor/reviews", venueOnly: false },
+  { id: "profile", label: "Profile", icon: UserCircle, path: "/vendor/profile", venueOnly: false },
+  { id: "settings", label: "Admin", icon: Settings, path: "/vendor/settings", venueOnly: false },
 ];
 
 const VendorBottomNavbar = () => {
   const location = useLocation();
+  const { user } = useAuth();
+  const isVenueManager = user?.category === "Venue Manager";
+  const navItems = allNavItems.filter((item) => !item.venueOnly || isVenueManager);
 
   return (
-    <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-[#F3E9E2] px-2 py-2.5 z-50 flex items-center justify-between pb-safe">
+    <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-[#F3E9E2] px-1 py-1.5 z-50 flex items-center justify-around pb-safe">
       {navItems.map((item) => {
         const Icon = item.icon;
         const isActive = location.pathname === item.path;
@@ -31,18 +39,18 @@ const VendorBottomNavbar = () => {
           <Link
             key={item.id}
             to={item.path}
-            className={`flex flex-col items-center gap-1 transition-all duration-300 relative flex-1 min-w-0 ${
+            className={`flex flex-col items-center gap-0.5 transition-all duration-300 relative ${
               isActive ? "scale-105" : "hover:scale-105"
-            }`}
+            } min-w-0 flex-1`}
           >
-            <div className={`w-11 h-11 rounded-2xl flex items-center justify-center transition-all duration-500 ${
+            <div className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-500 ${
               isActive 
                 ? "bg-[#B06A6C]/10 text-[#B06A6C]" 
                 : "text-[#8E7E77] hover:bg-[#F3E9E2]/30"
             }`}>
-              <Icon className={`w-5 h-5 ${isActive ? "stroke-[2.5px]" : "stroke-[1.5px]"}`} />
+              <Icon className={`w-4 h-4 ${isActive ? "stroke-[2.5px]" : "stroke-[1.5px]"}`} />
             </div>
-            <span className={`text-[9px] font-black uppercase tracking-widest truncate w-full text-center ${
+            <span className={`text-[7.5px] font-black uppercase tracking-tighter truncate w-full text-center px-0.5 ${
               isActive ? "text-[#B06A6C]" : "text-[#8E7E77]"
             }`}>
               {item.label}

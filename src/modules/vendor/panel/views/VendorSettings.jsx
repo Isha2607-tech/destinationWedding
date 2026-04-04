@@ -15,24 +15,30 @@ import {
   Database,
   Trash2,
   RefreshCcw,
-  CheckCircle2
+  CheckCircle2,
+  Building2,
+  PlusCircle,
+  ChevronRight
 } from "lucide-react";
+import { useAuth } from "../../context/AuthContext";
 
 import VendorLayout from "../layouts/VendorLayout";
 
 const VendorSettings = () => {
   const navigate = useNavigate();
-  const [settings, setSettings] = useState({
+  const { user } = useAuth();
+  const isVenueManager = user?.category === "Venue Manager";
 
-    name: "Zoya Khan",
+  const [settings, setSettings] = useState({
+    name: user?.name || "Zoya Khan",
     avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=150&auto=format&fit=crop",
     notifications: {
       leads: true,
       whatsapp: true
     },
-    category: "Photographer",
-    location: "Mumbai",
-    experience: "5+ Years"
+    category: user?.category || "Photographer",
+    location: user?.location || "Mumbai",
+    experience: user?.experience || "5+ Years"
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -236,6 +242,9 @@ const VendorSettings = () => {
                   </button>
                </div>
             </div>
+
+
+
 
 
            {/* Bottom Actions */}

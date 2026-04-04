@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, Share2, Heart, Plus } from "lucide-react";
-import { realWeddings } from "../data/weddingData";
+import { getAllRealWeddings } from "../../../services/storage";
 import ScrollReveal from "../components/ScrollReveal";
 import PlanWeddingModal from "../components/PlanWeddingModal";
 
@@ -9,12 +9,39 @@ const RealWeddingGalleryPage = () => {
   const { weddingId } = useParams();
   const navigate = useNavigate();
   const [isEnquiryOpen, setIsEnquiryOpen] = React.useState(false);
+  const [isLiked, setIsLiked] = React.useState(false);
 
+  const realWeddings = getAllRealWeddings();
   const wedding = realWeddings.find((w) => w.id === weddingId);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const handleBack = () => {
+    if (window.history.state && window.history.state.idx > 0) {
+      navigate(-1);
+    } else {
+      navigate('/wedding');
+    }
+  };
+
+  const handleShare = async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: `${wedding?.coupleName} - Destination Wedding`,
+          text: `Check out ${wedding?.coupleName}'s beautiful wedding gallery at ${wedding?.location}!`,
+          url: window.location.href,
+        });
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        alert("Gallery link copied to clipboard!");
+      }
+    } catch (error) {
+      console.log("Error sharing:", error);
+    }
+  };
 
   if (!wedding) {
     return (
@@ -35,7 +62,7 @@ const RealWeddingGalleryPage = () => {
       <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-100 px-4 py-2.5">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <button 
-            onClick={() => navigate(-1)}
+            onClick={handleBack}
             className="flex items-center gap-2 text-slate-600 hover:text-slate-900 transition-colors group"
           >
             <div className="p-2 rounded-full group-hover:bg-slate-50 transition-colors">
@@ -54,10 +81,16 @@ const RealWeddingGalleryPage = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <button className="p-2.5 rounded-full hover:bg-slate-50 transition-colors text-slate-400 hover:text-red-500">
-              <Heart className="w-5 h-5" />
+            <button 
+              onClick={() => setIsLiked(!isLiked)}
+              className={`p-2.5 rounded-full hover:bg-slate-50 transition-colors ${isLiked ? 'text-red-500' : 'text-slate-400 hover:text-red-500'}`}
+            >
+              <Heart className="w-5 h-5" fill={isLiked ? "currentColor" : "none"} />
             </button>
-            <button className="p-2.5 rounded-full hover:bg-slate-50 transition-colors text-slate-400 hover:text-blue-500">
+            <button 
+              onClick={handleShare}
+              className="p-2.5 rounded-full hover:bg-slate-50 transition-colors text-slate-400 hover:text-blue-500"
+            >
               <Share2 className="w-5 h-5" />
             </button>
           </div>
@@ -141,7 +174,10 @@ const RealWeddingGalleryPage = () => {
                     <Plus className="w-4 h-4 group-hover:rotate-180 transition-transform duration-500" />
                     <span>Plan Your Wedding</span>
                   </button>
-                  <button className="w-full sm:w-auto px-8 py-3.5 rounded-full border border-slate-200 text-xs md:text-sm font-bold text-slate-600 hover:bg-slate-50 transition-all active:scale-95">
+                  <button 
+                    onClick={() => navigate('/wedding/planners')}
+                    className="w-full sm:w-auto px-8 py-3.5 rounded-full border border-slate-200 text-xs md:text-sm font-bold text-slate-600 hover:bg-slate-50 transition-all active:scale-95"
+                  >
                     Contact Planner
                   </button>
                 </div>

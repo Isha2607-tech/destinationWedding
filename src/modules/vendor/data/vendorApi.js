@@ -19,6 +19,33 @@ export const createVendor = async (data) => {
     createdAt: new Date().toISOString(),
   };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(vendor));
+  
+  try {
+    const activeSession = JSON.parse(localStorage.getItem('vendor_active_session'));
+    if (activeSession) {
+      const dbRows = JSON.parse(localStorage.getItem('vendor_users_db') || "[]");
+      const userIdx = dbRows.findIndex(u => u.id === activeSession.id);
+      
+      if(userIdx !== -1) {
+        const expandedUser = {
+          ...dbRows[userIdx],
+          experience: data.basicInfo?.experience,
+          services: data.services,
+          basicPackage: data.pricing?.basePrice,
+          premiumPackage: data.pricing?.premiumPrice,
+          kycStatus: data.kyc?.aadhar ? "Verified" : "Pending Verification",
+          portfolio: data.portfolio,
+          name: data.basicInfo?.name || dbRows[userIdx].name,
+          category: data.basicInfo?.category || dbRows[userIdx].category,
+          location: data.basicInfo?.location || dbRows[userIdx].location,
+        };
+        dbRows[userIdx] = expandedUser;
+        localStorage.setItem('vendor_users_db', JSON.stringify(dbRows));
+        localStorage.setItem('vendor_active_session', JSON.stringify(expandedUser));
+      }
+    }
+  } catch(e) {}
+
   localStorage.removeItem(DRAFT_KEY);
   return { success: true, vendor };
 };

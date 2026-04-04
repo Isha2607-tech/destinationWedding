@@ -37,7 +37,7 @@ const VendorNavbar = ({ onOpenSidebar, title = "Dashboard" }) => {
 
   return (
     <header className="sticky top-0 right-0 left-0 bg-[#F7F1ED] border-b border-[#DED0C5] z-50 transition-all duration-300 shadow-sm">
-      <div className="flex h-20 items-center justify-between px-4 md:px-12 gap-3">
+      <div className="flex h-16 md:h-20 items-center justify-between px-4 md:px-12 gap-3">
         
         {/* Title Area - Hidden on mobile search */}
         {!showMobileSearch && (

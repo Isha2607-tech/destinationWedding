@@ -27,21 +27,21 @@ export const destinations = [
     venueCount: 12,
     venues: [
       {
-        id: "v1",
+        id: "venue-v1",
         name: "Taj Exotica",
         type: "Luxury Resort",
         capacity: 500,
         pricePerDay: 800000,
       },
       {
-        id: "v2",
+        id: "venue-v2",
         name: "W Goa",
         type: "Beachfront Hotel",
         capacity: 300,
         pricePerDay: 600000,
       },
       {
-        id: "v3",
+        id: "venue-v3",
         name: "Cidade de Goa",
         type: "Heritage Resort",
         capacity: 400,
@@ -64,21 +64,21 @@ export const destinations = [
     venueCount: 18,
     venues: [
       {
-        id: "v4",
+        id: "venue-v4",
         name: "Rambagh Palace",
         type: "Palace",
         capacity: 800,
         pricePerDay: 1500000,
       },
       {
-        id: "v5",
+        id: "venue-v5",
         name: "Samode Palace",
         type: "Heritage Haveli",
         capacity: 400,
         pricePerDay: 900000,
       },
       {
-        id: "v6",
+        id: "venue-v6",
         name: "Fairmont Jaipur",
         type: "Luxury Hotel",
         capacity: 600,
@@ -101,21 +101,21 @@ export const destinations = [
     venueCount: 15,
     venues: [
       {
-        id: "v7",
+        id: "venue-v7",
         name: "Taj Lake Palace",
         type: "Lake Palace",
         capacity: 250,
         pricePerDay: 2000000,
       },
       {
-        id: "v8",
+        id: "venue-v8",
         name: "The Oberoi Udaivilas",
         type: "Luxury Resort",
         capacity: 500,
         pricePerDay: 1800000,
       },
       {
-        id: "v9",
+        id: "venue-v9",
         name: "Jagmandir Island",
         type: "Island Palace",
         capacity: 400,
@@ -138,14 +138,14 @@ export const destinations = [
     venueCount: 10,
     venues: [
       {
-        id: "v10",
+        id: "venue-v10",
         name: "Kumarakom Lake Resort",
         type: "Lake Resort",
         capacity: 300,
         pricePerDay: 500000,
       },
       {
-        id: "v11",
+        id: "venue-v11",
         name: "Taj Bekal",
         type: "Beach Resort",
         capacity: 400,
@@ -168,14 +168,14 @@ export const destinations = [
     venueCount: 6,
     venues: [
       {
-        id: "v12",
+        id: "venue-v12",
         name: "Aloha on the Ganges",
         type: "Riverside Resort",
         capacity: 200,
         pricePerDay: 300000,
       },
       {
-        id: "v13",
+        id: "venue-v13",
         name: "Ananda in the Himalayas",
         type: "Luxury Spa Resort",
         capacity: 150,
@@ -198,14 +198,14 @@ export const destinations = [
     venueCount: 5,
     venues: [
       {
-        id: "v14",
+        id: "venue-v14",
         name: "The Solluna Resort",
         type: "Forest Resort",
         capacity: 250,
         pricePerDay: 400000,
       },
       {
-        id: "v15",
+        id: "venue-v15",
         name: "Namah Resort",
         type: "Luxury Resort",
         capacity: 300,

@@ -51,16 +51,15 @@ import ManageFinancials from "./modules/admin/views/ManageFinancials";
 import ManageMarketing from "./modules/admin/views/ManageMarketing";
 import ManageNotifications from "./modules/admin/views/ManageNotifications";
 import ManageSupport from "./modules/admin/views/ManageSupport";
-import ManageDestinations from "./modules/admin/views/ManageDestinations";
 import { 
-  ManageGallery, 
   AdminSettings 
 } from "./modules/admin/views/PlaceholderViews";
 
-// Vendor MVP Imports
 import AddVenue from "./modules/vendor/panel/views/AddVenue.jsx";
 import MyVenues from "./modules/vendor/panel/views/MyVenues.jsx";
 import ManageVenues from "./modules/admin/views/ManageVenues.jsx";
+import ManageRealWeddings from "./modules/admin/views/ManageRealWeddings.jsx";
+import ManageDestinations from "./modules/admin/views/ManageDestinations.jsx";
 
 const queryClient = new QueryClient();
 
@@ -134,7 +133,7 @@ const App = () => (
             <Route path="support" element={<ManageSupport />} />
             <Route path="destinations" element={<ManageDestinations />} />
             <Route path="venues" element={<ManageVenues />} />
-            <Route path="gallery" element={<ManageGallery />} />
+            <Route path="gallery" element={<ManageRealWeddings />} />
             <Route path="settings" element={<AdminSettings />} />
           </Route>
 

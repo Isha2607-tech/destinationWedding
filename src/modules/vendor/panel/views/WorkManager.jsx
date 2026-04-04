@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import VendorLayout from "../layouts/VendorLayout";
 
+
 const WorkManager = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("Portfolio");
@@ -105,6 +106,7 @@ const WorkManager = () => {
 
    // Save changes locally and broadcast
   const updateStore = (newData) => {
+
     setActiveProject(newData);
     try {
       localStorage.setItem('vendorPreviewData', JSON.stringify(newData));

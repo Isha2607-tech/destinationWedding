@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { mockVendors } from "../data/vendorListingData";
 import { getVendorVenues, getAllDestinations } from "../../../services/storage";
+import { planners } from "../data/weddingData";
 
 /* ─── Lightbox ─── */
 const Lightbox = ({ images, startIdx, onClose }) => {
@@ -75,7 +76,34 @@ const VendorDetailPage = () => {
   const tabRef = useRef(null);
 
   const vendor = useMemo(() => {
-    // 0. Check Venues
+    // 0. Check Planners (IDs start with p)
+    if (vendorId?.startsWith('p')) {
+      const p = planners.find(planner => planner.id === vendorId);
+      if (p) {
+        return {
+          id: p.id,
+          name: p.name,
+          category: "Planning & Decor",
+          rating: p.rating,
+          reviews: p.reviewCount,
+          location: p.cities.join(', '),
+          city: p.cities[0],
+          price: p.startingPrice >= 100000 
+            ? `₹${(p.startingPrice / 100000).toFixed(1)}L` 
+            : `₹${(p.startingPrice / 1000).toFixed(0)}K`,
+          priceUnit: "Starting",
+          image: p.avatar || "https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=600",
+          images: [p.avatar].filter(Boolean),
+          portfolio: [p.avatar].filter(Boolean),
+          about: p.bio || `${p.name} is a leading wedding planner from ${p.company}, specializing in ${p.specialties.join(' and ')}. With ${p.experience} years of experience, they have planned over 100+ weddings.`,
+          workingStyle: `Based in ${p.cities[0]}, they travel to ${p.cities.slice(1).join(', ')} for weddings. Known for their ${p.specialties[0]} expertise.`,
+          services: p.services || ["Wedding Planning", "Decor Design", "Guest Management"],
+          isFeatured: true
+        };
+      }
+    }
+
+    // 0.5 Check Venues
     if (vendorId?.startsWith('v-custom-')) {
       try {
         const allVenues = getVendorVenues() || [];

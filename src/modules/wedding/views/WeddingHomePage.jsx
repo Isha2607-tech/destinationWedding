@@ -14,8 +14,11 @@ import HeroSection from "../components/HeroSection";
 import DestinationCard from "../components/DestinationCard";
 import TestimonialSlider from "../components/TestimonialSlider";
 import ScrollReveal from "../components/ScrollReveal";
-import { destinations, budgetBuckets } from "../data/weddingData";
+import { destinations as staticDestinations, budgetBuckets } from "../data/weddingData";
+import { getAllDestinations } from "../../../services/storage";
 import StackedCarousel from "../components/StackedCarousel";
+
+const allDestinations = getAllDestinations();
 
 const steps = [
   {
@@ -73,7 +76,7 @@ const WeddingHomePage = () => {
       <HeroSection />
 
       {/* How It Works */}
-      <section className="pt-8 pb-2 md:pb-4 md:pt-24 px-4">
+      <section className="pt-8 pb-2 md:pb-4 md:pt-8 px-4">
         <div className="max-w-6xl mx-auto">
           <ScrollReveal>
             <div className="text-center mb-6 md:mb-16">
@@ -96,7 +99,7 @@ const WeddingHomePage = () => {
       </section>
 
       {/* Popular Destinations */}
-      <section className="pt-2 pb-4 md:pb-24 px-4 wedding-gradient-soft">
+      <section className="pt-2 pb-4 md:pb-6 px-4 wedding-gradient-soft">
         <div className="max-w-7xl mx-auto">
           <ScrollReveal>
             <div className="text-center mb-3 sm:mb-12">
@@ -114,7 +117,7 @@ const WeddingHomePage = () => {
 
           <div className="relative group/scroll">
             <div className="flex gap-6 overflow-x-auto overflow-y-hidden pb-6 snap-x snap-mandatory no-scrollbar scroll-smooth">
-              {destinations.slice(0, 5).map((dest, i) => (
+              {allDestinations.slice(0, 5).map((dest, i) => (
                 <ScrollReveal
                   key={dest.id}
                   delay={i * 100}
@@ -200,7 +203,7 @@ const WeddingHomePage = () => {
           </ScrollReveal>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 sm:gap-6">
-            {destinations.slice(0, 6).map((dest, i) => (
+            {allDestinations.slice(0, 6).map((dest, i) => (
               <ScrollReveal key={dest.id} delay={i * 80}>
                 <Link
                   to={`/wedding/real-weddings/by-location/${dest.id}`}

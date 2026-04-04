@@ -10,6 +10,7 @@ import {
   Image as ImageIcon,
   CheckCircle2,
   ChevronRight,
+  ChevronDown,
   Upload,
   Trash,
   Plus
@@ -17,6 +18,7 @@ import {
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import VendorLayout from '../layouts/VendorLayout';
+import { toast } from 'sonner';
 
 const ALL_AMENITIES = [
   'Bridal Suite',
@@ -75,13 +77,44 @@ const AddVenue = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    if (file.size > 2 * 1024 * 1024) {
-      alert('Image size should be less than 2MB');
-      return;
-    }
+
+    // Check size first, and compress if needed or just compress everything to be safe
     const reader = new FileReader();
     reader.onloadend = () => {
-      setFormData(prev => ({ ...prev, image: reader.result }));
+      const img = new Image();
+      img.onload = () => {
+        // Create canvas for compression
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+
+        // Max dimension 1200px
+        const MAX_DIM = 1200;
+        if (width > height) {
+          if (width > MAX_DIM) {
+            height *= MAX_DIM / width;
+            width = MAX_DIM;
+          }
+        } else {
+          if (height > MAX_DIM) {
+            width *= MAX_DIM / height;
+            height = MAX_DIM;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        
+        // Compress to 0.7 quality JPEG
+        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+        setFormData(prev => ({ ...prev, image: compressedBase64 }));
+        toast.info("Image Optimized", { 
+          description: "Compressed for faster submission" 
+        });
+      };
+      img.src = reader.result;
     };
     reader.readAsDataURL(file);
   };
@@ -96,41 +129,51 @@ const AddVenue = () => {
     
     // Simulate API/Network lag
     setTimeout(() => {
-      const payload = {
-        ...formData,
-        capacity: Number(formData.capacity),
-        pricePerDay: Number(formData.pricePerDay),
-        vendorName: user?.name || 'Authorized Vendor',
-        vendorId: user?.id
-      };
+      try {
+        const payload = {
+          ...formData,
+          capacity: Number(formData.capacity),
+          pricePerDay: Number(formData.pricePerDay),
+          vendorName: user?.name || 'Authorized Vendor',
+          vendorId: user?.id
+        };
 
-      if (editVenue) {
-        updateVendorVenue({ ...payload, id: editVenue.id, status: editVenue.status });
-      } else {
-        saveVendorVenue(payload);
+        if (editVenue) {
+          updateVendorVenue({ ...payload, id: editVenue.id, status: editVenue.status });
+          toast.success("Venue Updated", { description: "Your changes have been saved successfully." });
+        } else {
+          saveVendorVenue(payload);
+          toast.success("Venue Submitted", { description: "Property has been sent for admin verification." });
+        }
+        navigate('/vendor/venues/my');
+      } catch (error) {
+        console.error("Submission Error:", error);
+        toast.error("Submission Failed", { 
+          description: "Storage limit reached or connection lost. Try reducing image size." 
+        });
+      } finally {
+        setIsSubmitting(false);
       }
-      setIsSubmitting(false);
-      navigate('/vendor/venues/my');
     }, 1000);
   };
 
   return (
     <VendorLayout title={editVenue ? "Edit Venue" : "Add Venue"}>
-    <div className="max-w-4xl mx-auto py-8 px-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="flex items-center gap-2 mb-8 text-sm text-gray-400 font-bold uppercase tracking-widest">
+    <div className="max-w-6xl mx-auto pt-0 pb-4 md:py-8 px-2 md:px-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="flex items-center gap-2 mb-2 md:mb-8 text-[10px] md:text-sm text-gray-400 font-bold uppercase tracking-widest leading-none">
          <span>My Venues</span>
          <ChevronRight size={14} />
          <span className="text-[#B06A6C]">{editVenue ? "Edit Venue" : "Add New Venue"}</span>
       </div>
 
-      <div className="bg-white/80 backdrop-blur-xl rounded-[3rem] border border-[#B06A6C]/10 shadow-2xl overflow-hidden">
-         <div className="p-8 md:p-12 border-b border-[#B06A6C]/5 bg-gradient-to-r from-[#B06A6C]/5 to-transparent">
-            <h2 className="text-3xl font-serif text-[hsl(353,45%,35%)] mb-2">{editVenue ? "Edit Venue Details" : "Venue Submission"}</h2>
-            <p className="text-gray-500 text-sm">{editVenue ? "Update information for your existing property listing." : "Provide detailed information about your property for Admin verification."}</p>
+      <div className="bg-white/80 backdrop-blur-xl rounded-[1.5rem] md:rounded-[3rem] border border-[#B06A6C]/10 shadow-2xl overflow-hidden">
+         <div className="p-4 md:p-12 border-b border-[#B06A6C]/5 bg-gradient-to-r from-[#B06A6C]/5 to-transparent">
+            <h2 className="text-lg md:text-3xl font-serif text-[hsl(353,45%,35%)] mb-0.5 md:mb-2">{editVenue ? "Edit Venue" : "Venue Submission"}</h2>
+            <p className="hidden md:block text-gray-500 text-sm">{editVenue ? "Update information for your existing property listing." : "Provide detailed information about your property for Admin verification."}</p>
          </div>
 
-         <form onSubmit={handleSubmit} className="p-8 md:p-12 grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="space-y-2">
+         <form onSubmit={handleSubmit} className="p-4 md:p-12 grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-8">
+            <div className="col-span-2 space-y-1 md:space-y-2">
                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
                   <Type size={12} /> Venue Name
                </label>
@@ -139,45 +182,51 @@ const AddVenue = () => {
                  value={formData.name}
                  onChange={e => setFormData({...formData, name: e.target.value})}
                  placeholder="e.g. Moonlight Palace"
-                 className="w-full px-5 py-4 bg-white border border-[#B06A6C]/20 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-[#B06A6C]/20 transition-all font-medium"
+                 className="w-full px-5 py-3 md:py-4 bg-white border border-[#B06A6C]/20 rounded-xl md:rounded-2xl text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-[#B06A6C]/20 transition-all font-medium"
                />
             </div>
 
-            <div className="space-y-2">
+            <div className="col-span-1 space-y-1">
                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
                   <MapPin size={12} /> Destination
                </label>
-               <select 
-                 required
-                 value={formData.destinationId}
-                 onChange={e => setFormData({...formData, destinationId: e.target.value})}
-                 className="w-full px-5 py-4 bg-white border border-[#B06A6C]/20 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-[#B06A6C]/20 transition-all font-medium appearance-none"
-               >
-                  <option value="">Select Destination</option>
-                  {destinations.map(d => (
-                    <option key={d.id} value={d.id}>{d.name}</option>
-                  ))}
-               </select>
+               <div className="relative group">
+                  <select 
+                    required
+                    value={formData.destinationId}
+                    onChange={e => setFormData({...formData, destinationId: e.target.value})}
+                    className="w-full px-5 py-3 bg-white border border-[#B06A6C]/20 rounded-xl text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-[#B06A6C]/20 focus:border-[#B06A6C] transition-all font-medium appearance-none cursor-pointer"
+                  >
+                     <option value="">Select Destination</option>
+                     {destinations.map(d => (
+                       <option key={d.id} value={d.id}>{d.name}</option>
+                     ))}
+                  </select>
+                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-[#B06A6C] w-4 h-4 pointer-events-none group-hover:scale-110 transition-transform" />
+               </div>
             </div>
 
-            <div className="space-y-2">
+            <div className="col-span-1 space-y-1">
                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
                   <Building2 size={12} /> Venue Type
                </label>
-               <select 
-                 value={formData.type}
-                 onChange={e => setFormData({...formData, type: e.target.value})}
-                 className="w-full px-5 py-4 bg-white border border-[#B06A6C]/20 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-[#B06A6C]/20 transition-all font-medium"
-               >
-                  <option>Palace</option>
-                  <option>Resort</option>
-                  <option>Banquet</option>
-                  <option>Farmhouse</option>
-                  <option>Heritage Haveli</option>
-               </select>
+               <div className="relative group">
+                  <select 
+                    value={formData.type}
+                    onChange={e => setFormData({...formData, type: e.target.value})}
+                    className="w-full px-5 py-3 bg-white border border-[#B06A6C]/20 rounded-xl text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-[#B06A6C]/20 focus:border-[#B06A6C] transition-all font-medium appearance-none cursor-pointer"
+                  >
+                     <option>Palace</option>
+                     <option>Resort</option>
+                     <option>Banquet</option>
+                     <option>Farmhouse</option>
+                     <option>Heritage Haveli</option>
+                  </select>
+                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-[#B06A6C] w-4 h-4 pointer-events-none group-hover:scale-110 transition-transform" />
+               </div>
             </div>
 
-            <div className="space-y-2">
+            <div className="col-span-1 space-y-1">
                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
                   <Users size={12} /> Capacity (Guests)
                </label>
@@ -187,11 +236,11 @@ const AddVenue = () => {
                  value={formData.capacity}
                  onChange={e => setFormData({...formData, capacity: e.target.value})}
                  placeholder="e.g. 500"
-                 className="w-full px-5 py-4 bg-white border border-[#B06A6C]/20 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-[#B06A6C]/20 transition-all font-medium"
+                 className="w-full px-5 py-3 bg-white border border-[#B06A6C]/20 rounded-xl text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-[#B06A6C]/20 transition-all font-medium"
                />
             </div>
 
-            <div className="space-y-2">
+            <div className="col-span-1 space-y-1">
                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
                   <IndianRupee size={12} /> Price Per Day
                </label>
@@ -201,12 +250,11 @@ const AddVenue = () => {
                  value={formData.pricePerDay}
                  onChange={e => setFormData({...formData, pricePerDay: e.target.value})}
                  placeholder="e.g. 150000"
-                 className="w-full px-5 py-4 bg-white border border-[#B06A6C]/20 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-[#B06A6C]/20 transition-all font-medium"
+                 className="w-full px-5 py-3 bg-white border border-[#B06A6C]/20 rounded-xl text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-[#B06A6C]/20 transition-all font-medium"
                />
             </div>
 
-            {/* ---- IMAGE UPLOAD ---- */}
-            <div className="space-y-2">
+            <div className="col-span-2 space-y-1">
                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
                   <ImageIcon size={12} /> Cover Image
                </label>
@@ -221,31 +269,30 @@ const AddVenue = () => {
                   {!formData.image ? (
                     <label
                       htmlFor="venue-image-upload"
-                      className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-[#B06A6C]/20 rounded-3xl bg-white hover:bg-[#B06A6C]/5 hover:border-[#B06A6C]/40 transition-all cursor-pointer"
+                      className="flex flex-col items-center justify-center w-full h-28 border-2 border-dashed border-[#B06A6C]/20 rounded-xl bg-white hover:bg-[#B06A6C]/5 hover:border-[#B06A6C]/40 transition-all cursor-pointer"
                     >
-                      <div className="flex flex-col items-center gap-2">
-                        <div className="w-12 h-12 rounded-2xl bg-[#B06A6C]/10 flex items-center justify-center text-[#B06A6C]">
-                          <Upload size={20} />
+                      <div className="flex flex-col items-center gap-1">
+                        <div className="w-10 h-10 rounded-xl bg-[#B06A6C]/10 flex items-center justify-center text-[#B06A6C]">
+                          <Upload size={18} />
                         </div>
                         <div className="text-center">
-                          <p className="text-sm font-bold text-slate-600">Click to upload photo</p>
-                          <p className="text-[10px] text-slate-400 uppercase tracking-widest mt-1">PNG, JPG or WebP (Max 2MB)</p>
+                          <p className="text-xs font-bold text-slate-600">Click to upload</p>
                         </div>
                       </div>
                     </label>
                   ) : (
-                    <div className="relative h-44 w-full rounded-3xl overflow-hidden border border-[#B06A6C]/20 shadow-lg">
+                    <div className="relative h-28 w-full rounded-xl overflow-hidden border border-[#B06A6C]/20 shadow-lg">
                       <img src={formData.image} className="w-full h-full object-cover" alt="Preview" />
                       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
-                        <label htmlFor="venue-image-upload" className="p-3 bg-white text-[hsl(353,45%,35%)] rounded-2xl cursor-pointer hover:scale-110 transition-transform">
-                          <Upload size={20} />
+                        <label htmlFor="venue-image-upload" className="p-2 bg-white text-[hsl(353,45%,35%)] rounded-xl cursor-pointer hover:scale-110 transition-transform">
+                          <Upload size={16} />
                         </label>
                         <button
                           type="button"
                           onClick={() => setFormData({ ...formData, image: '' })}
-                          className="p-3 bg-white text-red-500 rounded-2xl hover:scale-110 transition-transform"
+                          className="p-2 bg-white text-red-500 rounded-xl hover:scale-110 transition-transform"
                         >
-                          <Trash size={20} />
+                          <Trash size={16} />
                         </button>
                       </div>
                     </div>
@@ -253,106 +300,10 @@ const AddVenue = () => {
                </div>
             </div>
 
-            {/* ---- AMENITIES ---- */}
-            <div className="md:col-span-2 space-y-3">
-               <div className="flex items-center justify-between">
-                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                    <CheckCircle2 size={12} /> Amenities Offered
-                 </label>
-                 <button 
-                   type="button"
-                   onClick={() => {
-                     const amenity = window.prompt("Enter new custom amenity:");
-                     if (amenity && amenity.trim()) {
-                       const newAmenity = amenity.trim();
-                       if (!ALL_AMENITIES.includes(newAmenity) && !customAmenities.includes(newAmenity)) {
-                         setCustomAmenities(prev => [...prev, newAmenity]);
-                         setFormData(prev => ({ ...prev, amenities: [...prev.amenities, newAmenity] }));
-                       }
-                     }
-                   }}
-                   className="text-[10px] font-black text-[#B06A6C] uppercase tracking-widest flex items-center gap-1 hover:underline active:scale-95 transition-all"
-                 >
-                    <Plus size={12} /> Add Custom
-                 </button>
-               </div>
-               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                 {[...ALL_AMENITIES, ...customAmenities].map(amenity => (
-                   <label key={amenity} className={`flex items-center gap-2.5 px-4 py-3 rounded-2xl border cursor-pointer text-sm font-semibold transition-all ${
-                     formData.amenities.includes(amenity)
-                       ? 'bg-[#B06A6C]/10 border-[#B06A6C]/40 text-[#B06A6C]'
-                       : 'bg-white border-[#B06A6C]/20 text-slate-600 hover:border-[#B06A6C]/40'
-                   }`}>
-                     <input
-                       type="checkbox"
-                       className="hidden"
-                       checked={formData.amenities.includes(amenity)}
-                       onChange={() => setFormData(prev => ({ ...prev, amenities: toggleAmenity(prev.amenities, amenity) }))}
-                     />
-                     <CheckCircle2 size={14} className={formData.amenities.includes(amenity) ? 'text-[#B06A6C]' : 'text-slate-300'} />
-                     {amenity}
-                   </label>
-                 ))}
-               </div>
-            </div>
 
-            {/* ---- BOOKING POLICY ---- */}
-            <div className="md:col-span-2 space-y-3">
-               <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                  <FileText size={12} /> Booking Policy
-               </label>
-               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                 <div className="space-y-2">
-                   <label className="text-[10px] text-slate-400 font-black uppercase tracking-widest">Venue Rental Hours</label>
-                   <input
-                     value={formData.rentalHours}
-                     onChange={e => setFormData({...formData, rentalHours: e.target.value})}
-                     placeholder="e.g. 12 PM – 12 AM"
-                     className="w-full px-5 py-3 bg-white border border-[#B06A6C]/20 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-[#B06A6C]/20 transition-all font-medium"
-                   />
-                 </div>
-                 <div className="space-y-2">
-                   <label className="text-[10px] text-slate-400 font-black uppercase tracking-widest">Cancellation Policy</label>
-                   <select
-                     value={formData.cancellationPolicy}
-                     onChange={e => setFormData({...formData, cancellationPolicy: e.target.value})}
-                     className="w-full px-5 py-3 bg-white border border-[#B06A6C]/20 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-[#B06A6C]/20 transition-all font-medium"
-                   >
-                     <option>Flexible (4 weeks)</option>
-                     <option>Moderate (6 weeks)</option>
-                     <option>Strict (3 months)</option>
-                     <option>Non-refundable</option>
-                   </select>
-                 </div>
-                 <div className="space-y-2">
-                   <label className="text-[10px] text-slate-400 font-black uppercase tracking-widest">Outside Catering</label>
-                   <select
-                     value={formData.outsideCatering}
-                     onChange={e => setFormData({...formData, outsideCatering: e.target.value})}
-                     className="w-full px-5 py-3 bg-white border border-[#B06A6C]/20 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-[#B06A6C]/20 transition-all font-medium"
-                   >
-                     <option>Permitted</option>
-                     <option>Not Permitted</option>
-                     <option>Permitted with charges</option>
-                   </select>
-                 </div>
-                 <div className="space-y-2">
-                   <label className="text-[10px] text-slate-400 font-black uppercase tracking-widest">Alcohol Policy</label>
-                   <select
-                     value={formData.alcoholPolicy}
-                     onChange={e => setFormData({...formData, alcoholPolicy: e.target.value})}
-                     className="w-full px-5 py-3 bg-white border border-[#B06A6C]/20 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-[#B06A6C]/20 transition-all font-medium"
-                   >
-                     <option>Allowed</option>
-                     <option>Not Allowed</option>
-                     <option>Allowed with permit</option>
-                   </select>
-                 </div>
-               </div>
-            </div>
 
             {/* ---- DESCRIPTION ---- */}
-            <div className="md:col-span-2 space-y-2">
+            <div className="col-span-2 space-y-1">
                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
                   <FileText size={12} /> Description
                </label>
@@ -361,15 +312,15 @@ const AddVenue = () => {
                  value={formData.description}
                  onChange={e => setFormData({...formData, description: e.target.value})}
                  placeholder="Tell us what makes this venue special..."
-                 className="w-full h-32 px-5 py-4 bg-white border border-[#B06A6C]/20 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-[#B06A6C]/20 transition-all font-medium"
+                 className="w-full h-24 px-5 py-3 bg-white border border-[#B06A6C]/20 rounded-xl text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-[#B06A6C]/20 transition-all font-medium"
                />
             </div>
 
-            <div className="md:col-span-2 pt-6">
+            <div className="col-span-2 pt-2">
                <button 
                  type="submit" 
                  disabled={isSubmitting}
-                 className="w-full py-5 bg-[hsl(353,45%,35%)] text-white rounded-[2rem] font-bold shadow-xl shadow-[hsl(353,45%,35%)]/20 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50 disabled:grayscale flex items-center justify-center gap-3"
+                 className="w-full py-4 md:py-5 bg-[hsl(353,45%,35%)] text-white rounded-2xl md:rounded-[2rem] font-bold shadow-xl shadow-[hsl(353,45%,35%)]/20 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50 disabled:grayscale flex items-center justify-center gap-3"
                >
                   {isSubmitting ? (
                     <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

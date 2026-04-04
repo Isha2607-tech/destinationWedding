@@ -1,8 +1,10 @@
-import { destinations as staticDestinations } from "../modules/wedding/data/weddingData";
+import { destinations as staticDestinations, realWeddings as staticRealWeddings } from "../modules/wedding/data/weddingData";
 
 const STORAGE_KEYS = {
   ADMIN_DESTINATIONS: 'admin_destinations',
   VENDOR_VENUES: 'vendor_venues',
+  REAL_WEDDINGS: 'real_weddings',
+  ADMIN_VENDORS: 'admin_vendors',
 };
 
 // --- Destination Helpers ---
@@ -28,6 +30,17 @@ export const saveAdminDestination = (dest) => {
   return newDest;
 };
 
+export const updateAdminDestination = (updatedDest) => {
+  const existing = getAdminDestinations();
+  const index = existing.findIndex(d => d.id === updatedDest.id);
+  if (index !== -1) {
+    existing[index] = { ...existing[index], ...updatedDest };
+    localStorage.setItem(STORAGE_KEYS.ADMIN_DESTINATIONS, JSON.stringify(existing));
+    return existing[index];
+  }
+  return null;
+};
+
 export const deleteAdminDestination = (id) => {
   const existing = getAdminDestinations().filter(d => d.id !== id);
   localStorage.setItem(STORAGE_KEYS.ADMIN_DESTINATIONS, JSON.stringify(existing));
@@ -37,6 +50,48 @@ export const getAllDestinations = () => {
   const adminDests = getAdminDestinations();
   // Standardize the format to match weddingData
   return [...staticDestinations, ...adminDests];
+};
+
+// --- Real Weddings Helpers ---
+
+export const getAdminRealWeddings = () => {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEYS.REAL_WEDDINGS) || "[]");
+  } catch {
+    return [];
+  }
+};
+
+export const saveAdminRealWedding = (wedding) => {
+  const existing = getAdminRealWeddings();
+  const newWedding = {
+    ...wedding,
+    id: `rw-custom-${Date.now()}`,
+  };
+  existing.push(newWedding);
+  localStorage.setItem(STORAGE_KEYS.REAL_WEDDINGS, JSON.stringify(existing));
+  return newWedding;
+};
+
+export const updateAdminRealWedding = (updatedWedding) => {
+  const existing = getAdminRealWeddings();
+  const index = existing.findIndex(w => w.id === updatedWedding.id);
+  if (index !== -1) {
+    existing[index] = { ...existing[index], ...updatedWedding };
+    localStorage.setItem(STORAGE_KEYS.REAL_WEDDINGS, JSON.stringify(existing));
+    return existing[index];
+  }
+  return null;
+};
+
+export const deleteAdminRealWedding = (id) => {
+  const existing = getAdminRealWeddings().filter(w => w.id !== id);
+  localStorage.setItem(STORAGE_KEYS.REAL_WEDDINGS, JSON.stringify(existing));
+};
+
+export const getAllRealWeddings = () => {
+  const adminWeddings = getAdminRealWeddings();
+  return [...staticRealWeddings, ...adminWeddings];
 };
 
 // --- Venue Helpers ---
@@ -83,4 +138,26 @@ export const updateVenueStatus = (id, status) => {
 export const getApprovedVenuesByDestination = (destId) => {
   const allVenues = getVendorVenues();
   return allVenues.filter(v => v.destinationId === destId && v.status === 'approved');
+};
+
+// --- Admin Vendors Helpers ---
+
+export const getAdminVendors = () => {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEYS.ADMIN_VENDORS) || "[]");
+  } catch {
+    return [];
+  }
+};
+
+export const saveAdminVendor = (vendor) => {
+  const existing = getAdminVendors();
+  const newVendor = {
+    ...vendor,
+    id: `admin-vend-${Date.now()}`,
+    createdAt: new Date().toISOString(),
+  };
+  existing.push(newVendor);
+  localStorage.setItem(STORAGE_KEYS.ADMIN_VENDORS, JSON.stringify(existing));
+  return newVendor;
 };

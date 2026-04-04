@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { getAdminDestinations, saveAdminDestination, deleteAdminDestination } from '../../../services/storage';
+import { createPortal } from 'react-dom';
+import { getAdminDestinations, saveAdminDestination, deleteAdminDestination, updateAdminDestination } from '../../../services/storage';
 import { adminStyles } from '../theme/themeConfig';
 import { 
   Plus, 
@@ -14,12 +15,17 @@ import {
   X,
   Upload,
   Trash,
-  Calendar
+  Calendar,
+  Pencil,
+  ChevronDown
 } from 'lucide-react';
 
 const ManageDestinations = () => {
   const [destinations, setDestinations] = useState([]);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
+  const categories = ['Heritage', 'Beach', 'Hill', 'Resort'];
+  const [editingDest, setEditingDest] = useState(null);
   const [newDest, setNewDest] = useState({
     name: '',
     location: '',
@@ -53,14 +59,46 @@ const ManageDestinations = () => {
 
   const handleAdd = (e) => {
     e.preventDefault();
-    if (!newDest.name || !newDest.location) return;
+    if (!newDest.name || !newDest.location || !newDest.startingPrice) {
+      alert("Please fill in all required fields (Name, Location, Starting Price)");
+      return;
+    }
     
-    saveAdminDestination({
-      ...newDest,
-      startingPrice: Number(newDest.startingPrice)
-    });
+    if (editingDest) {
+      updateAdminDestination({
+        ...newDest,
+        id: editingDest.id,
+        startingPrice: Number(newDest.startingPrice)
+      });
+    } else {
+      saveAdminDestination({
+        ...newDest,
+        startingPrice: Number(newDest.startingPrice)
+      });
+    }
+    
     setDestinations(getAdminDestinations());
+    resetForm();
+  };
+
+  const handleEdit = (dest) => {
+    setEditingDest(dest);
+    setNewDest({
+      name: dest.name,
+      location: dest.location,
+      category: dest.category,
+      startingPrice: dest.startingPrice,
+      avgCost: dest.avgCost || '',
+      bestSeason: dest.bestSeason || '',
+      description: dest.description || '',
+      image: dest.image || ''
+    });
+    setShowAddForm(true);
+  };
+
+  const resetForm = () => {
     setShowAddForm(false);
+    setEditingDest(null);
     setNewDest({
       name: '',
       location: '',
@@ -71,6 +109,11 @@ const ManageDestinations = () => {
       description: '',
       image: ''
     });
+  };
+
+  const openAddForm = () => {
+    resetForm();
+    setShowAddForm(true);
   };
 
   const handleDelete = (id) => {
@@ -89,7 +132,7 @@ const ManageDestinations = () => {
             <p className="text-gray-500 text-sm mt-1">Add and control the wedding destinations available on the platform</p>
           </div>
           <button 
-            onClick={() => setShowAddForm(true)}
+            onClick={openAddForm}
             className="flex items-center gap-2 px-6 py-3 bg-[hsl(353,45%,35%)] text-white rounded-2xl text-sm font-bold shadow-lg hover:shadow-xl transition-all active:scale-95 leading-none"
           >
              <Plus size={18} /> Add New Destination
@@ -111,12 +154,20 @@ const ManageDestinations = () => {
                     <span className="px-4 py-1.5 bg-[hsl(353,45%,35%)] text-white rounded-full text-[10px] font-black uppercase tracking-widest leading-none">
                        {dest.category}
                     </span>
-                    <button 
-                      onClick={() => handleDelete(dest.id)}
-                      className="p-2.5 bg-red-50 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all shadow-sm"
-                    >
-                       <Trash2 size={16} />
-                    </button>
+                    <div className="flex gap-2">
+                       <button 
+                         onClick={() => handleEdit(dest)}
+                         className="p-2.5 bg-blue-50 text-blue-500 rounded-xl hover:bg-blue-500 hover:text-white transition-all shadow-sm"
+                       >
+                          <Pencil size={16} />
+                       </button>
+                       <button 
+                         onClick={() => handleDelete(dest.id)}
+                         className="p-2.5 bg-red-50 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all shadow-sm"
+                       >
+                          <Trash2 size={16} />
+                       </button>
+                    </div>
                  </div>
                  
                  <div className="mt-4">
@@ -148,17 +199,19 @@ const ManageDestinations = () => {
       </div>
 
       {/* Add Form Modal Overlay */}
-      {showAddForm && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-300">
-           <div className="bg-white/90 backdrop-blur-xl w-full max-w-2xl rounded-[3rem] shadow-2xl p-8 md:p-12 relative border border-white/40">
+      {showAddForm && createPortal(
+        <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 md:p-8 bg-black/60 backdrop-blur-md animate-in fade-in duration-300">
+           <div className="bg-white/90 backdrop-blur-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-[3rem] shadow-2xl p-8 md:p-12 relative border border-white/40 no-scrollbar">
               <button 
-                onClick={() => setShowAddForm(false)}
+                onClick={resetForm}
                 className="absolute right-8 top-8 p-3 hover:bg-slate-100 rounded-2xl transition-colors"
               >
                  <X size={24} className="text-slate-400" />
               </button>
 
-              <h3 className="text-3xl font-serif text-[hsl(353,45%,35%)] mb-8">Add Destination</h3>
+              <h3 className="text-3xl font-serif text-[hsl(353,45%,35%)] mb-8">
+                {editingDest ? 'Edit Destination' : 'Add Destination'}
+              </h3>
               <form onSubmit={handleAdd} className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
                  <div className="space-y-2">
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
@@ -190,21 +243,35 @@ const ManageDestinations = () => {
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
                        <LayoutGrid size={12} /> Category
                     </label>
-                    <select 
-                      value={newDest.category}
-                      onChange={e => setNewDest({...newDest, category: e.target.value})}
-                      className="w-full px-5 py-3 bg-white border border-[#B06A6C]/20 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-[#B06A6C]/20"
-                    >
-                       <option>Heritage</option>
-                       <option>Beach</option>
-                       <option>Hill</option>
-                       <option>Resort</option>
-                    </select>
+                    <div className="relative">
+                       <div 
+                         onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
+                         className="w-full px-5 py-3 bg-white border border-[#B06A6C]/20 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-[#B06A6C]/20 cursor-pointer flex justify-between items-center"
+                       >
+                          <span>{newDest.category || 'Select Category'}</span>
+                          <ChevronDown size={16} className={`text-gray-400 transition-transform ${showCategoryDropdown ? 'rotate-180' : ''}`} />
+                       </div>
+                       
+                       {showCategoryDropdown && (
+                         <div className="absolute z-50 w-full mt-2 bg-white border border-[#B06A6C]/20 rounded-xl shadow-xl overflow-hidden">
+                            {categories.map(cat => (
+                               <div 
+                                 key={cat} 
+                                 className={`px-5 py-3 cursor-pointer text-sm transition-colors ${newDest.category === cat ? 'bg-[#B06A6C]/10 text-[#B06A6C] font-bold' : 'hover:bg-[#B06A6C]/5 text-gray-700'}`}
+                                 onClick={() => { setNewDest({...newDest, category: cat}); setShowCategoryDropdown(false); }}
+                               >
+                                 {cat}
+                               </div>
+                            ))}
+                         </div>
+                       )}
+                    </div>
                  </div>
 
-                 <div className="space-y-2">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                       <IndianRupee size={12} /> Starting Price
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center justify-between">
+                       <span className="flex items-center gap-2"><IndianRupee size={12} /> Starting Price</span>
+                       {newDest.startingPrice && <span className="text-[#B06A6C] font-bold">₹{(newDest.startingPrice / 100000).toFixed(1)}L+</span>}
                     </label>
                     <input 
                       type="number"
@@ -302,12 +369,13 @@ const ManageDestinations = () => {
 
                  <div className="md:col-span-2 pt-4">
                     <button type="submit" className="w-full py-4 bg-[hsl(353,45%,35%)] text-white rounded-[2rem] font-bold shadow-xl shadow-[hsl(353,45%,35%)]/20 hover:scale-[1.02] active:scale-95 transition-all">
-                       Save Destination
+                       {editingDest ? 'Update Destination' : 'Save Destination'}
                     </button>
                  </div>
               </form>
            </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

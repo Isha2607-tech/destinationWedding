@@ -1,14 +1,21 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { realWeddings } from "../data/weddingData";
+import { realWeddings as staticRealWeddings } from "../data/weddingData";
+import { getAdminRealWeddings } from "../../../services/storage";
 import RealWeddingCardDetailed from "../components/RealWeddingCardDetailed";
 import ScrollReveal from "../components/ScrollReveal";
 
 const RealWeddingsByLocation = () => {
   const { destinationId } = useParams();
-  const filteredWeddings = realWeddings.filter(
-    (w) => w.destinationId.toLowerCase() === destinationId.toLowerCase()
+  
+  const allRealWeddings = React.useMemo(() => {
+    const adminWeddings = getAdminRealWeddings();
+    return [...staticRealWeddings, ...adminWeddings];
+  }, []);
+
+  const filteredWeddings = allRealWeddings.filter(
+    (w) => w.destinationId?.toLowerCase() === destinationId?.toLowerCase()
   );
 
   const destinationName = filteredWeddings.length > 0 ? filteredWeddings[0].location : destinationId;

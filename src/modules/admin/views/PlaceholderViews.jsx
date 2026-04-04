@@ -8,8 +8,8 @@ const PlaceholderView = ({ name }) => (
 );
 
 export const ManageDestinations = () => <PlaceholderView name="Destination Management" />;
-export const ManageGallery = () => <PlaceholderView name="Real Weddings Gallery" />;
 export const AdminSettings = () => <PlaceholderView name="Admin Settings" />;
+
 export const ManageCustomers = () => <PlaceholderView name="Customer Management" />;
 export const ManageFinancials = () => <PlaceholderView name="Financials & Commissions" />;
 export const ManageMarketing = () => <PlaceholderView name="Marketing & Banners" />;

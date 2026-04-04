@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { X, ChevronDown } from "lucide-react";
 
@@ -12,6 +12,17 @@ const PlanWeddingModal = ({ isOpen, onClose, initialLocation = "" }) => {
     whatsappUpdates: true,
     description: "",
   });
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -30,7 +41,7 @@ const PlanWeddingModal = ({ isOpen, onClose, initialLocation = "" }) => {
 
   return createPortal(
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-500 overflow-hidden">
-      <div className="relative w-full max-w-lg md:max-w-2xl bg-white rounded-[2.5rem] md:rounded-[3rem] shadow-2xl overflow-y-auto max-h-[92vh] md:max-h-[85vh] animate-in slide-in-from-bottom duration-700 ease-out flex flex-col border border-white/20 scrollbar-thin scrollbar-thumb-slate-200">
+      <div className="relative w-full max-w-lg md:max-w-2xl bg-white rounded-[2.5rem] md:rounded-[3rem] shadow-2xl overflow-hidden max-h-[95vh] animate-in slide-in-from-bottom duration-700 ease-out flex flex-col border border-white/20">
         {/* Close Button */}
         <button 
           onClick={onClose}
@@ -39,8 +50,8 @@ const PlanWeddingModal = ({ isOpen, onClose, initialLocation = "" }) => {
           <X className="w-4 h-4 md:w-5 h-5" />
         </button>
 
-        <div className="flex-1 p-6 md:p-14 pt-12 md:pt-14 relative z-40">
-          <div className="mb-8">
+        <div className="flex-1 p-6 md:p-8 pt-8 md:pt-10 relative z-40">
+          <div className="mb-4">
             <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>
               Plan your wedding
             </h2>
@@ -49,9 +60,9 @@ const PlanWeddingModal = ({ isOpen, onClose, initialLocation = "" }) => {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
             {/* Name & Phone Grid for Desktop */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
               {/* Full Name */}
               <div>
                 <label className="block text-[10px] md:text-xs font-black mb-1.5 text-slate-400 uppercase tracking-widest">Full Name</label>
@@ -59,7 +70,7 @@ const PlanWeddingModal = ({ isOpen, onClose, initialLocation = "" }) => {
                   type="text"
                   required
                   placeholder="Enter your Full Name"
-                  className="w-full px-5 py-4 rounded-2xl border border-slate-100 bg-slate-50/50 focus:outline-none focus:ring-2 focus:ring-[#ff7676]/20 focus:border-[#ff7676] transition-all text-sm placeholder:text-slate-400"
+                  className="w-full px-4 py-2.5 rounded-2xl border border-slate-100 bg-slate-50/50 focus:outline-none focus:ring-2 focus:ring-[#ff7676]/20 focus:border-[#ff7676] transition-all text-sm placeholder:text-slate-400"
                   value={formData.fullName}
                   onChange={(e) => setFormData({...formData, fullName: e.target.value})}
                 />
@@ -69,7 +80,7 @@ const PlanWeddingModal = ({ isOpen, onClose, initialLocation = "" }) => {
               <div>
                 <label className="block text-[10px] md:text-xs font-black mb-1.5 text-slate-400 uppercase tracking-widest">Phone Number</label>
                 <div className="flex gap-0 overflow-hidden rounded-2xl border border-slate-100 group">
-                  <div className="flex items-center gap-1 px-4 py-4 bg-slate-50 text-sm border-r border-slate-100 cursor-pointer hover:bg-slate-100 transition-colors">
+                  <div className="flex items-center gap-1 px-4 py-2.5 bg-slate-50 text-sm border-r border-slate-100 cursor-pointer hover:bg-slate-100 transition-colors">
                     <span className="font-bold text-slate-700">+91</span>
                     <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
                   </div>
@@ -77,7 +88,7 @@ const PlanWeddingModal = ({ isOpen, onClose, initialLocation = "" }) => {
                     type="tel"
                     required
                     placeholder="Enter Phone Number"
-                    className="flex-1 px-5 py-4 bg-slate-50/50 focus:outline-none transition-all text-sm placeholder:text-slate-400"
+                    className="flex-1 px-4 py-2.5 bg-slate-50/50 focus:outline-none transition-all text-sm placeholder:text-slate-400"
                     value={formData.phone}
                     onChange={(e) => setFormData({...formData, phone: e.target.value})}
                   />
@@ -86,13 +97,13 @@ const PlanWeddingModal = ({ isOpen, onClose, initialLocation = "" }) => {
             </div>
 
             {/* Event Month & Location */}
-            <div className="grid grid-cols-2 gap-4 md:gap-6">
+            <div className="grid grid-cols-2 gap-3 md:gap-4">
               <div>
                 <label className="block text-[10px] md:text-xs font-black mb-1.5 text-slate-400 uppercase tracking-widest">Event Month</label>
                 <div className="relative">
                   <select
                     required
-                    className="w-full appearance-none px-5 pr-10 py-4 rounded-2xl border border-slate-100 bg-slate-50/50 focus:outline-none focus:ring-2 focus:ring-[#ff7676]/20 focus:border-[#ff7676] transition-all text-sm"
+                    className="w-full appearance-none px-4 pr-10 py-2.5 rounded-2xl border border-slate-100 bg-slate-50/50 focus:outline-none focus:ring-2 focus:ring-[#ff7676]/20 focus:border-[#ff7676] transition-all text-sm"
                     value={formData.eventMonth}
                     onChange={(e) => setFormData({...formData, eventMonth: e.target.value})}
                   >
@@ -107,7 +118,7 @@ const PlanWeddingModal = ({ isOpen, onClose, initialLocation = "" }) => {
                 <div className="relative">
                   <select
                     required
-                    className="w-full appearance-none px-5 pr-10 py-4 rounded-2xl border border-slate-100 bg-slate-50/50 focus:outline-none focus:ring-2 focus:ring-[#ff7676]/20 focus:border-[#ff7676] transition-all text-sm"
+                    className="w-full appearance-none px-4 pr-10 py-2.5 rounded-2xl border border-slate-100 bg-slate-50/50 focus:outline-none focus:ring-2 focus:ring-[#ff7676]/20 focus:border-[#ff7676] transition-all text-sm"
                     value={formData.eventLocation}
                     onChange={(e) => setFormData({...formData, eventLocation: e.target.value})}
                   >
@@ -124,7 +135,7 @@ const PlanWeddingModal = ({ isOpen, onClose, initialLocation = "" }) => {
               <label className="block text-[10px] md:text-xs font-black mb-1.5 text-slate-400 uppercase tracking-widest">Description</label>
               <textarea
                 placeholder="Enter Description"
-                className="w-full px-5 py-4 rounded-2xl border border-slate-100 bg-slate-50/50 focus:outline-none focus:ring-2 focus:ring-[#ff7676]/20 focus:border-[#ff7676] transition-all text-sm placeholder:text-slate-400 min-h-[100px] resize-none"
+                className="w-full px-4 py-2.5 rounded-2xl border border-slate-100 bg-slate-50/50 focus:outline-none focus:ring-2 focus:ring-[#ff7676]/20 focus:border-[#ff7676] transition-all text-sm placeholder:text-slate-400 min-h-[60px] resize-none"
                 value={formData.description}
                 onChange={(e) => setFormData({...formData, description: e.target.value})}
               />
@@ -132,8 +143,8 @@ const PlanWeddingModal = ({ isOpen, onClose, initialLocation = "" }) => {
 
             {/* Venue Decided */}
             <div>
-              <p className="text-sm font-bold mb-4 text-slate-700">Have you already decided the venue?</p>
-              <div className="flex gap-8">
+              <p className="text-sm font-bold mb-3 text-slate-700">Have you already decided the venue?</p>
+              <div className="flex gap-6">
                 <label className="flex items-center gap-3 cursor-pointer group">
                   <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${formData.venueDecided === 'yes' ? 'border-[#ff7676] bg-[#ff7676]' : 'border-slate-200 group-hover:border-[#ff7676]'}`}>
                     {formData.venueDecided === 'yes' && <div className="w-2 h-2 rounded-full bg-white transition-all transform scale-100" />}
@@ -166,7 +177,7 @@ const PlanWeddingModal = ({ isOpen, onClose, initialLocation = "" }) => {
             </div>
 
             {/* Submit Button Section */}
-            <div className="pt-4 border-t border-slate-50 space-y-4">
+            <div className="pt-3 border-t border-slate-50 space-y-3">
               <label className="flex items-center gap-3 cursor-pointer group">
                 <div 
                   className={`w-5 h-5 rounded flex items-center justify-center border-2 transition-all ${formData.whatsappUpdates ? 'bg-[#ff7676] border-[#ff7676]' : 'border-slate-200 group-hover:border-[#ff7676]'}`}
@@ -179,7 +190,7 @@ const PlanWeddingModal = ({ isOpen, onClose, initialLocation = "" }) => {
 
               <button
                 type="submit"
-                className="w-full py-4.5 py-4 rounded-2xl bg-[#ff7676] text-white font-black text-sm md:text-base uppercase tracking-widest shadow-xl shadow-red-200 hover:bg-[#ef6666] transition-all transform hover:-translate-y-0.5"
+                className="w-full py-3 rounded-2xl bg-[#ff7676] text-white font-black text-sm md:text-base uppercase tracking-widest shadow-xl shadow-red-200 hover:bg-[#ef6666] transition-all transform hover:-translate-y-0.5"
               >
                 Get a consultation
               </button>

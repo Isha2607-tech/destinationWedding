@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useLocation } from 'react-router-dom';
 import { pendingVendors } from '../data/adminMockData';
 import { adminStyles } from '../theme/themeConfig';
@@ -32,6 +33,12 @@ const ManageVendors = () => {
         location: u.location || "Not Set",
         status: "Pending",
         date: new Date(u.createdAt).toLocaleDateString(),
+        experience: u.experience,
+        services: u.services,
+        email: u.email,
+        phone: u.phone,
+        pricing: u.basicPackage ? `₹${u.basicPackage} - ₹${u.premiumPackage}` : null,
+        kycStatus: u.kycStatus === 'Verified' ? "Aadhar & GST Verified" : "Pending Verification",
         realUser: true
       }));
     const staticPending = saved ? JSON.parse(saved) : pendingVendors;
@@ -288,8 +295,8 @@ const ManageVendors = () => {
       </div>
 
       {/* Vendor Detail Modal - Moved outside the animated container to span full viewport */}
-      {selectedVendor && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+      {selectedVendor && createPortal(
+        <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4">
            {/* Backdrop */}
            <div 
              className="fixed inset-0 bg-[#4A3730]/40 backdrop-blur-md animate-in fade-in duration-300"
@@ -327,24 +334,24 @@ const ManageVendors = () => {
                     <div className="space-y-1">
                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Experience</p>
                        <p className="text-sm font-bold text-slate-800 flex items-center gap-2">
-                          <Clock className="w-4 h-4 text-[#B06A6C]" /> {mockFullDetails.experience}
+                          <Clock className="w-4 h-4 text-[#B06A6C]" /> {selectedVendor.experience ? `${selectedVendor.experience} Years` : mockFullDetails.experience}
                        </p>
                     </div>
                     <div className="space-y-1">
                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Average Pricing</p>
                        <p className="text-sm font-bold text-emerald-600 flex items-center gap-1.5">
-                          <IndianRupee className="w-4 h-4" /> {mockFullDetails.pricing}
+                          <IndianRupee className="w-4 h-4" /> {selectedVendor.pricing || mockFullDetails.pricing}
                        </p>
                     </div>
                     <div className="space-y-1">
                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Contact Information</p>
-                       <p className="text-sm font-bold text-slate-800">{mockFullDetails.email}</p>
-                       <p className="text-xs text-slate-500">{mockFullDetails.phone}</p>
+                       <p className="text-sm font-bold text-slate-800">{selectedVendor.email || mockFullDetails.email}</p>
+                       <p className="text-xs text-slate-500">{selectedVendor.phone || mockFullDetails.phone}</p>
                     </div>
                     <div className="space-y-1">
                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Verification Status</p>
                        <div className="flex items-center gap-1.5 text-blue-600 font-bold text-sm">
-                          <ShieldCheck className="w-5 h-5" /> {mockFullDetails.kyc}
+                          <ShieldCheck className="w-5 h-5" /> {selectedVendor.kycStatus || mockFullDetails.kyc}
                        </div>
                     </div>
                  </div>
@@ -355,9 +362,9 @@ const ManageVendors = () => {
                        <PackageCheck className="w-4 h-4" /> Offered Services
                     </h5>
                     <div className="flex flex-wrap gap-2">
-                       {mockFullDetails.services.map((service, i) => (
+                       {(selectedVendor.services || mockFullDetails.services).map((service, i) => (
                          <span key={i} className="px-4 py-2 bg-slate-50 border border-slate-100 rounded-xl text-xs font-bold text-slate-600">
-                            {service}
+                            {service.name || service}
                          </span>
                        ))}
                     </div>
@@ -380,7 +387,8 @@ const ManageVendors = () => {
                  </button>
               </div>
            </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );

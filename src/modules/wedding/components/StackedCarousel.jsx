@@ -12,8 +12,8 @@ const StackedCarousel = ({ items }) => {
   }, [items.length]);
 
   return (
-    <div 
-      className="relative w-full max-w-[340px] h-[480px] md:max-w-[360px] md:h-[500px] mx-auto flex items-center justify-center"
+    <div
+      className="relative w-full max-w-[340px] h-[450px] md:max-w-[360px] md:h-[460px] mx-auto flex items-center justify-center"
     >
       {items.map((item, i) => {
         const diff = (i - activeIndex + items.length) % items.length;
@@ -59,7 +59,7 @@ const StackedCarousel = ({ items }) => {
           >
             {/* Card Match: DestinationCard Aesthetics */}
             <div className="bg-white rounded-3xl shadow-[0_15px_40px_-10px_rgba(0,0,0,0.1)] overflow-hidden h-full flex flex-col border border-gray-100/60 transition-all duration-500 ease-in-out">
-              
+
               {/* Top Image Area */}
               <div className="relative h-[220px] md:h-[240px] w-full shrink-0 overflow-hidden">
                 {item.image ? (
@@ -70,16 +70,16 @@ const StackedCarousel = ({ items }) => {
                   />
                 ) : (
                   <div className="w-full h-full bg-slate-100 flex items-center justify-center">
-                     {item.icon && <item.icon className="w-16 h-16 text-primary/30" />}
+                    {item.icon && <item.icon className="w-16 h-16 text-primary/30" />}
                   </div>
                 )}
-                
+
                 {/* Very subtle bottom gradient melting into white */}
                 <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white via-white/80 to-transparent" />
-                
+
                 {/* Pill Top Right */}
                 <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full text-xs font-extrabold text-primary shadow-sm flex items-center gap-1.5 border border-primary/10 tracking-wide uppercase">
-                   Step {i + 1}
+                  Step {i + 1}
                 </div>
               </div>
 
@@ -88,9 +88,9 @@ const StackedCarousel = ({ items }) => {
                 <h3 className="text-2xl font-black text-slate-800 tracking-tight mb-4">
                   {item.title}
                 </h3>
-                
+
                 <div className="w-full border-t border-slate-100 mb-4" />
-                
+
                 <div className="flex items-start gap-3 text-sm text-slate-500 font-medium">
                   {item.icon && (
                     <div className="p-2 rounded-xl bg-primary/10 text-primary shrink-0 mt-[-2px]">

@@ -27,8 +27,8 @@ const megaMenuData = [
     {
       title: "Planning & Decor",
       links: [
-        { label: "Wedding Planners", to: "/wedding/vendors?category=Planning & Decor" },
-        { label: "Decorators", to: "/wedding/vendors?category=Planning & Decor" }
+        { label: "Wedding Planners", to: "/wedding/vendors?category=Planning%20%26%20Decor" },
+        { label: "Decorators", to: "/wedding/vendors?category=Planning%20%26%20Decor" }
       ]
     },
     {
@@ -44,20 +44,20 @@ const megaMenuData = [
     {
       title: "Music & Dance",
       links: [
-        { label: "DJs", to: "/wedding/vendors?category=Music & Dance" },
-        { label: "Sangeet Choreographer", to: "/wedding/vendors?category=Music & Dance" },
-        { label: "Wedding Entertainment", to: "/wedding/vendors?category=Music & Dance" }
+        { label: "DJs", to: "/wedding/vendors?category=Music%20%26%20Dance" },
+        { label: "Sangeet Choreographer", to: "/wedding/vendors?category=Music%20%26%20Dance" },
+        { label: "Wedding Entertainment", to: "/wedding/vendors?category=Music%20%26%20Dance" }
       ]
     },
     {
       title: "Invites & Gifts",
       links: [
-        { label: "Invitations", to: "/wedding/vendors?category=Invites & Gifts" },
-        { label: "Favors", to: "/wedding/vendors?category=Invites & Gifts" },
-        { label: "Trousseau Packers", to: "/wedding/vendors?category=Invites & Gifts" },
-        { label: "Invitation Gifts", to: "/wedding/vendors?category=Invites & Gifts" },
-        { label: "Mehndi Favors", to: "/wedding/vendors?category=Invites & Gifts" },
-        { label: "View All Invites & Gifts", isViewAll: true, to: "/wedding/vendors?category=Invites & Gifts" }
+        { label: "Invitations", to: "/wedding/vendors?category=Invites%20%26%20Gifts" },
+        { label: "Favors", to: "/wedding/vendors?category=Invites%20%26%20Gifts" },
+        { label: "Trousseau Packers", to: "/wedding/vendors?category=Invites%20%26%20Gifts" },
+        { label: "Invitation Gifts", to: "/wedding/vendors?category=Invites%20%26%20Gifts" },
+        { label: "Mehndi Favors", to: "/wedding/vendors?category=Invites%20%26%20Gifts" },
+        { label: "View All Invites & Gifts", isViewAll: true, to: "/wedding/vendors?category=Invites%20%26%20Gifts" }
       ]
     },
     {
@@ -137,7 +137,7 @@ const WeddingLayout = () => {
               </Link>
 
               {/* Brand Text */}
-              <div className="hidden md:flex items-center">
+              <div className="flex items-center">
                 <div className="flex flex-col items-center select-none">
                   <span
                     style={{

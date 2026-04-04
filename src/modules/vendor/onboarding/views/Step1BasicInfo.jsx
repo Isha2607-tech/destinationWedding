@@ -6,6 +6,7 @@ import useVendorForm from "../../hooks/useVendorForm";
 import { useAuth } from "../../context/AuthContext";
 import { getCategories } from "../../data/categoryApi";
 import { vendorLocations } from "../../data/vendorMockData";
+import { getAdminVendors } from "../../../../services/storage";
 import {
   Select,
   SelectContent,
@@ -28,7 +29,20 @@ const Step1BasicInfo = () => {
       try {
         const res = await getCategories();
         if (res.success) {
-          setAvailableCategories(res.categories);
+          let cats = [...res.categories];
+          
+          try {
+            const adminVendors = getAdminVendors() || [];
+            const adminCats = [...new Set(adminVendors.map(v => v.category).filter(Boolean))];
+            
+            adminCats.forEach(ac => {
+               if(!cats.find(c => c.name.toLowerCase() === ac.toLowerCase())) {
+                   cats.push({ id: `custom-cat-${Date.now()}-${Math.random()}`, name: ac });
+               }
+            });
+          } catch(e) {}
+          
+          setAvailableCategories(cats);
         }
       } catch (error) {
         console.error("Failed to load categories", error);

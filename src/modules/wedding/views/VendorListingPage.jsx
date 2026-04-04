@@ -2,7 +2,8 @@ import React, { useState, useMemo } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { Search, ChevronRight, SlidersHorizontal, LayoutGrid, LayoutList } from "lucide-react";
 import { mockVendors, vendorCategories, citiesData } from "../data/vendorListingData";
-import { getVendorVenues, getAllDestinations } from '../../../services/storage';
+import { getVendorVenues, getAllDestinations, getAdminVendors } from '../../../services/storage';
+import { planners } from "../data/weddingData";
 import VendorCard from "../components/VendorCard";
 import FilterDropdown from "../components/FilterDropdown";
 import VendorHubPage from "./VendorHubPage";
@@ -29,7 +30,15 @@ const VendorListingPage = () => {
   return <ListingView category={categoryParam} cityFromUrl={cityParam} />;
 };
 
-const ListingView = ({ category, cityFromUrl }) => {
+const ListingView = ({ category: categoryFromProps, cityFromUrl }) => {
+  const category = useMemo(() => {
+    const raw = categoryFromProps?.trim();
+    if (raw === 'Planning') return 'Planning & Decor';
+    if (raw === 'Music') return 'Music & Dance';
+    if (raw === 'Invites') return 'Invites & Gifts';
+    return raw;
+  }, [categoryFromProps]);
+
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedRating, setSelectedRating] = useState(null);
   const [selectedBudget, setSelectedBudget] = useState(null);
@@ -70,6 +79,27 @@ const ListingView = ({ category, cityFromUrl }) => {
       } catch (e) {}
     }
 
+    let adminCreatedVendors = [];
+    try {
+      const dbAdmins = getAdminVendors() || [];
+      adminCreatedVendors = dbAdmins.map(p => ({
+        id: p.id,
+        name: p.name || "Vendor",
+        category: p.category || "General",
+        rating: p.rating || 5.0,
+        reviews: p.reviews || 0,
+        location: p.location || "Custom Location",
+        city: p.city || p.location?.split(',').pop()?.trim() || "Mumbai",
+        price: p.price || "₹Contact for Pricing",
+        priceUnit: p.priceUnit || "onwards",
+        startingPrice: 0,
+        image: p.image || "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?q=80&w=1200",
+        tags: p.subsections?.length ? p.subsections : ["Verified", "Premium"],
+        isFeatured: p.isFeatured || true,
+        isCustom: p.isCustom || true
+      }));
+    } catch(err) {}
+
     let approvedVenuesAsVendors = [];
     try {
       if (category && category.toLowerCase() === 'venues') {
@@ -102,7 +132,29 @@ const ListingView = ({ category, cityFromUrl }) => {
       }
     } catch(err) {}
 
-    return [...approvedVenuesAsVendors, ...customVendors, ...mockVendors];
+    let mappedPlanners = [];
+    if (category && (category.toLowerCase() === 'planners' || category.toLowerCase() === 'planning & decor')) {
+      mappedPlanners = planners.map(p => ({
+        id: p.id,
+        name: p.name,
+        category: "Planning & Decor",
+        rating: p.rating,
+        reviews: p.reviewCount,
+        location: p.cities.join(', '),
+        city: p.cities[0],
+        price: p.startingPrice >= 100000 
+          ? `₹${(p.startingPrice / 100000).toFixed(1)}L` 
+          : `₹${(p.startingPrice / 1000).toFixed(0)}K`,
+        priceUnit: "Starting",
+        startingPrice: p.startingPrice,
+        image: p.avatar || "https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=600",
+        tags: p.specialties || ["Professional", "Elite"],
+        services: p.services || [],
+        isFeatured: true
+      }));
+    }
+
+    return [...adminCreatedVendors, ...approvedVenuesAsVendors, ...customVendors, ...mappedPlanners, ...mockVendors];
   }, [category]);
 
   const allCities = useMemo(() => {

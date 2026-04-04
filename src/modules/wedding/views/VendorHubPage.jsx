@@ -24,7 +24,7 @@ const VendorHubPage = () => {
           {vendorCategories.map((cat) => (
             <Link
               key={cat.name}
-              to={`/wedding/vendors?category=${cat.name}`}
+              to={`/wedding/vendors?category=${encodeURIComponent(cat.name)}`}
               className="group relative block overflow-hidden transition-all duration-300 hover:shadow-md"
               style={{ height: "140px", backgroundColor: cat.bgColor || "#F5F0EB" }}
             >

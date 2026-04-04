@@ -23,7 +23,7 @@ const AdminLayout = () => {
     <div className="min-h-screen font-sans" style={{ background: ADMIN_THEME.colors.background }}>
       <AdminSidebar />
       
-      <main className="ml-72 transition-all">
+      <main className="ml-72 transition-all relative z-[100]">
         <AdminHeader title={getPageTitle()} />
         
         {/* Page Content */}

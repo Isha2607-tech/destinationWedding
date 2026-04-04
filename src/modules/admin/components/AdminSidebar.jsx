@@ -40,7 +40,6 @@ const menuItems = [
   { icon: MapPin, label: 'Destinations', path: '/admin/destinations' },
   { icon: Building2, label: 'Venue Approval', path: '/admin/venues' },
   { icon: Image, label: 'Real Weddings', path: '/admin/gallery' },
-  { icon: Megaphone, label: 'Marketing', path: '/admin/marketing' },
   { icon: Bell, label: 'Notifications', path: '/admin/notifications' },
   { icon: LifeBuoy, label: 'Support', path: '/admin/support' },
   { icon: Settings, label: 'Settings', path: '/admin/settings' },
@@ -51,11 +50,11 @@ const AdminSidebar = () => {
   const [expanded, setExpanded] = useState(true); // Keep vendors expanded by default if active
 
   return (
-    <aside className={`w-72 h-screen fixed left-0 top-0 bg-[#F8E2E5] border-r border-[#F3E9E2] z-50 flex flex-col shadow-sm`}>
+    <aside className={`w-72 h-screen fixed left-0 top-0 bg-[#F8E2E5] border-r border-[#F3E9E2] z-50 flex flex-col shadow-[10px_0_30px_rgba(0,0,0,0.05)]`}>
       <div className="p-8">
-        <h1 className={`${adminStyles.heading} text-2xl font-bold tracking-tight`}>
+        <h1 className={`${adminStyles.heading} text-xl font-bold tracking-tight`}>
           MY DESTINATION
-          <span className="block text-xs mt-1 uppercase tracking-[0.2em] font-sans opacity-70">Admin Panel</span>
+          <span className="block text-[10px] mt-1 uppercase tracking-[0.2em] font-sans opacity-70">Admin Panel</span>
         </h1>
       </div>
 
