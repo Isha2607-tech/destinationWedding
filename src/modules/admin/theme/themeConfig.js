@@ -5,7 +5,7 @@
 
 export const ADMIN_THEME = {
   colors: {
-    primary: "hsl(353 45% 35%)", // Deep Maroon
+    primary: "hsl(var(--primary))", // Dynamic primary from CSS variables
     primaryForeground: "hsl(0 0% 100%)",
     secondary: "hsl(353 30% 94%)", // Soft Pink
     secondaryForeground: "hsl(353 45% 25%)",
@@ -31,9 +31,9 @@ export const ADMIN_THEME = {
 };
 
 export const adminStyles = {
-  glassCard: "bg-white border border-[#F3E9E2] shadow-sm hover:shadow-md transition-all duration-300",
-  primaryButton: "bg-[hsl(353,45%,35%)] text-white hover:bg-[hsl(353,45%,40%)] transition-all",
-  heading: "font-serif text-[hsl(353,45%,35%)]",
-  sidebarItem: "flex items-center gap-3 px-4 py-3 rounded-xl transition-all hover:bg-[hsl(353,45%,35%)]/10 text-[hsl(353,20%,15%)]",
-  sidebarItemActive: "bg-[hsl(353,45%,35%)] text-white shadow-md"
+  glassCard: "bg-background border border-border shadow-sm hover:shadow-md transition-all duration-300",
+  primaryButton: "bg-primary text-white hover:opacity-90 transition-all",
+  heading: "font-serif text-primary",
+  sidebarItem: "flex items-center gap-3 px-4 py-3 rounded-xl transition-all hover:bg-primary/10 text-foreground",
+  sidebarItemActive: "bg-primary text-white shadow-md active-sidebar-item"
 };

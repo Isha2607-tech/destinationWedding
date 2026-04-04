@@ -4,6 +4,8 @@ import ScrollToTop from "./components/ScrollToTop";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+
+// User/Wedding Module Imports
 import WeddingLayout from "./modules/wedding/components/WeddingLayout";
 import WeddingHomePage from "./modules/wedding/views/WeddingHomePage";
 import DestinationsPage from "./modules/wedding/views/DestinationsPage";
@@ -22,6 +24,8 @@ import AccountSettingsPage from "./modules/wedding/views/AccountSettingsPage";
 import WeddingEnquiryPage from "./modules/wedding/views/WeddingEnquiryPage";
 import NotFound from "./app-pages/NotFound.jsx";
 import Welcome from "./app-pages/Welcome.jsx";
+
+// Vendor Module Imports
 import OnboardingLayout from "./modules/vendor/components/VendorLayout";
 import Step1BasicInfo from "./modules/vendor/onboarding/views/Step1BasicInfo";
 import Step2Portfolio from "./modules/vendor/onboarding/views/Step2Portfolio";
@@ -35,7 +39,8 @@ import WorkManager from "./modules/vendor/panel/views/WorkManager";
 import LeadsInbox from "./modules/vendor/panel/views/LeadsInbox";
 import ReviewsManager from "./modules/vendor/panel/views/ReviewsManager";
 import VendorSettings from "./modules/vendor/panel/views/VendorSettings";
-
+import MyVenues from "./modules/vendor/panel/views/MyVenues";
+import AddVenue from "./modules/vendor/panel/views/AddVenue.jsx";
 import VendorSignup from "./modules/vendor/auth/views/VendorSignup";
 import VendorLogin from "./modules/vendor/auth/views/VendorLogin";
 import { AuthProvider } from "./modules/vendor/context/AuthContext";
@@ -51,15 +56,14 @@ import ManageFinancials from "./modules/admin/views/ManageFinancials";
 import ManageMarketing from "./modules/admin/views/ManageMarketing";
 import ManageNotifications from "./modules/admin/views/ManageNotifications";
 import ManageSupport from "./modules/admin/views/ManageSupport";
-import { 
-  AdminSettings 
-} from "./modules/admin/views/PlaceholderViews";
-
-import AddVenue from "./modules/vendor/panel/views/AddVenue.jsx";
-import MyVenues from "./modules/vendor/panel/views/MyVenues.jsx";
+import AdminSettings from "./modules/admin/views/AdminSettings";
 import ManageVenues from "./modules/admin/views/ManageVenues.jsx";
 import ManageRealWeddings from "./modules/admin/views/ManageRealWeddings.jsx";
 import ManageDestinations from "./modules/admin/views/ManageDestinations.jsx";
+import AdminProfile from "./modules/admin/views/AdminProfile";
+
+// Theme Controller
+import ThemeController from "./components/ThemeController";
 
 const queryClient = new QueryClient();
 
@@ -69,6 +73,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <ThemeController />
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<Navigate to="/welcome" replace />} />
@@ -134,7 +139,8 @@ const App = () => (
             <Route path="destinations" element={<ManageDestinations />} />
             <Route path="venues" element={<ManageVenues />} />
             <Route path="gallery" element={<ManageRealWeddings />} />
-            <Route path="settings" element={<AdminSettings />} />
+            <Route path="profile" element={<AdminProfile />} />
+            <Route path="settings/*" element={<AdminSettings />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />

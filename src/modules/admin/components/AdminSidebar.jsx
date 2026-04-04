@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { 
-  LayoutDashboard, 
-  Users, 
-  MessageSquare, 
-  MapPin, 
-  Image, 
-  Settings, 
+import {
+  LayoutDashboard,
+  Users,
+  MessageSquare,
+  MapPin,
+  Image,
+  Settings,
   LogOut,
   ChevronRight,
   ChevronDown,
@@ -15,18 +15,18 @@ import {
   CreditCard,
   BarChart,
   LifeBuoy,
-  Bell,
   Megaphone,
   Briefcase,
-  Building2
+  Building2,
+  Palette
 } from 'lucide-react';
 import { adminStyles } from '../theme/themeConfig';
 
 const menuItems = [
   { icon: LayoutDashboard, label: 'Dashboard', path: '/admin/dashboard' },
-  { 
-    icon: Users, 
-    label: 'Manage Vendors', 
+  {
+    icon: Users,
+    label: 'Manage Vendors',
     path: '/admin/vendors',
     subItems: [
       { label: 'All Vendors', path: '/admin/vendors/all', icon: UserCheck },
@@ -40,9 +40,15 @@ const menuItems = [
   { icon: MapPin, label: 'Destinations', path: '/admin/destinations' },
   { icon: Building2, label: 'Venue Approval', path: '/admin/venues' },
   { icon: Image, label: 'Real Weddings', path: '/admin/gallery' },
-  { icon: Bell, label: 'Notifications', path: '/admin/notifications' },
   { icon: LifeBuoy, label: 'Support', path: '/admin/support' },
-  { icon: Settings, label: 'Settings', path: '/admin/settings' },
+  {
+    icon: Settings,
+    label: 'Settings',
+    path: '/admin/settings',
+    subItems: [
+      { label: 'Appearance', path: '/admin/settings/appearance', icon: Palette },
+    ]
+  },
 ];
 
 const AdminSidebar = () => {
@@ -50,8 +56,8 @@ const AdminSidebar = () => {
   const [expanded, setExpanded] = useState(true); // Keep vendors expanded by default if active
 
   return (
-    <aside className={`w-72 h-screen fixed left-0 top-0 bg-[#F8E2E5] border-r border-[#F3E9E2] z-50 flex flex-col shadow-[10px_0_30px_rgba(0,0,0,0.05)]`}>
-      <div className="p-8">
+    <aside className={`w-72 h-screen fixed left-0 top-0 bg-[#F8E2E5] border-r border-[hsl(353,45%,35%)]/20 z-50 flex flex-col shadow-[10px_0_30px_rgba(0,0,0,0.05)]`}>
+      <div className="h-20 px-8 border-b border-[hsl(353,45%,35%)]/20 mb-4 flex items-center shrink-0">
         <h1 className={`${adminStyles.heading} text-xl font-bold tracking-tight`}>
           MY DESTINATION
           <span className="block text-[10px] mt-1 uppercase tracking-[0.2em] font-sans opacity-70">Admin Panel</span>
@@ -67,10 +73,9 @@ const AdminSidebar = () => {
             <div key={item.path} className="flex flex-col">
               <NavLink
                 to={item.path}
-                className={({ isActive }) => 
-                  `flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-[hsl(353,20%,15%)] ${
-                    isActive 
-                    ? 'bg-[hsl(353,45%,35%)] text-white shadow-md active-sidebar-item' 
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-[hsl(353,20%,15%)] ${isActive
+                    ? 'bg-[hsl(353,45%,35%)] text-white shadow-md active-sidebar-item'
                     : 'hover:bg-[hsl(353,45%,35%)]/10'
                   } ${hasSubItems ? 'justify-between' : ''}`
                 }
@@ -100,10 +105,9 @@ const AdminSidebar = () => {
                     <NavLink
                       key={sub.path}
                       to={sub.path}
-                      className={({ isActive }) => 
-                        `flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                          isActive 
-                          ? 'text-[hsl(353,45%,35%)] bg-[hsl(353,45%,35%)]/10 font-bold' 
+                      className={({ isActive }) =>
+                        `flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${isActive
+                          ? 'text-[hsl(353,45%,35%)] bg-[hsl(353,45%,35%)]/10 font-bold'
                           : 'text-gray-500 hover:text-[hsl(353,45%,35%)] hover:bg-[hsl(353,45%,35%)]/5'
                         }`
                       }
@@ -119,8 +123,8 @@ const AdminSidebar = () => {
         })}
       </nav>
 
-      <div className="p-4 mt-auto">
-        <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 hover:bg-red-50 transition-all font-medium">
+      <div className="p-2 mt-auto border-t border-[hsl(353,45%,35%)]/20 pt-3">
+        <button className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-red-600 hover:bg-red-50 transition-all font-medium">
           <LogOut size={20} />
           <span>Logout</span>
         </button>

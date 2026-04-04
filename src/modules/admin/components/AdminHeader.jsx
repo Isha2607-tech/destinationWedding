@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { 
-  Bell, 
-  Search, 
-  User, 
+import { Link } from 'react-router-dom';
+import {
+  Bell,
+  Search,
+  User,
   Calendar,
   Settings,
   Mail,
@@ -28,15 +29,15 @@ const AdminHeader = ({ title = "Dashboard" }) => {
   }, []);
 
   return (
-    <header className={`h-20 w-[calc(100%-18rem)] fixed right-0 top-0 bg-[#F8E2E5] border-b border-[#F3E9E2] z-40 px-8 flex items-center justify-between shadow-sm`}>
+    <header className={`h-20 w-[calc(100%-18rem)] fixed right-0 top-0 bg-[#F8E2E5] border-b border-[hsl(353,45%,35%)]/20 z-40 px-8 flex items-center justify-between shadow-sm`}>
       <div className="flex items-center gap-4">
         <h2 className={`${adminStyles.heading} text-2xl font-semibold`}>
           {title}
         </h2>
         <div className="ml-8 relative">
-          <input 
-            type="text" 
-            placeholder="Search everything..." 
+          <input
+            type="text"
+            placeholder="Search everything..."
             className="w-80 h-10 pl-10 pr-4 rounded-xl border border-white/40 bg-white/50 focus:outline-none focus:ring-2 focus:ring-[hsl(353,45%,35%)] transition-all"
           />
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
@@ -58,7 +59,7 @@ const AdminHeader = ({ title = "Dashboard" }) => {
 
         {/* Profile Section with Dropdown */}
         <div className="relative" ref={dropdownRef}>
-          <button 
+          <button
             onClick={() => setIsProfileOpen(!isProfileOpen)}
             className={`flex items-center gap-3 pl-2 pr-1 py-1 rounded-2xl transition-all hover:bg-white/40 ${isProfileOpen ? 'bg-white/60 shadow-sm' : ''}`}
           >
@@ -87,10 +88,14 @@ const AdminHeader = ({ title = "Dashboard" }) => {
               </div>
 
               <div className="space-y-1">
-                <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-[hsl(353,20%,15%)] hover:bg-[hsl(353,45%,35%)]/10 hover:text-[hsl(353,45%,35%)] transition-all">
+                <Link
+                  to="/admin/profile"
+                  onClick={() => setIsProfileOpen(false)}
+                  className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-[hsl(353,20%,15%)] hover:bg-[hsl(353,45%,35%)]/10 hover:text-[hsl(353,45%,35%)] transition-all"
+                >
                   <Edit3 size={18} />
                   Edit Profile
-                </button>
+                </Link>
                 <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-red-600 hover:bg-red-50 transition-all">
                   <LogOut size={18} />
                   Logout Account

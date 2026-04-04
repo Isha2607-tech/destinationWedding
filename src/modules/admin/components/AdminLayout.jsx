@@ -6,7 +6,7 @@ import { ADMIN_THEME } from '../theme/themeConfig';
 
 const AdminLayout = () => {
   const location = useLocation();
-  
+
   // Get the title from current path for the header
   const getPageTitle = () => {
     const path = location.pathname;
@@ -15,6 +15,7 @@ const AdminLayout = () => {
     if (path.includes('enquiries')) return "Wedding Enquiries";
     if (path.includes('destinations')) return "Manage Destinations";
     if (path.includes('gallery')) return "Real Weddings Gallery";
+    if (path.includes('profile')) return "Edit Profile";
     if (path.includes('settings')) return "Admin Settings";
     return "Admin Panel";
   };
@@ -22,12 +23,12 @@ const AdminLayout = () => {
   return (
     <div className="min-h-screen font-sans" style={{ background: ADMIN_THEME.colors.background }}>
       <AdminSidebar />
-      
+
       <main className="ml-72 transition-all relative z-[100]">
         <AdminHeader title={getPageTitle()} />
-        
+
         {/* Page Content */}
-        <div className="pt-28 p-8 max-w-7xl mx-auto">
+        <div className="pt-24 p-8 max-w-7xl mx-auto">
           <Outlet />
         </div>
       </main>
