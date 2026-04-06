@@ -66,7 +66,7 @@ const WeddingEnquiryPage = () => {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="w-full">
       <section className="pt-4 md:pt-20 pb-4 px-4 text-center leading-tight">
         <h1
           className="text-2xl md:text-5xl font-bold"
@@ -112,7 +112,7 @@ const WeddingEnquiryPage = () => {
       </div>
 
       {/* Form */}
-      <div className="max-w-2xl mx-auto px-4 pb-12 md:pb-24">
+      <div className="max-w-2xl mx-auto px-4 pb-4 md:pb-12">
         <ScrollReveal>
           <div className="p-5 md:p-8 rounded-2xl bg-card border border-border wedding-shadow">
             {step === 1 && (

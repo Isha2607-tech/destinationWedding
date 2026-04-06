@@ -6,9 +6,9 @@ const DestinationCard = ({ destination }) => {
   return (
     <Link
       to={`/wedding/destinations/${destination.id}`}
-      className="group block mx-auto w-full max-w-[310px] sm:max-w-none rounded-[1.5rem] overflow-hidden bg-white/40 backdrop-blur-md border border-pink-100/30 transition-all duration-500 hover:shadow-[0_20px_60px_-15px_rgba(157,49,61,0.2)] hover:bg-white"
+      className="group block w-full rounded-[1.5rem] overflow-hidden bg-white/40 backdrop-blur-md border border-pink-100/30 transition-all duration-500 hover:shadow-[0_20px_60px_-15px_rgba(157,49,61,0.2)] hover:bg-white"
     >
-      <div className="relative overflow-hidden aspect-[1.7/1]">
+      <div className="relative overflow-hidden aspect-[2.2/1] sm:aspect-[1.8/1]">
         <img
           src={destination.image}
           alt={destination.name}

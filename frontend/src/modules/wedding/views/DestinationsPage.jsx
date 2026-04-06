@@ -37,7 +37,7 @@ const DestinationsPage = () => {
   return (
     <div>
       {/* Hero Banner */}
-      <section className="relative py-16 md:py-32 px-4 overflow-hidden">
+      <section className="relative py-10 md:py-32 px-4 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
             src={heroImg} 
@@ -73,9 +73,9 @@ const DestinationsPage = () => {
       </section>
 
       {/* Filters + Grid */}
-      <section className="py-8 px-4">
+      <section className="py-4 md:py-8 px-3 md:px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-nowrap overflow-x-auto md:flex-wrap md:justify-center gap-2 md:gap-3 mb-8 pb-4 md:pb-0 px-2 scrollbar-none">
+          <div className="flex flex-nowrap overflow-x-auto md:flex-wrap md:justify-center gap-2 md:gap-3 mb-5 pb-2 md:pb-0 px-2 scrollbar-none">
             {categories.map((cat) => (
               <button
                 key={cat}

@@ -232,7 +232,7 @@ const WeddingHomePage = () => {
       </section>
 
       {/* Testimonials */}
-      <section className="pt-4 pb-16 px-4">
+      <section className="pt-4 pb-8 px-4">
         <div className="max-w-4xl mx-auto">
           <ScrollReveal>
             <div className="text-center mb-8">
@@ -254,7 +254,7 @@ const WeddingHomePage = () => {
       </section>
 
       {/* Budget Buckets */}
-      <section className="pt-8 pb-16 px-4 wedding-gradient-soft">
+      <section className="pt-4 pb-16 px-4 wedding-gradient-soft">
         <div className="max-w-6xl mx-auto">
           <ScrollReveal>
             <div className="text-center mb-10">
