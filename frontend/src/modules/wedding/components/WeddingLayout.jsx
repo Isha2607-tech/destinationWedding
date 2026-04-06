@@ -133,11 +133,11 @@ const WeddingLayout = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               <Link to="/wedding" className="flex items-center gap-2">
-                <img src={logoImg} alt="Weddings Logo" className="h-12 md:h-14 w-auto object-contain scale-110 transition-transform duration-300" />
+                <img src={logoImg} alt="Weddings Logo" className="h-10 md:h-14 w-auto object-contain md:scale-110 transition-transform duration-300" />
               </Link>
 
-              {/* Brand Text */}
-              <div className="flex items-center">
+              {/* Brand Text (Watermark Style) */}
+              <div className="flex items-center opacity-30 hover:opacity-50 transition-opacity duration-500 cursor-default grayscale mix-blend-multiply">
                 <div className="flex flex-col items-center select-none">
                   <span
                     style={{

@@ -15,7 +15,7 @@ const ServiceCard = ({ title, subtitle, image, icon: Icon, onClick, comingSoon, 
   return (
     <div
       onClick={onClick}
-      className={`relative group w-full max-w-[340px] mx-auto aspect-[16/8] md:aspect-[1.5/0.8] md:max-w-none overflow-hidden rounded-[1rem] cursor-pointer shadow-[0_15px_40px_rgba(0,0,0,0.12)] transition-all duration-500 hover:scale-[1.01] active:scale-[0.99] hover:shadow-xl`}
+      className={`relative group w-full max-w-[340px] mx-auto aspect-[16/8] md:aspect-[4/3] lg:aspect-[16/10] md:max-w-none overflow-hidden rounded-[1.5rem] cursor-pointer shadow-[0_15px_40px_rgba(0,0,0,0.12)] transition-all duration-500 hover:scale-[1.02] active:scale-[0.98] hover:shadow-xl`}
     >
       {/* Background Image */}
       <img
@@ -56,14 +56,14 @@ const Welcome = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-[#FDFCFB] p-3 md:p-6 lg:p-8 overflow-hidden flex flex-col items-center justify-center">
+    <div className="min-h-screen bg-[#FDFCFB] p-4 md:p-8 overflow-hidden flex flex-col items-center pt-2 md:pt-12">
       {/* Background shiny glow */}
       <div className="fixed top-20 right-20 w-[600px] h-[600px] bg-[#722F37]/10 blur-[120px] rounded-full pointer-events-none z-0"></div>
       <div className="fixed -bottom-20 -left-20 w-[500px] h-[500px] bg-orange-200/10 blur-[100px] rounded-full pointer-events-none z-0"></div>
 
       <div className="max-w-6xl w-full mx-auto relative z-10 flex flex-col items-center">
         <div className="mb-4 md:mb-5 w-full text-center">
-          <h1 className="text-3xl md:text-5xl font-black text-[#1e1b1b] mb-0.5 tracking-tighter drop-shadow-sm" style={{ fontFamily: "'Inter', sans-serif" }}>
+          <h1 className="text-4xl md:text-6xl font-black text-[#1e1b1b] mb-2 md:mb-4 tracking-tighter drop-shadow-sm" style={{ fontFamily: "'Inter', sans-serif" }}>
             Booking
           </h1>
           <p className="text-slate-500 text-xs md:text-base font-medium tracking-tight opacity-80">
@@ -72,7 +72,7 @@ const Welcome = () => {
         </div>
 
         {/* Categories Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-8 w-full max-w-4xl px-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 lg:gap-10 w-full max-w-5xl lg:max-w-6xl px-4 mt-8 md:mt-12">
           <ServiceCard
             title="Hotel Services"
             subtitle="Indulge in a premium stay at curated locations"
