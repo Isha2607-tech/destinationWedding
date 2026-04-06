@@ -61,6 +61,7 @@ import ManageVenues from "./modules/admin/views/ManageVenues.jsx";
 import ManageRealWeddings from "./modules/admin/views/ManageRealWeddings.jsx";
 import ManageDestinations from "./modules/admin/views/ManageDestinations.jsx";
 import AdminProfile from "./modules/admin/views/AdminProfile";
+import AdminLogin from "./modules/admin/views/AdminLogin";
 
 // Theme Controller
 import ThemeController from "./components/ThemeController";
@@ -78,6 +79,27 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Navigate to="/welcome" replace />} />
           <Route path="/welcome" element={<Welcome />} />
+          
+          {/* Admin Routes */}
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<Navigate to="/admin/dashboard" replace />} />
+            <Route path="dashboard" element={<AdminDashboard />} />
+            <Route path="vendors/*" element={<ManageVendors />} />
+            <Route path="add-vendor" element={<AddVendors />} />
+            <Route path="enquiries" element={<ManageEnquiries />} />
+            <Route path="customers" element={<ManageCustomers />} />
+            <Route path="financials" element={<ManageFinancials />} />
+            <Route path="marketing" element={<ManageMarketing />} />
+            <Route path="notifications" element={<ManageNotifications />} />
+            <Route path="support" element={<ManageSupport />} />
+            <Route path="destinations" element={<ManageDestinations />} />
+            <Route path="venues" element={<ManageVenues />} />
+            <Route path="gallery" element={<ManageRealWeddings />} />
+            <Route path="profile" element={<AdminProfile />} />
+            <Route path="settings/*" element={<AdminSettings />} />
+          </Route>
+
           <Route path="/wedding" element={<WeddingLayout />}>
             <Route index element={<WeddingHomePage />} />
             <Route path="destinations" element={<DestinationsPage />} />
@@ -123,25 +145,6 @@ const App = () => (
             <Route path="login" element={<VendorLogin />} />
             <Route path="signup" element={<VendorSignup />} />
           </Routes></AuthProvider>} />
-
-          {/* Admin Routes */}
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<Navigate to="/admin/dashboard" replace />} />
-            <Route path="dashboard" element={<AdminDashboard />} />
-            <Route path="vendors/*" element={<ManageVendors />} />
-            <Route path="add-vendor" element={<AddVendors />} />
-            <Route path="enquiries" element={<ManageEnquiries />} />
-            <Route path="customers" element={<ManageCustomers />} />
-            <Route path="financials" element={<ManageFinancials />} />
-            <Route path="marketing" element={<ManageMarketing />} />
-            <Route path="notifications" element={<ManageNotifications />} />
-            <Route path="support" element={<ManageSupport />} />
-            <Route path="destinations" element={<ManageDestinations />} />
-            <Route path="venues" element={<ManageVenues />} />
-            <Route path="gallery" element={<ManageRealWeddings />} />
-            <Route path="profile" element={<AdminProfile />} />
-            <Route path="settings/*" element={<AdminSettings />} />
-          </Route>
 
           <Route path="*" element={<NotFound />} />
         </Routes>

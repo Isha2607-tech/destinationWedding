@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
   Users,
@@ -21,6 +21,7 @@ import {
   Palette
 } from 'lucide-react';
 import { adminStyles } from '../theme/themeConfig';
+import { toast } from 'sonner';
 
 const menuItems = [
   { icon: LayoutDashboard, label: 'Dashboard', path: '/admin/dashboard' },
@@ -53,7 +54,14 @@ const menuItems = [
 
 const AdminSidebar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [expanded, setExpanded] = useState(true); // Keep vendors expanded by default if active
+
+  const handleLogout = () => {
+    localStorage.removeItem("admin_token");
+    toast.success("Successfully logged out");
+    navigate("/admin/login");
+  };
 
   return (
     <aside className={`w-72 h-screen fixed left-0 top-0 bg-[#F8E2E5] border-r border-[hsl(353,45%,35%)]/20 z-50 flex flex-col shadow-[10px_0_30px_rgba(0,0,0,0.05)]`}>
@@ -124,7 +132,10 @@ const AdminSidebar = () => {
       </nav>
 
       <div className="p-2 mt-auto border-t border-[hsl(353,45%,35%)]/20 pt-3">
-        <button className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-red-600 hover:bg-red-50 transition-all font-medium">
+        <button 
+          onClick={handleLogout}
+          className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-red-600 hover:bg-red-50 transition-all font-medium"
+        >
           <LogOut size={20} />
           <span>Logout</span>
         </button>

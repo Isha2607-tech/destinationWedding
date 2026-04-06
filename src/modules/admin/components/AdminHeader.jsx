@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Bell,
   Search,
@@ -12,10 +12,18 @@ import {
   ChevronDown
 } from 'lucide-react';
 import { adminStyles } from '../theme/themeConfig';
+import { toast } from 'sonner';
 
 const AdminHeader = ({ title = "Dashboard" }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("admin_token");
+    toast.success("Successfully logged out");
+    navigate("/admin/login");
+  };
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -96,7 +104,10 @@ const AdminHeader = ({ title = "Dashboard" }) => {
                   <Edit3 size={18} />
                   Edit Profile
                 </Link>
-                <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-red-600 hover:bg-red-50 transition-all">
+                <button 
+                  onClick={handleLogout}
+                  className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-red-600 hover:bg-red-50 transition-all"
+                >
                   <LogOut size={18} />
                   Logout Account
                 </button>
