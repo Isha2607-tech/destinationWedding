@@ -1,109 +1,137 @@
-import React from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Hotel, Heart, Car } from 'lucide-react';
-import hotelImg from '../assets/hotel_blue.png';
-import weddingImg from '../assets/wedding_pink.png';
-import taxiImg from '../assets/taxi_road.png';
+import useEmblaCarousel from 'embla-carousel-react';
+import { ChevronRight } from 'lucide-react';
 
-const ServiceCard = ({ title, subtitle, image, icon: Icon, onClick, comingSoon, themeColor }) => {
-  const themes = {
-    blue: "bg-blue-600/30 border-blue-400/40 shadow-blue-500/20",
-    pink: "bg-pink-600/30 border-pink-400/40 shadow-pink-500/20",
-    yellow: "bg-yellow-600/30 border-yellow-400/40 shadow-yellow-500/20"
-  };
+// Images
+import hotelImg from '../assets/welcomePageHotelImage.jpg';
+import weddingImg from '../assets/welcomePageWeddingIamge.jpg';
+import taxiImg from '../assets/taxi_straight.png';
 
-  return (
-    <div
-      onClick={onClick}
-      className={`relative group w-full max-w-[340px] mx-auto aspect-[16/8] md:aspect-[4/3] lg:aspect-[16/10] md:max-w-none overflow-hidden rounded-[1.5rem] cursor-pointer shadow-[0_15px_40px_rgba(0,0,0,0.12)] transition-all duration-500 hover:scale-[1.02] active:scale-[0.98] hover:shadow-xl`}
-    >
-      {/* Background Image */}
-      <img
-        src={image}
-        alt={title}
-        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-      />
-
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-90 group-hover:opacity-95 transition-opacity" />
-
-      {/* Icon Container (Top Left) */}
-      <div className={`absolute top-4 left-4 w-10 h-10 rounded-xl backdrop-blur-md border flex items-center justify-center shadow-lg transition-all duration-500 group-hover:rotate-[10deg] ${themes[themeColor]}`}>
-        <Icon className="w-5 h-5 text-white" strokeWidth={1.5} />
-      </div>
-
-      {/* Coming Soon Badge (Top Right) */}
-      {comingSoon && (
-        <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-[9px] font-black tracking-widest text-white uppercase shadow-sm">
-          Coming Soon
-        </div>
-      )}
-
-      {/* Content (Bottom Left) */}
-      <div className="absolute bottom-4 left-4 right-4 text-white">
-        <h2 className="text-xl md:text-xl font-black tracking-tight mb-0.5 leading-none transition-transform group-hover:-translate-y-1">
-          {title}
-        </h2>
-        <p className="text-[10px] md:text-xs font-medium text-white/80 leading-tight opacity-90 transition-transform group-hover:-translate-y-1 delay-75">
-          {subtitle}
-        </p>
-      </div>
-    </div>
-  );
-};
+const slides = [
+  {
+    id: 1,
+    title: "Luxurious Stays",
+    subtitle: "Hotel Services",
+    description: "Indulge in a premium stay at curated locations with world-class amenities.",
+    image: hotelImg,
+    path: "/hotel",
+    theme: "from-blue-600/20 to-transparent",
+    btnColor: "bg-sky-200 hover:bg-sky-300 text-sky-950"
+  },
+  {
+    id: 2,
+    title: "Destination Wedding",
+    subtitle: "Wedding Dreams",
+    description: "Craft your dream celebration with elegance and breathtaking views.",
+    image: weddingImg,
+    path: "/wedding",
+    theme: "from-rose-600/20 to-transparent",
+    btnColor: "bg-pink-100 hover:bg-pink-200 text-pink-950"
+  },
+  {
+    id: 3,
+    title: "Taxi Service",
+    subtitle: "Taxi Service",
+    description: "Travel in comfort with our elite fleet of premium vehicles.",
+    image: taxiImg,
+    path: "/taxi",
+    theme: "from-amber-600/20 to-transparent",
+    btnColor: "bg-yellow-100 hover:bg-yellow-200 text-yellow-950"
+  }
+];
 
 const Welcome = () => {
   const navigate = useNavigate();
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, duration: 30 });
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on('select', onSelect);
+    emblaApi.on('reInit', onSelect);
+
+    const timer = setInterval(() => {
+      if (emblaApi) emblaApi.scrollNext();
+    }, 8000);
+
+    return () => clearInterval(timer);
+  }, [emblaApi, onSelect]);
+
+  const scrollTo = useCallback((index) => {
+    if (emblaApi) emblaApi.scrollTo(index);
+  }, [emblaApi]);
 
   return (
-    <div className="min-h-screen bg-[#FDFCFB] p-4 md:p-8 overflow-hidden flex flex-col items-center pt-2 md:pt-12">
-      {/* Background shiny glow */}
-      <div className="fixed top-20 right-20 w-[600px] h-[600px] bg-[#722F37]/10 blur-[120px] rounded-full pointer-events-none z-0"></div>
-      <div className="fixed -bottom-20 -left-20 w-[500px] h-[500px] bg-orange-200/10 blur-[100px] rounded-full pointer-events-none z-0"></div>
+    <div style={{ height: '100dvh' }} className="relative w-full bg-[#1e1b1b] overflow-hidden font-['Inter',sans-serif]">
+      {/* Carousel Container */}
+      <div style={{ height: '100dvh' }} className="w-full overflow-hidden" ref={emblaRef}>
+        <div style={{ height: '100dvh' }} className="flex w-full">
+          {slides.map((slide, index) => (
+            <div key={slide.id} style={{ height: '100dvh' }} className="relative flex-[0_0_100%] min-w-0">
+              {/* Background Image */}
+              <div className="absolute inset-0 w-full h-full overflow-hidden">
+                <img
+                  src={slide.image}
+                  alt={slide.title}
+                  style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
+                  className={`transition-transform duration-[4000ms] ease-out ${selectedIndex === index ? 'scale-110' : 'scale-100'}`}
+                />
+              </div>
 
-      <div className="max-w-6xl w-full mx-auto relative z-10 flex flex-col items-center">
-        <div className="mb-4 md:mb-5 w-full text-center">
-          <h1 className="text-4xl md:text-6xl font-black text-[#1e1b1b] mb-2 md:mb-4 tracking-tighter drop-shadow-sm" style={{ fontFamily: "'Inter', sans-serif" }}>
-            Booking
-          </h1>
-          <p className="text-slate-500 text-xs md:text-base font-medium tracking-tight opacity-80">
-            All your travel and event needs in one place
-          </p>
-        </div>
+              {/* Enhanced Gradient Overlays */}
+              <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10" />
+              <div className={`absolute inset-0 bg-gradient-to-br ${slide.theme} opacity-40 mix-blend-overlay z-0`} />
 
-        {/* Categories Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 lg:gap-10 w-full max-w-5xl lg:max-w-6xl px-4 mt-8 md:mt-12">
-          <ServiceCard
-            title="Hotel Services"
-            subtitle="Indulge in a premium stay at curated locations"
-            image={hotelImg}
-            icon={Hotel}
-            themeColor="blue"
-            onClick={() => navigate('/hotel')}
-          />
+              {/* Content Area - Bottom Anchored */}
+              <div className="absolute bottom-4 left-0 right-0 p-8 md:p-12 z-20 flex flex-col items-start gap-3">
+                <div className="overflow-hidden">
+                  <span className={`inline-block text-xs font-black tracking-[0.3em] uppercase text-white/70 py-1 transition-all duration-700 delay-300 transform ${selectedIndex === index ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'}`}>
+                    {slide.subtitle}
+                  </span>
+                </div>
+                
+                <h1 className={`text-4xl md:text-6xl font-black text-white leading-none tracking-tighter mb-2 transition-all duration-1000 delay-500 transform ${selectedIndex === index ? 'translate-x-0 opacity-100' : '-translate-x-12 opacity-0'}`}>
+                  {slide.title}
+                </h1>
+                
+                <p className={`text-sm md:text-lg text-white/80 max-w-[90%] md:max-w-md font-medium leading-relaxed mb-6 transition-all duration-1000 delay-700 transform ${selectedIndex === index ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+                  {slide.description}
+                </p>
 
-          <ServiceCard
-            title="Destination Wedding"
-            subtitle="Craft your dream celebration with elegance"
-            image={weddingImg}
-            icon={Heart}
-            themeColor="pink"
-            onClick={() => navigate('/wedding')}
-          />
-
-          <ServiceCard
-            title="Taxi Service"
-            subtitle="Travel in comfort with our elite fleet"
-            image={taxiImg}
-            icon={Car}
-            themeColor="yellow"
-            onClick={() => navigate('/taxi')}
-          />
+                <button
+                  onClick={() => navigate(slide.path)}
+                  className={`group flex items-center gap-3 px-7 py-4 rounded-full font-black text-sm tracking-tight transition-all duration-300 delay-[900ms] transform ${slide.btnColor} ${selectedIndex === index ? 'scale-100 opacity-100 translate-y-0' : 'scale-90 opacity-0 translate-y-4'}`}
+                >
+                  Explore Now
+                  <div className="w-6 h-6 rounded-full bg-black/5 flex items-center justify-center transition-transform group-hover:translate-x-1">
+                    <ChevronRight className="w-4 h-4" />
+                  </div>
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
+
+      {/* Right Arrow - Navigate to Next Slide */}
+      <button
+        onClick={() => emblaApi && emblaApi.scrollNext()}
+        className="absolute right-6 top-1/2 -translate-y-1/2 z-40 w-11 h-11 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white/25 hover:scale-110 transition-all duration-300"
+        aria-label="Next slide"
+      >
+        <ChevronRight className="w-5 h-5" />
+      </button>
+
+
     </div>
   );
 };
 
 export default Welcome;
-
